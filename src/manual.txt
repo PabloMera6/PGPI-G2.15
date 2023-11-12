@@ -1,0 +1,21 @@
+-Instalaros Python 3.10.11: https://www.python.org/ftp/python/3.10.11/python-3.10.11-amd64.exe
+
+-Crear una carpeta y dentro de esta carpeta clonar el repo y abrir el cmd para crear el entorno virtual con la version:
+    virtualenv -p 3.10.11 venv_motos
+
+-Dentro de visual studio abrir la carpeta donde se encuentra el repo y el entorno virtual
+-Pulsa F1 y busca la opcion de "Python:select interpeter"
+-Selecciona el entorno virtual con la version 3.10
+-Abre una nueva terminal desde la barra de arriba y comprueba que te sale en la terminal que estas en el entorno
+-Si te da error porque no te deja lanzar el script: https://www.cdmon.com/es/blog/la-ejecucion-de-scripts-esta-deshabilitada-en-este-sistema-te-contamos-como-actuar
+-Ahora, siempre que abras la carpeta que contiene al repo y al entorno y lances una nueva terminal desde la barra de arriba, te leerá los archivos python con el interprete.
+-En la consola con el entorno virtual:
+    cd .\PGPI-G2.15\src
+    pip install -r requirements.txt
+    python .\manage.py makemigrations
+    python .\manage.py migrate
+    python .\manage.py runserver
+
+
+CREDENCIALES ADMIN
+admin:1111
