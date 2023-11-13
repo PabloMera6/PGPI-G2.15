@@ -44,7 +44,18 @@ INSTALLED_APPS = [
     "motorcycle",
     "order",
     "part",
+    "rest_framework",
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+    'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.QueryParameterVersioning'
+}
+
+AUTH_USER_MODEL = 'users.UserProfile'
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
