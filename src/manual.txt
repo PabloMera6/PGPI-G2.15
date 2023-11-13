@@ -1,6 +1,7 @@
 -Instalaros Python 3.10.11: https://www.python.org/ftp/python/3.10.11/python-3.10.11-amd64.exe
 
 -Crear una carpeta y dentro de esta carpeta clonar el repo y abrir el cmd para crear el entorno virtual con la version:
+    pip install virtualenv
     virtualenv -p 3.10.11 venv_motos
 
 -Dentro de visual studio abrir la carpeta donde se encuentra el repo y el entorno virtual
