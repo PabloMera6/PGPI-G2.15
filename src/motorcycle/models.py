@@ -3,9 +3,19 @@ from product.models import Product
 from part.models import Part
 
 class Motorcycle(Product):
+    
+    TYPE_CHOICES = [
+        ('Turismo', 'Turismo'),
+        ('Deportivo', 'Deportivo'),
+        ('Naked', 'Naked'),
+        ('Custom', 'Custom')
+    ]
+
     name = models.CharField(max_length=50)
-    photo = models.ImageField(upload_to='motorcycle_photos/', null=True, blank=True)
+    photo = models.URLField(blank=True)
     brand = models.CharField(max_length=50)
+    category = models.CharField(max_length=50, choices=TYPE_CHOICES)
+    stock_quantity = models.PositiveIntegerField()
 
     selected_carrocería = models.ForeignKey(Part, on_delete=models.CASCADE, related_name='selected_carrocería')
     compatible_carroceria = models.ManyToManyField(Part, related_name='compatible_carroceria')
@@ -25,9 +35,6 @@ class Motorcycle(Product):
     selected_frenos = models.ForeignKey(Part, on_delete=models.CASCADE, related_name='selected_frenos')
     compatible_frenos = models.ManyToManyField(Part, related_name='compatible_frenos')
 
-    selected_electricidad = models.ForeignKey(Part, on_delete=models.CASCADE, related_name='selected_electricidad')
-    compatible_electricidad = models.ManyToManyField(Part, related_name='compatible_electricidad')
-
     selected_manillar = models.ForeignKey(Part, on_delete=models.CASCADE, related_name='selected_manillar')
     compatible_manillar = models.ManyToManyField(Part, related_name='compatible_manillar')
 
@@ -36,3 +43,6 @@ class Motorcycle(Product):
 
     selected_chasis = models.ForeignKey(Part, on_delete=models.CASCADE, related_name='selected_chasis')
     compatible_chasis = models.ManyToManyField(Part, related_name='compatible_chasis')
+
+    def __str__(self):
+        return self.name

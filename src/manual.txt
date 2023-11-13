@@ -16,6 +16,7 @@ Ahora siempre que abras la carpeta que contiene al repo y al entorno y lances un
     pip install -r requirements.txt
     python .\manage.py makemigrations
     python .\manage.py migrate
+    python .\manage.py loaddata populate.json
     python .\manage.py runserver
 
 

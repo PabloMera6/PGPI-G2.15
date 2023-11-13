@@ -11,15 +11,17 @@ class Part(Product):
         ('Suspensión', 'Suspensión'),
         ('Ruedas', 'Ruedas'),
         ('Frenos', 'Frenos'),
-        ('Electricidad', 'Electricidad'),
         ('Manillar', 'Manillar'),
         ('Sistema de combustible', 'Sistema de combustible'),
-        ('chasis', 'chasis')
+        ('Chasis', 'Chasis')
     ]
 
     name = models.CharField(max_length=50)
-    photo = models.ImageField(upload_to='part_photos/', null=True, blank=True)
+    photo = models.URLField(blank=True)
     category = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
     stock_quantity = models.PositiveIntegerField()
     manufacturer = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
     
