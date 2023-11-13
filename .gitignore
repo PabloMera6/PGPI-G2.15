@@ -6,6 +6,9 @@ __pycache__
 db.sqlite3
 media
 
+# Ignorar el archivo de migración específico
+src/claim/migrations/
+
 # Backup files # 
 *.bak 
 
