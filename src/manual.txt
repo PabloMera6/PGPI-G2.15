@@ -21,4 +21,4 @@ Ahora siempre que abras la carpeta que contiene al repo y al entorno y lances un
 
 
 CREDENCIALES ADMIN
-admin:1111
+admin@admin.com:1111
