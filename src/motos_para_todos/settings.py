@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "motorcycle",
     "order",
     "part",
+    "rest_framework.authtoken",
     "rest_framework",
 ]
 
