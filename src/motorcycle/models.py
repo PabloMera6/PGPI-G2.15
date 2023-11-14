@@ -12,10 +12,10 @@ class Motorcycle(Product):
     ]
 
     name = models.CharField(max_length=50)
-    photo = models.URLField(blank=True)
+    photo = models.URLField(blank=True, default="", max_length=200)
     brand = models.CharField(max_length=50)
-    category = models.CharField(max_length=50, choices=TYPE_CHOICES)
-    stock_quantity = models.PositiveIntegerField()
+    category = models.CharField(max_length=50, choices=TYPE_CHOICES, default='Custom')
+    stock_quantity = models.PositiveIntegerField(default=0)
 
     selected_carrocería = models.ForeignKey(Part, on_delete=models.CASCADE, related_name='selected_carrocería')
     compatible_carroceria = models.ManyToManyField(Part, related_name='compatible_carroceria')
