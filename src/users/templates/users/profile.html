@@ -1,32 +1,33 @@
-<!-- users/profile.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Perfil</title>
-</head>
-<body>
-    <h2>Editar Perfil</h2>
-    <form method="post" action="{% url 'profile' %}">
-        {% csrf_token %}
-        <div>
-            <label for="id_full_name">Full Name:</label>
-            <input type="text" id="id_full_name" name="full_name" value="{{ current_user.full_name }}">
+{% extends 'base.html' %}
+
+{% block title %}Editar Perfil{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">Editar Perfil</h2>
+                <form method="post" action="{% url 'profile' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="id_full_name">Nombre completo:</label>
+                        <input type="text" class="form-control" id="id_full_name" name="full_name" value="{{ current_user.full_name }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="id_phone">Teléfono:</label>
+                        <input type="text" class="form-control" id="id_phone" name="phone" value="{{ current_user.phone }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="id_address">Dirección:</label>
+                        <textarea class="form-control" id="id_address" name="address">{{ current_user.address }}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_email">Correo electrónico:</label>
+                        <input type="email" class="form-control" id="id_email" name="email" value="{{ current_user.email }}">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                </form>
+            </div>
         </div>
-        <div>
-            <label for="id_phone">Phone:</label>
-            <input type="text" id="id_phone" name="phone" value="{{ current_user.phone }}">
-        </div>
-        <div>
-            <label for="id_address">Address:</label>
-            <textarea id="id_address" name="address">{{ current_user.address }}</textarea>
-        </div>
-        <div>
-            <label for="id_email">Email:</label>
-            <input type="email" id="id_email" name="email" value="{{ current_user.email }}">
-        </div>
-        <button type="submit">Save Changes</button>
-    </form>
-</body>
-</html>
+    </div>
+{% endblock %}
