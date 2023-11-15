@@ -6,6 +6,10 @@ from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
 from .models import UserProfile
 from django.shortcuts import render
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponseForbidden
+
+
 
 class RegisterView(APIView):
     def get(self, request):
@@ -55,3 +59,42 @@ class LoginView(APIView):
             login(request, user)
             token, _ = Token.objects.get_or_create(user=user)
         return Response({'token': token.key, 'user_pk': user.pk}, status=status.HTTP_200_OK)
+
+
+class UserProfileView(APIView):
+    template_name = 'users/profile.html'
+
+    def get(self, request):
+        if not request.user.is_authenticated:
+            return HttpResponseForbidden("Acceso denegado. Debes iniciar sesión para ver este contenido.")
+        current_user = request.user  # Obtén el UserProfile del usuario actual
+        return render(request, self.template_name, {'current_user': current_user})
+    
+
+    def post(self, request):
+        if not request.user.is_authenticated:
+            return Response({'error': 'Acceso denegado. Debes iniciar sesión para actualizar tu perfil.'}, status=status.HTTP_403_FORBIDDEN)
+
+        full_name = request.data.get('full_name', '')
+        phone = request.data.get('phone', '')
+        address = request.data.get('address', '')
+        new_email = request.data.get('email', '')
+
+        try:
+            user_profile = request.user
+        except ObjectDoesNotExist:
+            return Response({'error': 'UserProfile no encontrado para este usuario.'}, status=status.HTTP_404_NOT_FOUND)
+
+        if new_email and UserProfile.objects.exclude(pk=user_profile.pk).filter(email=new_email).exists():
+            return Response({'error': 'El nuevo correo electrónico ya está en uso.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        user_profile.full_name = full_name
+        user_profile.phone = phone
+        user_profile.address = address
+
+        if new_email:
+            user_profile.email = new_email
+
+        user_profile.save()
+
+        return Response({'message': 'Perfil actualizado correctamente.'}, status=status.HTTP_200_OK)
