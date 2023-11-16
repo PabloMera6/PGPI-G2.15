@@ -167,7 +167,7 @@ class UserProfileViewTest(TestCase):
         self.assertEqual(self.user.phone, data['phone'])
         self.assertEqual(self.user.address, data['address'])
         self.assertEqual(self.user.email, data['email'])
-        
+
     def test_update_profile_unauthenticated_user(self):
         data = {
             'full_name': 'Updated Name',
