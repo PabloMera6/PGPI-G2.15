@@ -102,5 +102,4 @@ class UserProfileView(APIView):
             user_profile.email = new_email
 
         user_profile.save()
-
         return redirect('/shop')
