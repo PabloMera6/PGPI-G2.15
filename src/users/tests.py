@@ -124,3 +124,70 @@ class LoginViewTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn('error', response.data)
         self.assertEqual(response.data['error'], 'Contraseña incorrecta.')
+
+class UserProfileViewTest(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+        self.user_data = {
+            'email': 'test@example.com',
+            'password': 'testpassword',
+            'full_name': 'Test User',
+            'phone': '123456789',
+            'address': 'Test Address',
+        }
+        self.user = UserProfile.objects.create_user(**self.user_data)
+        self.profile_url = reverse('profile')
+
+    def test_get_profile_view_authenticated_user(self):
+        self.client.force_authenticate(user=self.user)
+        response = self.client.get(self.profile_url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTemplateUsed(response, 'users/profile.html')
+
+    def test_get_profile_view_unauthenticated_user(self):
+        response = self.client.get(self.profile_url)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_update_profile_authenticated_user(self):
+        self.client.force_authenticate(user=self.user)
+        data = {
+            'full_name': 'Updated Name',
+            'phone': '987654321',
+            'address': 'Updated Address',
+            'email': 'updated@example.com',
+        }
+        response = self.client.post(self.profile_url, data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn('message', response.data)
+        self.assertEqual(response.data['message'], 'Perfil actualizado correctamente.')
+
+        # Recargar el objeto desde la base de datos para obtener los cambios
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.full_name, data['full_name'])
+        self.assertEqual(self.user.phone, data['phone'])
+        self.assertEqual(self.user.address, data['address'])
+        self.assertEqual(self.user.email, data['email'])
+        
+    def test_update_profile_unauthenticated_user(self):
+        data = {
+            'full_name': 'Updated Name',
+            'phone': '987654321',
+            'address': 'Updated Address',
+            'email': 'updated@example.com',
+        }
+        response = self.client.post(self.profile_url, data)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_update_profile_duplicate_email(self):
+        self.client.force_authenticate(user=self.user)
+        other_user = UserProfile.objects.create_user(email='other@example.com', password='otherpassword')
+        data = {
+            'full_name': 'Updated Name',
+            'phone': '987654321',
+            'address': 'Updated Address',
+            'email': other_user.email,  # Intentar actualizar con un correo electrónico ya existente
+        }
+        response = self.client.post(self.profile_url, data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('error', response.data)
+        self.assertEqual(response.data['error'], 'El nuevo correo electrónico ya está en uso.')
