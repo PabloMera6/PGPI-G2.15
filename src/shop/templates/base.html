@@ -6,40 +6,44 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Motos Para Todos</title>
-  <link type="text/css" rel="stylesheet" href="{% static 'styles/main.css' %}" />
   <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
-  
 
+  <link type="text/css" rel="stylesheet" href="{% static 'styles/main.css' %}" />
   <!-- BUSCADOR -->
   <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
   <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
   <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 
+  
   <!-- FOOTER -->
-  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+  <link rel="stylesheet" type="text/css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+
+  
 
 </head>
 
 <body>
   <nav class="navbar">
     <div class="navbar container">
-      <a href="."><img src="{% static 'images/icon.png' %}" alt="logo" width="90" height="90"></a>
+      <a href="/"><img src="{% static 'images/icon.png' %}" alt="logo" width="90" height="90"></a>
       <div class="container-fluid">
         <div class="row">
           <div class="col-xs-8 col-xs-offset-2">
             <div class="input-group">
               <div class="input-group-btn search-panel">
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                  <span id="search_concept">All</span> <span class="caret"></span>
+                  <span id="search_concept">Todos</span> <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" role="menu">
-                  <li><a href="#contains">Example 1</a></li>
-                  <li><a href="#its_equal">Example 2</a></li>
-                  <li><a href="#greather_than">Example 3</a></li>
-                  <li><a href="#less_than">Example 4</a></li>
+                  <li><a href="#contains">Motocicletas</a></li>
+                  <li><a href="#its_equal">Partes</a></li>
+                  <li><a href="#greather_than">Fabricantes</a></li>
                   <li class="divider"></li>
-                  <li><a href="#all">All</a></li>
+                  <li><a href="#all">Todos</a></li>
                 </ul>
               </div>
               <input type="hidden" name="search_param" value="all" id="search_param">
@@ -53,7 +57,19 @@
       </div>
       <div>
         <a href="."><img src="{% static 'images/cart.png' %}" alt="logo" width="40" height="40"></a>
-        
+        <div class="collapse navbar-collapse js-navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="dropdown dropdown-large">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Bienvenido <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="/users/profile"><i class="icon-cog"></i> Perfil</a></li>
+                <li class="divider"></li>
+                <li><a href="/users/logout"><i class="icon-off"></i> Cerrar sesión</a></li>
+              </ul>              
+            </li>
+          </ul>
+          
+        </div><!-- /.nav-collapse -->
       </div>
     </div>
   </nav>
