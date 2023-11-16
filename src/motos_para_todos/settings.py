@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "order",
     "part",
     "shop",
+    "manufacturer",
     "rest_framework.authtoken",
     "rest_framework",
 ]
