@@ -8,6 +8,7 @@ from .models import UserProfile
 from django.shortcuts import render, redirect
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseForbidden
+from django.shortcuts import redirect
 
 
 
@@ -30,7 +31,7 @@ class RegisterView(APIView):
 
         try:
             user = UserProfile.objects.create_user(email=email, password=password, full_name=full_name, phone=phone, address=address)
-            return Response({'user_pk': user.pk}, status=status.HTTP_201_CREATED)
+            return redirect('/shop')
         except IntegrityError:
             return Response({'error': 'Ha ocurrido un error al crear el usuario.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -63,7 +64,7 @@ class LoginView(APIView):
         if user is not None:
             login(request, user)
             token, _ = Token.objects.get_or_create(user=user)
-        return Response({'token': token.key, 'user_pk': user.pk}, status=status.HTTP_200_OK)
+        return redirect('/shop')
 
 
 class UserProfileView(APIView):
@@ -102,4 +103,4 @@ class UserProfileView(APIView):
 
         user_profile.save()
 
-        return Response({'message': 'Perfil actualizado correctamente.'}, status=status.HTTP_200_OK)
+        return redirect('/shop')
