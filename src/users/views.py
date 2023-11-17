@@ -38,7 +38,7 @@ class RegisterView(APIView):
 class LogoutView(APIView):
     def post(self, request):
         logout(request)
-        return redirect('.')
+        return redirect('/shop/')
 
 class LoginView(APIView):
     def get(self, request):
@@ -64,7 +64,7 @@ class LoginView(APIView):
         if user is not None:
             login(request, user)
             token, _ = Token.objects.get_or_create(user=user)
-        return redirect('.')
+        return redirect('/shop')
 
 
 class UserProfileView(APIView):
@@ -103,4 +103,4 @@ class UserProfileView(APIView):
 
         user_profile.save()
 
-        return redirect('·')
+        return redirect('/shop')
