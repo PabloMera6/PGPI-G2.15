@@ -1,7 +1,6 @@
 from django.db import models
 from product.models import Product
 from part.models import Part
-from manufacturer.models import Manufacturer
 
 class Motorcycle(Product):
     
@@ -14,7 +13,6 @@ class Motorcycle(Product):
 
     name = models.CharField(max_length=50)
     photo = models.URLField(blank=True, default="", max_length=200)
-    brand = models.ForeignKey(Manufacturer, on_delete=models.CASCADE, related_name='brand')
     category = models.CharField(max_length=50, choices=TYPE_CHOICES, default='Custom')
     stock_quantity = models.PositiveIntegerField(default=0)
 
