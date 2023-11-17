@@ -22,14 +22,15 @@ class RegisterViewTest(TestCase):
             'address': 'Test Address',
         }
 
-        response = self.client.post(reverse('register'), data)
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        response = self.client.post(reverse('register'), data, follow=True) 
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         user = UserProfile.objects.get(email=data['email'])
         self.assertIsNotNone(user)
         self.assertEqual(user.full_name, data['full_name'])
         self.assertEqual(user.phone, data['phone'])
         self.assertEqual(user.address, data['address'])
+
 
     def test_missing_email_or_password(self):
         data = {
@@ -83,15 +84,15 @@ class LoginViewTest(TestCase):
 
     def test_successful_login(self):
         data = {
-            'email': self.user_data['email'],
-            'password': self.user_data['password'],
+            'email': 'test@example.com',
+            'password': 'testpassword',
         }
 
         response = self.client.post(self.login_url, data)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertIn('token', response.data)
-        self.assertIn('user_pk', response.data)
-        self.assertEqual(response.data['user_pk'], self.user.pk)
+        self.assertEqual(response.status_code, status.HTTP_302_FOUND)
+        self.assertRedirects(response, '/shop', target_status_code=301)
+
+        self.assertTrue(response.wsgi_request.user.is_authenticated)
 
     def test_missing_email_or_password(self):
         data = {
@@ -156,10 +157,8 @@ class UserProfileViewTest(TestCase):
             'address': 'Updated Address',
             'email': 'updated@example.com',
         }
-        response = self.client.post(self.profile_url, data)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertIn('message', response.data)
-        self.assertEqual(response.data['message'], 'Perfil actualizado correctamente.')
+        response = self.client.post(self.profile_url, data, follow=True)
+        self.assertRedirects(response, '/shop/')
 
         # Recargar el objeto desde la base de datos para obtener los cambios
         self.user.refresh_from_db()
