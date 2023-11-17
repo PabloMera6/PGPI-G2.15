@@ -15,7 +15,7 @@ Ahora siempre que abras la carpeta que contiene al repo y al entorno y lances un
     cd .\PGPI-G2.15\src
     pip install -r requirements.txt
     python .\manage.py makemigrations
-    python .\manage.py migrate
+    python .\manage.py migrate --run-syncdb
     python .\manage.py loaddata populate.json
     python .\manage.py runserver
 
