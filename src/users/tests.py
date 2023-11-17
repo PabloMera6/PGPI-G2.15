@@ -90,7 +90,7 @@ class LoginViewTest(TestCase):
 
         response = self.client.post(self.login_url, data)
         self.assertEqual(response.status_code, status.HTTP_302_FOUND)
-        self.assertRedirects(response, '/shop', target_status_code=301)
+        self.assertRedirects(response, '/', target_status_code=200)
 
         self.assertTrue(response.wsgi_request.user.is_authenticated)
 
@@ -158,7 +158,7 @@ class UserProfileViewTest(TestCase):
             'email': 'updated@example.com',
         }
         response = self.client.post(self.profile_url, data, follow=True)
-        self.assertRedirects(response, '/shop/')
+        self.assertRedirects(response, '/')
 
         # Recargar el objeto desde la base de datos para obtener los cambios
         self.user.refresh_from_db()
