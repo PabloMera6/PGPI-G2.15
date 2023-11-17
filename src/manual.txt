@@ -20,5 +20,10 @@ Ahora siempre que abras la carpeta que contiene al repo y al entorno y lances un
     python .\manage.py runserver
 
 
+-Si quieres lanzarlo todo automaticamente, activas el entorno virtual en visual y:
+    cd .\PGPI-G2.15\
+    .\inicio.bat
+
+
 CREDENCIALES ADMIN
 admin@admin.com:1111
