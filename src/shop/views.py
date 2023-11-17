@@ -1,4 +1,4 @@
 from django.shortcuts import render
 
 def welcome(request):
-    return render(request, 'index.html')
+    return render(request, 'index.html', {'user': request.user})
