@@ -6,44 +6,51 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Motos Para Todos</title>
-  <link type="text/css" rel="stylesheet" href="{% static 'styles/main.css' %}" />
   <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
-  
 
-  <!-- BUSCADOR -->
-  <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-  <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+  <!-- SCRIPT BUSCADOR -->
   <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 
-  <!-- FOOTER -->
-  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+  <!-- SCRIPT NAVBAR -->
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+
+  <!-- ESTILOS FOOTER -->
+  <link rel="stylesheet" type="text/css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+
+  <!-- ESTILOS NAVBAR -->
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+
+  <!-- ESTILOS NUESTROS -->
+  <link type="text/css" rel="stylesheet" href="{% static 'styles/main.css' %}" />
 
 
 </head>
 
 <body>
   <nav class="navbar">
+    <div class="lateral">
+    </div>
     <div class="navbar container">
-      <a href="."><img src="{% static 'images/icon.png' %}" alt="logo" width="90" height="90"></a>
+      <a href="/"><img src="{% static 'images/icon.png' %}" alt="logo" width="90" height="90"></a>
       <div class="container-fluid">
         <div class="row">
           <div class="col-xs-8 col-xs-offset-2">
             <div class="input-group">
               <div class="input-group-btn search-panel">
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                  <span id="search_concept">All</span> <span class="caret"></span>
+                  <span id="search_concept">Todos</span> <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" role="menu">
-                  <li><a href="#contains">Example 1</a></li>
-                  <li><a href="#its_equal">Example 2</a></li>
-                  <li><a href="#greather_than">Example 3</a></li>
-                  <li><a href="#less_than">Example 4</a></li>
+                  <li><a href="#contains">Motocicletas</a></li>
+                  <li><a href="#its_equal">Partes</a></li>
+                  <li><a href="#greather_than">Fabricantes</a></li>
                   <li class="divider"></li>
-                  <li><a href="#all">All</a></li>
+                  <li><a href="#all">Todos</a></li>
                 </ul>
               </div>
               <input type="hidden" name="search_param" value="all" id="search_param">
-              <input type="text" class="form-control" name="x" placeholder="Search">
+              <input type="text" class="form-control" name="x" placeholder="Buscar productos">
               <span class="input-group-btn">
                 <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
               </span>
@@ -51,23 +58,53 @@
           </div>
         </div>
       </div>
-      <div>
-        <a href="."><img src="{% static 'images/cart.png' %}" alt="logo" width="40" height="40"></a>
-        
+      <a href="/cart"><img src="{% static 'images/cart.png' %}" alt="cart" width="90" height="90"></a>
+    </div>
+    <div class="lateral">
+      <div class="collapse navbar-collapse js-navbar-collapse">
+        {% if user.is_authenticated %}
+          <ul class="nav navbar-nav">
+            <li class="dropdown dropdown-large">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"
+                  aria-hidden="true"></span> Bienvenido, {{ user.full_name }} <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="/users/profile"><i class="icon-cog"></i> <span class="	glyphicon glyphicon-cog"
+                      aria-hidden="true"></span> Perfil</a></li>
+                <li class="divider"></li>
+                <li><a href="/users/logout"><i class="icon-off"></i><span class="	glyphicon glyphicon-off"
+                      aria-hidden="true"></span> Cerrar sesión</a></li>
+              </ul>
+            </li>
+          </ul>
+        {% else %}
+          <div>
+            <a href="/users/login" class="btn btn-primary inline-btn">Iniciar Sesión</a>
+            <a href="/users/register" class="btn btn-primary inline-btn">Registrarse</a>
+          </div>
+        {% endif %}
       </div>
     </div>
   </nav>
-  <nav class="categories container">
+  <nav class="container categories">
     <ul>
-      <li><a href="."><img src="{% static 'images/motos.png' %}" alt="logo" width="60" height="60">
-          <p>Motocicletas</p>
-        </a></li>
-      <li><a href="."><img src="{% static 'images/parts.png' %}" alt="logo" width="60" height="60">
-          <p>Partes</p>
-        </a></li>
-      <li><a href="."><img src="{% static 'images/brands.png' %}" alt="logo" width="60" height="60">
-          <p>Fabricantes</p>
-        </a></li>
+      <li>
+        <a href=".">
+          <div class="categoria-img">
+            <img src="{% static 'images/motos.png' %}" alt="logo" width="60" height="60">
+          </div>
+          <h4>Motocicletas</h4>
+        </a>
+      </li>
+      <li>
+        <a href="."><img src="{% static 'images/parts.png' %}" alt="parts" width="60" height="60">
+          <h4>Partes</h4>
+        </a>
+      </li>
+      <li>
+        <a href="."><img src="{% static 'images/brands.png' %}" alt="brands" width="60" height="60">
+          <h4>Fabricantes</h4>
+        </a>
+      </li>
     </ul>
   </nav>
   <div>
@@ -88,8 +125,8 @@
         <div class="footer-col">
           <h4>ayuda</h4>
           <ul>
-            <li><a href="#">reclamaciones</a></li>
             <li><a href="#">envíos</a></li>
+            <li><a href="#">reclamaciones</a></li>
             <li><a href="#">opciones de pago</a></li>
           </ul>
         </div>
@@ -103,7 +140,7 @@
         </div>
         <div class="footer-col">
           <div class="footer-icon">
-            <a href="."><img src="{% static 'images/icon.png' %}" alt="logo" width="140" height="140"></a>
+            <a href="/"><img src="{% static 'images/icon.png' %}" alt="logo" width="140" height="140"></a>
           </div>
         </div>
       </div>
