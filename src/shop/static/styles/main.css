@@ -68,13 +68,28 @@ body{
     align-items: center;
 }
 
-.categories ul li a{
+a {
   color: var(--black-pearl-950);
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.nav .open>a, .nav .open>a:hover, .nav .open>a:focus {
+  background-color: var(--antique-brass-200);
+  border-color: #428bca;
+}
+
+.nav>li>a:hover,.nav>li>a:focus {
+  text-decoration: none;
+  color: var(--black-pearl-950);
+  background-color: var(--antique-brass-200);
+}
+
+.categories ul li a{
   text-transform: capitalize;
   margin-bottom: 35px;
   font-weight: 500;
   position: relative;
-  text-decoration: none;
   font-weight: 300;
   display: block;
   transition: all 0.3s ease;
@@ -85,8 +100,9 @@ body{
   font-size: 22px;
 }
 
-.categories ul li a p{
+.categories ul li a{
     text-align: center;
+    text-decoration: none;
 }
 
 .categories ul li a:hover{
@@ -223,5 +239,29 @@ ul{
   text-justify: center;
   padding-right: 15px;
   padding-left: 15px;
+  flex:1;
 }
 
+.lateral {
+  flex: 1;
+  max-width: calc((100% - 1200px) / 2); /* Calcula el ancho máximo de las columnas laterales */
+  box-sizing: border-box;
+  padding: 10px; /* Ajusta el espaciado interno según tus necesidades */
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: var(--black-pearl-950);
+  border-color: var(--black-pearl-700);
+}
+
+.inline-btn {
+  display: inline-block;
+}
+
+.submit {
+  width: 100%;
+  margin: auto;
+  text-align: center ;
+  align-items: center;
+}
