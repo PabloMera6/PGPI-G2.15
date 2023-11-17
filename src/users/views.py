@@ -31,14 +31,14 @@ class RegisterView(APIView):
 
         try:
             user = UserProfile.objects.create_user(email=email, password=password, full_name=full_name, phone=phone, address=address)
-            return redirect('/shop')
+            return redirect('/')
         except IntegrityError:
             return Response({'error': 'Ha ocurrido un error al crear el usuario.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class LogoutView(APIView):
     def post(self, request):
         logout(request)
-        return redirect('/shop/')
+        return redirect('/')
 
 class LoginView(APIView):
     def get(self, request):
@@ -64,7 +64,7 @@ class LoginView(APIView):
         if user is not None:
             login(request, user)
             token, _ = Token.objects.get_or_create(user=user)
-        return redirect('/shop')
+        return redirect('/')
 
 
 class UserProfileView(APIView):
@@ -103,4 +103,4 @@ class UserProfileView(APIView):
 
         user_profile.save()
 
-        return redirect('/shop')
+        return redirect('/')
