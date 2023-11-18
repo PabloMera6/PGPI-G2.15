@@ -72,8 +72,14 @@
                 <li><a href="{% url 'profile' %}"><i class="icon-cog"></i> <span class="	glyphicon glyphicon-cog"
                       aria-hidden="true"></span> Perfil</a></li>
                 <li class="divider"></li>
-                <li><a href="{% url 'logout' %}"><i class="icon-off"></i><span class="	glyphicon glyphicon-off"
-                      aria-hidden="true"></span> Cerrar sesión</a></li>
+                <form id="logoutForm" method="post" action="{% url 'logout' %}">
+                  {% csrf_token %}
+                  <button type="submit">
+                    <i class="icon-off"></i>
+                    <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+                    Cerrar sesión
+                  </button>
+                </form>                
               </ul>
             </li>
           </ul>
