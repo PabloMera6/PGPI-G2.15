@@ -2,16 +2,103 @@
 
 {% block title %}Escaparate{% endblock %}
 
+<head>
+    {% load static %}
+    <link type="text/css" rel="stylesheet" href="{% static 'styles/storefront.css' %}" />
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+
 {% block content %}
 
-<main class="container">
-    <h1>-</h1>
-    <h1>-</h1>
-    <h1>-</h1>
-    <h1>Contenido del escaparate</h1>
-    <h1>-</h1>
-    <h1>-</h1>
-    <h1>-</h1>
-</main>
+<div class="container">
+    <div class="row">
+        <div class="row">
+            <div class="col-md-9">
+                <h3 class="storefront-title">LOS PRODUCTOS DE MOTOS PARA TODOS</h3>
+            </div>
+            <div class="col-md-3">
+                <div class="controls pull-right hidden-xs">
+                    <a class="left fa fa-chevron-left btn btn-primary" href="#carousel-items" data-slide="prev"></a>
+                    <a class="right fa fa-chevron-right btn btn-primary" href="#carousel-items" data-slide="next"></a>
+                </div>
+            </div>
+        </div>
+        <div id="carousel-items" class="carousel slide hidden-xs" data-ride="carousel">
+            <div class="carousel-inner">
+                <div class="item active">
+                    <div class="row">
+                        {% for motorcycle in active %}
+                            <div class="col-sm-4">
+                                <div class="col-item">
+                                    <div class="photo">
+                                        <img src={{ motorcycle.photo }} class="img-responsive" alt="a" />
+                                    </div>
+                                    <div class="info">
+                                        <div class="row">
+                                            <div class="price col-md-6">
+                                                <h5>{{ motorcycle.name }}</h5>
+                                            </div>
+                                            <div class="rating hidden-sm col-md-6">
+                                                <i class="price-text-color fa fa-star"></i><i class="price-text-color fa fa-star">
+                                                </i><i class="price-text-color fa fa-star"></i><i class="price-text-color fa fa-star">
+                                                </i><i class="fa fa-star"></i>
+                                            </div>
+                                        </div>
+                                        <div class="separator clear-left">
+                                            <p class="btn-add">
+                                                <i class="fa fa-shopping-cart"></i><a href="" class="hidden-sm">Añadir al carrito</a></p>
+                                            <p class="btn-details">
+                                                <i class="fa fa-list"></i><a href="" class="hidden-sm">Más detalles</a></p>
+                                        </div>
+                                        <div class="clearfix">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% for group in others %}
+                    <div class="item">
+                        <div class="row">
+                            {% for motorcycle in group %}
+                                <div class="col-sm-4">
+                                    <div class="col-item">
+                                        <div class="photo">
+                                            <img src={{ motorcycle.photo }} class="img-responsive" alt="a" />
+                                        </div>
+                                        <div class="info">
+                                            <div class="row">
+                                                <div class="price col-md-6">
+                                                    <h5>{{ motorcycle.name }}</h5>
+                                                </div>
+                                                <div class="rating hidden-sm col-md-6">
+                                                    <i class="price-text-color fa fa-star"></i><i class="price-text-color fa fa-star">
+                                                    </i><i class="price-text-color fa fa-star"></i><i class="price-text-color fa fa-star">
+                                                    </i><i class="fa fa-star"></i>
+                                                </div>
+                                            </div>
+                                            <div class="separator clear-left">
+                                                <p class="btn-add">
+                                                    <i class="fa fa-shopping-cart"></i><a href="" class="hidden-sm">Añadir al carrito</a></p>
+                                                <p class="btn-details">
+                                                    <i class="fa fa-list"></i><a href="" class="hidden-sm">Más detalles</a></p>
+                                            </div>
+                                            <div class="clearfix">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
 
 {% endblock %}
