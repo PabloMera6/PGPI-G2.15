@@ -1,13 +1,10 @@
 {% extends 'base_categories.html' %}
 
+{% load static %}
 
-<head>
-    {% load static %}
-    <link type="text/css" rel="stylesheet" href="{% static 'styles/storefront.css' %}" />
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-</head>
+{% block extrahead %}
+<link type="text/css" rel="stylesheet" href="{% static 'styles/storefront.css' %}" />
+{% endblock %}
 
 {% block content %}
 
