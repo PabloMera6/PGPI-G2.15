@@ -14,7 +14,7 @@ from django.shortcuts import redirect
 
 class RegisterView(APIView):
     def get(self, request):
-        return render(request, 'users/register.html')
+        return render(request, 'register')
 
     def post(self, request):
         email = request.data.get('email', '')
@@ -31,18 +31,18 @@ class RegisterView(APIView):
 
         try:
             user = UserProfile.objects.create_user(email=email, password=password, full_name=full_name, phone=phone, address=address)
-            return redirect('/')
+            return redirect('initial')
         except IntegrityError:
             return Response({'error': 'Ha ocurrido un error al crear el usuario.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class LogoutView(APIView):
     def post(self, request):
         logout(request)
-        return redirect('/')
+        return redirect('initial')
 
 class LoginView(APIView):
     def get(self, request):
-        return render(request, 'users/login.html')
+        return render(request, 'login')
 
     def post(self, request):
         email = request.data.get('email', '')
@@ -64,7 +64,7 @@ class LoginView(APIView):
         if user is not None:
             login(request, user)
             token, _ = Token.objects.get_or_create(user=user)
-        return redirect('/')
+        return redirect('initial')
 
 
 class UserProfileView(APIView):
@@ -102,4 +102,4 @@ class UserProfileView(APIView):
             user_profile.email = new_email
 
         user_profile.save()
-        return redirect('/')
+        return redirect('initial')
