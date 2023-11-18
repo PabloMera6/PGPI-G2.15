@@ -86,32 +86,16 @@
       </div>
     </div>
   </nav>
-  <nav class="container categories">
-    <ul>
-      <li>
-        <a href=".">
-          <div class="categoria-img">
-            <img src="{% static 'images/motos.png' %}" alt="logo" width="60" height="60">
-          </div>
-          <h4>Motocicletas</h4>
-        </a>
-      </li>
-      <li>
-        <a href="."><img src="{% static 'images/parts.png' %}" alt="parts" width="60" height="60">
-          <h4>Partes</h4>
-        </a>
-      </li>
-      <li>
-        <a href="."><img src="{% static 'images/brands.png' %}" alt="brands" width="60" height="60">
-          <h4>Fabricantes</h4>
-        </a>
-      </li>
-    </ul>
-  </nav>
-  <div>
-    {% block content %}
-    {% endblock %}
+  {% block categories %}
+  {% endblock %}
+  <div class="container">
+    <h2 class="card-title">
+      {% block title %}
+      {% endblock %}
+    </h2>
   </div>
+  {% block content %}
+  {% endblock %}
   <footer class="footer container">
     <div class="container-footer">
       <div class="row">
