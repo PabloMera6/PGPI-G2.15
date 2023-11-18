@@ -14,7 +14,7 @@ from django.shortcuts import redirect
 
 class RegisterView(APIView):
     def get(self, request):
-        return render(request, 'register')
+        return render(request, 'users/register.html')
 
     def post(self, request):
         email = request.data.get('email', '')
@@ -42,7 +42,7 @@ class LogoutView(APIView):
 
 class LoginView(APIView):
     def get(self, request):
-        return render(request, 'login')
+        return render(request, 'users/login.html')
 
     def post(self, request):
         email = request.data.get('email', '')
