@@ -1,30 +1,23 @@
 @import url(http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css);
 
-.storefront-title {
+.title {
     position: relative;
     font-weight: bold;
     display: inline-block;
     text-align: left;
     margin-right: auto;
     white-space: nowrap;
+    margin-bottom: 10%;
 }
 
-.btn-primary {
+.items {
     position: relative;
-    align-self: right;
-    display: inline-block;
-    white-space: nowrap;
-    margin-top: 14%;
-}
-
-.left {
-    margin-left: 45%;
-}
-
-.hidden-xs {
-    display: block!important;
     width: 100%;
-    margin-bottom: 25px;
+    overflow: hidden;
+}
+
+.items-row {
+    margin-bottom: 36%;
 }
 
 .col-item {
