@@ -112,3 +112,11 @@
 [data-slide="prev"] {
     margin-right: 10px;
 }
+
+.pagination>li>a, .pagination>li>span {
+    color: #031924;
+}
+
+.pagination>li>a:hover {
+    color: #ba5f3c;
+}
