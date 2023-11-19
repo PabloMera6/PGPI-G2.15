@@ -25,16 +25,16 @@
             <div class="carousel-inner">
                 <div class="item active">
                     <div class="row">
-                        {% for motorcycle in active %}
+                        {% for product in active %}
                             <div class="col-sm-4">
                                 <div class="col-item">
                                     <div class="photo">
-                                        <img src={{ motorcycle.photo }} class="img-responsive" alt="a" />
+                                        <img src={{ product.photo }} class="img-responsive" alt="a" />
                                     </div>
                                     <div class="info">
                                         <div class="row">
                                             <div class="price col-md-6">
-                                                <h5>{{ motorcycle.name }}</h5>
+                                                <h5>{{ product.name }}</h5>
                                             </div>
                                             <div class="rating hidden-sm col-md-6">
                                                 <i class="price-text-color fa fa-star"></i><i class="price-text-color fa fa-star">
@@ -43,10 +43,8 @@
                                             </div>
                                         </div>
                                         <div class="separator clear-left">
-                                            <p class="btn-add">
-                                                <i class="fa fa-shopping-cart"></i><a href="" class="hidden-sm">Añadir al carrito</a></p>
                                             <p class="btn-details">
-                                                <i class="fa fa-list"></i><a href="" class="hidden-sm">Más detalles</a></p>
+                                                <i class="fa fa-list"></i><a href="." class="hidden-sm">Más detalles</a></p>
                                         </div>
                                         <div class="clearfix">
                                         </div>
@@ -59,16 +57,16 @@
                 {% for group in others %}
                     <div class="item">
                         <div class="row">
-                            {% for motorcycle in group %}
+                            {% for product in group %}
                                 <div class="col-sm-4">
                                     <div class="col-item">
                                         <div class="photo">
-                                            <img src={{ motorcycle.photo }} class="img-responsive" alt="a" />
+                                            <img src={{ product.photo }} class="img-responsive" alt="a" />
                                         </div>
                                         <div class="info">
                                             <div class="row">
                                                 <div class="price col-md-6">
-                                                    <h5>{{ motorcycle.name }}</h5>
+                                                    <h5>{{ product.name }}</h5>
                                                 </div>
                                                 <div class="rating hidden-sm col-md-6">
                                                     <i class="price-text-color fa fa-star"></i><i class="price-text-color fa fa-star">
@@ -77,10 +75,8 @@
                                                 </div>
                                             </div>
                                             <div class="separator clear-left">
-                                                <p class="btn-add">
-                                                    <i class="fa fa-shopping-cart"></i><a href="" class="hidden-sm">Añadir al carrito</a></p>
                                                 <p class="btn-details">
-                                                    <i class="fa fa-list"></i><a href="" class="hidden-sm">Más detalles</a></p>
+                                                    <i class="fa fa-list"></i><a href="." class="hidden-sm">Más detalles</a></p>
                                             </div>
                                             <div class="clearfix">
                                             </div>
