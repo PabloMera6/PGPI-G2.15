@@ -2,9 +2,9 @@
 
 {% block extrahead %}
 {% load static %}
-<link rel="stylesheet" href="{% static 'styles/part_details.css' %}">
+<link rel="stylesheet" href="{% static 'styles/motorcycle_details.css' %}">
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-<script src="{% static 'styles/part_details.js' %}"></script>
+<script src="{% static 'styles/motorcycle_details.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -16,13 +16,13 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="item">
-                    <img class="product-image" src="{{ part.photo }}" />
+                    <img class="product-image" src="{{ motorcycle.photo }}" />
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="product-dtl">
                     <div class="product-info">
-                        <div class="product-name">{{ part.name }}</div>
+                        <div class="product-name">{{ motorcycle.name }}</div>
                         <div class="reviews-counter">
                             <div class="rate">
                                 <input type="radio" id="star5" name="rate" value="5" checked />
@@ -40,17 +40,7 @@
                         </div>
                         <div class="product-price"><span>{{ product.price }}€</span></div>
                     </div>
-                    <p class="category"><strong>Categoría:</strong> {{ part.category }}</p>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label for="size">Compatibilidad</label>
-                            <select id="size" name="size" class="form-control">
-                                {% for motorcycle in compatible_motorcycles %}
-                                    <option>{{ motorcycle }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                    </div>
+                    <p class="category"><strong>Categoría:</strong> {{ motorcycle.category }}</p>
                     <div class="product-count">
                         <label for="size">Cantidad</label>
                         <form action="." class="display-flex">
@@ -66,7 +56,7 @@
         <div class="product-info-tabs">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                   <li class="nav-item">
-                    <a class="nav-link active" id="description-tab" data-toggle="tab" href="#description" role="tab" aria-controls="description" aria-selected="true">Motocicletas compatibles</a>
+                    <a class="nav-link active" id="description-tab" data-toggle="tab" href="#description" role="tab" aria-controls="description" aria-selected="true">Partes compatibles</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" id="review-tab" data-toggle="tab" href="#review" role="tab" aria-controls="review" aria-selected="false">Opiniones</a>
@@ -75,19 +65,19 @@
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade active in" id="description" role="tabpanel" aria-labelledby="description-tab">
                     <div class="items">
-                        {% for motorcycle in compatible_motorcycles %}
+                        {% for part in compatible_parts %}
                             {% if forloop.counter0|divisibleby:3 %}
                                 <div class="items-row">
                             {% endif %}
                                 <div class="col-sm-4">
                                     <div class="col-item">
                                         <div class="photo">
-                                            <img src='{{ motorcycle.photo }}' class="img-responsive" alt="a" />
+                                            <img src='{{ part.photo }}' class="img-responsive" alt="a" />
                                         </div>
                                         <div class="info">
                                             <div class="row">
                                                 <div class="price col-md-6">
-                                                    <h5>{{ motorcycle.name }}</h5>
+                                                    <h5>{{ part.name }}</h5>
                                                 </div>
                                                 <div class="rating hidden-sm col-md-6">
                                                     <i class="price-text-color fa fa-star"></i><i class="price-text-color fa fa-star">
@@ -97,7 +87,7 @@
                                             </div>
                                             <div class="separator clear-left">
                                                 <p class="btn-details">
-                                                    <i class="fa fa-list"></i><a href="{% url 'motorcycle_details' motorcycle.id %}" class="hidden-sm">Más detalles</a></p>
+                                                    <i class="fa fa-list"></i><a href="{% url 'part_details' part.id %}" class="hidden-sm">Más detalles</a></p>
                                             </div>
                                             <div class="clearfix">
                                             </div>

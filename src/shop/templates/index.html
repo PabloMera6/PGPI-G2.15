@@ -44,7 +44,13 @@
                                         </div>
                                         <div class="separator clear-left">
                                             <p class="btn-details">
-                                                <i class="fa fa-list"></i><a href="." class="hidden-sm">Más detalles</a></p>
+                                                {% if product.product_type == 'M' %}
+                                                    <i class="fa fa-list"></i><a href="{% url 'motorcycle_details' product.id %}" class="hidden-sm">Más detalles</a></p>
+                                                {% elif product.product_type == 'P' %}
+                                                    <i class="fa fa-list"></i><a href="{% url 'part_details' product.id %}" class="hidden-sm">Más detalles</a></p>
+                                                {% else %}
+                                                    <i class="fa fa-list"></i><a href="." class="hidden-sm">Más detalles</a></p>
+                                                {% endif %}
                                         </div>
                                         <div class="clearfix">
                                         </div>
@@ -76,7 +82,13 @@
                                             </div>
                                             <div class="separator clear-left">
                                                 <p class="btn-details">
-                                                    <i class="fa fa-list"></i><a href="." class="hidden-sm">Más detalles</a></p>
+                                                    {% if product.product_type == 'M' %}
+                                                        <i class="fa fa-list"></i><a href="{% url 'motorcycle_details' product.id %}" class="hidden-sm">Más detalles</a></p>
+                                                    {% elif product.product_type == 'P' %}
+                                                        <i class="fa fa-list"></i><a href="{% url 'part_details' product.id %}" class="hidden-sm">Más detalles</a></p>
+                                                    {% else %}
+                                                        <i class="fa fa-list"></i><a href="." class="hidden-sm">Más detalles</a></p>
+                                                    {% endif %}
                                             </div>
                                             <div class="clearfix">
                                             </div>
