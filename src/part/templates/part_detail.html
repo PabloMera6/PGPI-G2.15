@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+
+{% block extrahead %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'styles/part_details.css' %}">
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="{% static 'styles/part_details.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="pd-wrap">
+    <div class="container">
+        <div class="heading-section">
+            <h2 class="section-title">Detalles del producto</h2>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="item">
+                    <img class="product-image" src="{{ part.photo }}" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="product-dtl">
+                    <div class="product-info">
+                        <div class="product-name">{{ part.name }}</div>
+                        <div class="reviews-counter">
+                            <div class="rate">
+                                <input type="radio" id="star5" name="rate" value="5" checked />
+                                <label for="star5" title="text">5 stars</label>
+                                <input type="radio" id="star4" name="rate" value="4" checked />
+                                <label for="star4" title="text">4 stars</label>
+                                <input type="radio" id="star3" name="rate" value="3" checked />
+                                <label for="star3" title="text">3 stars</label>
+                                <input type="radio" id="star2" name="rate" value="2" />
+                                <label for="star2" title="text">2 stars</label>
+                                <input type="radio" id="star1" name="rate" value="1" />
+                                <label for="star1" title="text">1 star</label>
+                              </div>
+                            <span>0 Opiniones</span>
+                        </div>
+                        <div class="product-price"><span>{{ product.price }}€</span></div>
+                    </div>
+                    <p class="category"><strong>Categoría:</strong> {{ part.category }}</p>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="size">Compatibilidad</label>
+                            <select id="size" name="size" class="form-control">
+                                {% for motorcycle in compatible_motorcycles %}
+                                    <option>{{ motorcycle }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="product-count">
+                        <label for="size">Cantidad</label>
+                        <form action="." class="display-flex">
+                            <div class="qtyminus">-</div>
+                            <input type="text" name="quantity" value="1" class="qty">
+                            <div class="qtyplus">+</div>
+                        </form>
+                        <a href="." class="round-black-btn">Añadir al carrito</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="product-info-tabs">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                  <li class="nav-item">
+                    <a class="nav-link active" id="description-tab" data-toggle="tab" href="#description" role="tab" aria-controls="description" aria-selected="true">Motocicletas compatibles</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" id="review-tab" data-toggle="tab" href="#review" role="tab" aria-controls="review" aria-selected="false">Opiniones</a>
+                  </li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade active in" id="description" role="tabpanel" aria-labelledby="description-tab">
+                    <div class="items">
+                        {% for motorcycle in compatible_motorcycles %}
+                            {% if forloop.counter0|divisibleby:3 %}
+                                <div class="items-row">
+                            {% endif %}
+                                <div class="col-sm-4">
+                                    <div class="col-item">
+                                        <div class="photo">
+                                            <img src='{{ motorcycle.photo }}' class="img-responsive" alt="a" />
+                                        </div>
+                                        <div class="info">
+                                            <div class="row">
+                                                <div class="price col-md-6">
+                                                    <h5>{{ motorcycle.name }}</h5>
+                                                </div>
+                                                <div class="rating hidden-sm col-md-6">
+                                                    <i class="price-text-color fa fa-star"></i><i class="price-text-color fa fa-star">
+                                                    </i><i class="price-text-color fa fa-star"></i><i class="price-text-color fa fa-star">
+                                                    </i><i class="fa fa-star"></i>
+                                                </div>
+                                            </div>
+                                            <div class="separator clear-left">
+                                                <p class="btn-details">
+                                                    <i class="fa fa-list"></i><a href="." class="hidden-sm">Más detalles</a></p>
+                                            </div>
+                                            <div class="clearfix">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% if forloop.counter|divisibleby:3 or forloop.last %}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
+                    <div class="review-heading">OPINIONES</div>
+                    <p class="mb-20">No hay opiniones disponibles.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
