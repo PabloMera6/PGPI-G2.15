@@ -2,7 +2,7 @@
 
 {% block extrahead %}
 {% load static %}
-<link rel="stylesheet" href="{% static 'styles/motorcycles.css' %}">
+<link rel="stylesheet" href="{% static 'styles/parts.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -11,23 +11,23 @@
     <div class="row">
         <div class="row">
             <div class="col-md-9">
-                <h3 class="title">NUESTRAS MOTOCICLETAS</h3>
+                <h3 class="title">PARTES PARA MOTOCICLETAS</h3>
             </div>
         </div>
         <div class="items">
-            {% for motorcycle in motorcycles %}
+            {% for part in parts %}
                 {% if forloop.counter0|divisibleby:3 %}
                     <div class="items-row">
                 {% endif %}
                     <div class="col-sm-4">
                         <div class="col-item">
                             <div class="photo">
-                                <img src={{ motorcycle.photo }} class="img-responsive" alt="a" />
+                                <img src={{ part.photo }} class="img-responsive" alt="a" />
                             </div>
                             <div class="info">
                                 <div class="row">
                                     <div class="price col-md-6">
-                                        <h5>{{ motorcycle.name }}</h5>
+                                        <h5>{{ part.name }}</h5>
                                     </div>
                                     <div class="rating hidden-sm col-md-6">
                                         <i class="price-text-color fa fa-star"></i><i class="price-text-color fa fa-star">
@@ -52,27 +52,27 @@
 
         <div class="pagination-container text-center mt-4">
             <ul class="pagination">
-                {% if motorcycles.has_previous %}
+                {% if parts.has_previous %}
                     <li class="page-item">
                         <a class="page-link" href="?page=1">&laquo; Primera</a>
                     </li>
                     <li class="page-item">
-                        <a class="page-link" href="?page={{ motorcycles.previous_page_number }}">Anterior</a>
+                        <a class="page-link" href="?page={{ parts.previous_page_number }}">Anterior</a>
                     </li>
                 {% endif %}
         
                 <li class="page-item disabled">
                     <span class="page-link">
-                        Página {{ motorcycles.number }} de {{ motorcycles.paginator.num_pages }}.
+                        Página {{ parts.number }} de {{ parts.paginator.num_pages }}.
                     </span>
                 </li>
         
-                {% if motorcycles.has_next %}
+                {% if parts.has_next %}
                     <li class="page-item">
-                        <a class="page-link" href="?page={{ motorcycles.next_page_number }}">Siguiente</a>
+                        <a class="page-link" href="?page={{ parts.next_page_number }}">Siguiente</a>
                     </li>
                     <li class="page-item">
-                        <a class="page-link" href="?page={{ motorcycles.paginator.num_pages }}">Última &raquo;</a>
+                        <a class="page-link" href="?page={{ parts.paginator.num_pages }}">Última &raquo;</a>
                     </li>
                 {% endif %}
             </ul>
