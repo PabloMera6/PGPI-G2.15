@@ -38,7 +38,9 @@
                                 <div class="img-cart"><img src="{{ moto.photo }}" alt="..." 
                                         class="img-responsive" /></div>
                                 <div class="cart-product col-sm-10">
-                                    <h4 class="nomargin" style="font-weight: bold;">{{ moto }}</h4>
+                                    <a href="{% url 'motorcycle_details' moto.id %}" class="hidden-sm">
+                                        <h4 class="nomargin" style="font-weight: bold;">{{ moto }}</h4>
+                                    </a>
                                     <div>
                                         <strong style="display: inline;">Categoria:</strong>
                                         <p style="display: inline;"> Motocicleta - {{ moto.category}}</p>
@@ -54,16 +56,15 @@
                         </td>
                         <td data-th="Price">{{ moto.price }}  €</td>
                         <td data-th="Quantity">
-                            <input type="number" name="quantity" id="quantityInput" class="form-control text-center" value="{{ datos.quantity }}">
+                            <form action="{% url 'refresh' %}" method="post">
+                                <input type="number" name="quantity" id="quantityInputPart" class="form-control text-center" value="{{ datos.quantity }}">
                         </td>
-                        <td data-th="Subtotal" class="text-center">{{ datos.price }}</td>
+                        <td data-th="Subtotal" class="text-center">{{ datos.price }} €</td>
                         <td class="actions" data-th="">
                             <div class="form">
-                                <form action="{% url 'refresh' %}" method="post">
                                     {% csrf_token %}
                                     <input type="hidden" name="product_id" style="position: absolute;"  value="{{ moto.id }}">
-                                    <input type="hidden" name="quantity" value="" id="hiddenQuantity">
-                                    <button class="btn btn-info btn-sm" onclick="updateQuantityMoto()"><i class="glyphicon glyphicon-refresh"></i></button>
+                                    <button type="submit" class="btn btn-info btn-sm"><i class="glyphicon glyphicon-refresh"></i></button>
                                 </form>
                                 <form action="{% url 'cart_remove' %}" method="post">
                                     {% csrf_token %}
@@ -81,7 +82,9 @@
                                 <div class="img-cart"><img src="{{ part.photo}}" alt="..."
                                         class="img-responsive" /></div>
                                 <div class="cart-product col-sm-10">
-                                    <h4 class="nomargin" style="font-weight: bold;">{{ part }}</h4>
+                                    <a href="{% url 'part_details' part.id %}" class="hidden-sm">
+                                        <h4 class="nomargin" style="font-weight: bold;">{{ part }}</h4>
+                                    </a>
                                     <div>
                                         <strong style="display: inline;">Categoria:</strong>
                                         <p style="display: inline;"> Parte - {{ part.category}}</p>
@@ -97,16 +100,16 @@
                         </td>
                         <td data-th="Price">{{ part.price }} €</td>
                         <td data-th="Quantity">
-                            <input type="number" name="quantity" id="quantityInput" class="form-control text-center" value="{{ datos.quantity }}">
+                            <form action="{% url 'refresh' %}" method="post">
+                            <input type="number" name="quantity" id="quantityInputPart" class="form-control text-center" value="{{ datos.quantity }}">
                         </td>
-                        <td data-th="Subtotal" class="text-center">{{ datos.price }}</td>
+                        <td data-th="Subtotal" class="text-center">{{ datos.price }} €</td>
                         <td class="actions" data-th="">
                             <div class="form">
-                                <form action="{% url 'refresh' %}" method="post">
+                                
                                     {% csrf_token %}
                                     <input type="hidden" name="product_id" style="position: absolute;"  value="{{ part.id }}">
-                                    <input type="hidden" name="quantity" value="" id="hiddenQuantity">
-                                    <button class="btn btn-info btn-sm" onclick="updateQuantityPart()"><i class="glyphicon glyphicon-refresh"></i></button>
+                                    <button type="submit" class="btn btn-info btn-sm"><i class="glyphicon glyphicon-refresh"></i></button>
                                 </form>
                                 <form action="{% url 'cart_remove' %}" method="post">
                                     {% csrf_token %}
@@ -141,24 +144,6 @@
             </tfoot>
         </table>
     </div>
-
-    <script>
-        function updateQuantityMoto() {
-            var quantityInput = document.getElementById("quantityInput");
-            var hiddenQuantity = document.getElementById("hiddenQuantity");
-            hiddenQuantity.value = quantityInput.value;
-            document.forms[0].submit();
-        }
-    </script>
-
-    <script>
-        function updateQuantityPart() {
-            var quantityInput = document.getElementById("quantityInput");
-            var hiddenQuantity = document.getElementById("hiddenQuantity");
-            hiddenQuantity.value = quantityInput.value;
-            document.forms[2].submit();
-        }
-    </script>
 </main>
 
 {% endblock %}
