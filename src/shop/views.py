@@ -1,9 +1,14 @@
-from django.shortcuts import render
+from product.models import Product
+from django.shortcuts import redirect, render
 from motorcycle.models import Motorcycle
+from manufacturer.models import Manufacturer 
 from part.models import Part
+from django.views.generic import TemplateView
 from manufacturer.models import Manufacturer
 from .forms import SearchForm
 import random
+from django.shortcuts import get_object_or_404
+from django.contrib import messages
 
 def welcome(request):
     motorcycles = Motorcycle.objects.all()
@@ -55,9 +60,60 @@ def search(request):
     return render(request, 'search.html', {'form': form, 'results': results, 'user': request.user})
 
 def view_cart(request):
-        return render(request, 'cart.html')
+    my_cart = Cart(request).cart
+    motos = {}
+    parts = {}
+    manufacturers = Manufacturer.objects.all()
+    precio_total = 0.0
+    for key, value in my_cart.items():
+        product = get_object_or_404(Product, pk=key)
+        precio_total += float(product.price) * float(value)
+        if product.product_type == 'M':
+            moto = get_object_or_404(Motorcycle, pk=key)
+            motos[moto] = {
+                'price': float(product.price) * float(value),
+                'quantity': value
+            }
+        elif product.product_type == 'P':
+            part = get_object_or_404(Part, pk=key)
+            parts[part] = {
+                'price': float(product.price) * float(value),
+                'quantity': value
+            }
+    return render(request, 'cart.html', {
+        'motos': motos,
+        'parts': parts,
+        'manufacturers': manufacturers,
+        'precio': round(precio_total, 2)
+    })
 
-class Cart:
+def add_to_cart(request):
+    if request.method == 'POST':
+        my_cart = Cart(request)
+        my_cart.add()
+    return view_cart(request)
+
+def remove_cart(request):
+    if request.method == 'POST':
+        product_id = request.POST.get('product_id')
+        my_cart = Cart(request)
+        my_cart.remove(product_id)
+    return view_cart(request)
+
+def refresh(request):
+    if request.method == 'POST':
+        my_cart = Cart(request)
+        product_id = request.POST.get('product_id')
+        quantity = int(request.POST.get('quantity'))
+        if quantity < 0:
+            messages.error(request,'La cantidad del producto no puede ser menor que 0')
+            return redirect('cart')
+        elif quantity == 0:
+            return remove_cart(request)
+        my_cart.refresh(product_id, quantity)
+    return view_cart(request)
+
+class Cart():
     def __init__(self, request):
         self.request = request
         self.session = request.session
@@ -66,8 +122,9 @@ class Cart:
             cart = self.session["cart"] = {}
         self.cart = cart
 
-    def add(self, product, quantity):
-        product_id = str(product.id)
+    def add(self):
+        quantity = int(self.request.POST.get('product_quantity'))
+        product_id = self.request.POST.get('product_id')
         if product_id not in self.cart.keys():
             self.cart[product_id] = quantity
         else:
@@ -77,27 +134,26 @@ class Cart:
                     break
         self.save()
 
-    def remove(self, product):
-        product_id = str(product.id)
+    def remove(self, product_id=None):
         if product_id in self.cart:
-            del self.cart[product.id]
+            del self.cart[product_id]
             self.save()
+        elif product_id == None:
+            self.session["cart"] = {}
+            self.session.modified = True
 
-    def decrement(self, product, quantity):
-        product_id = str(product.id)
-        for key, value in self.cart.items():
-            if key == product_id:
-                value = value - quantity
-                if value <= 0:
-                    self.remove()
-                break
+    def refresh(self, product_id, quantity):
+        my_cart = self.cart.items()
+        if product_id not in my_cart:
+            self.cart[product_id] = quantity
+        else:
+            for key, value in my_cart:
+                if key == product_id:
+                    value = quantity
+                    break
         self.save()
 
 
     def save(self):
         self.session["cart"] = self.cart
-        self.session.modified = True
-    
-    def clear(self):
-        self.session["cart"] = {}
         self.session.modified = True

@@ -119,3 +119,19 @@
 [data-slide="prev"] {
     margin-right: 10px;
 }
+
+.sin-estilo {
+    color: #2a6496;
+    text-decoration: underline; 
+    border: none;
+    outline: none; 
+    color: var(--black-pearl-950);
+    font-weight: bold;
+    text-decoration: none;
+    background-color: transparent;
+}
+
+.sin-estilo:hover {
+    color: #2a6496;
+    text-decoration: underline; 
+}
