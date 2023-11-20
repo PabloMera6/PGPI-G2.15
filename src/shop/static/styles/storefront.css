@@ -108,8 +108,8 @@
 .col-item .btn-details {
     width: 50%;
     float: left;
-    padding-left: 10px;
-    margin-left: 24%;
+    /* padding-left: 10px;
+    margin-left: 24%; */
 }
 
 .control {

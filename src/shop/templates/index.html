@@ -45,7 +45,7 @@
                                         <div class="separator clear-left">
                                             <form id="addToCartForm" action="{% url 'add_to_cart' %}" method="post">
                                                 {% csrf_token %}
-                                                <input type="hidden" name="product_id" style="position: absolute;"  value="{{ motorcycle.id }}">
+                                                <input type="hidden" name="product_id" style="position: absolute;"  value="{{ product.id }}">
                                                 <input type="hidden" name="product_quantity" style="position: absolute;" value="1">
                                                 <p class="btn-add">
                                                     <i class="fa fa-shopping-cart"></i>
@@ -54,16 +54,14 @@
                         
                                                 </p>
                                                 <p class="btn-details">
-                                                    <i class="fa fa-list"></i><a href="" class="hidden-sm">Más detalles</a></p>
-                                            </form>
-                                            <p class="btn-details">
-                                                {% if product.product_type == 'M' %}
+                                                    {% if product.product_type == 'M' %}
                                                     <i class="fa fa-list"></i><a href="{% url 'motorcycle_details' product.id %}" class="hidden-sm">Más detalles</a></p>
-                                                {% elif product.product_type == 'P' %}
-                                                    <i class="fa fa-list"></i><a href="{% url 'part_details' product.id %}" class="hidden-sm">Más detalles</a></p>
-                                                {% else %}
-                                                    <i class="fa fa-list"></i><a href="." class="hidden-sm">Más detalles</a></p>
-                                                {% endif %}
+                                                    {% elif product.product_type == 'P' %}
+                                                        <i class="fa fa-list"></i><a href="{% url 'part_details' product.id %}" class="hidden-sm">Más detalles</a></p>
+                                                    {% else %}
+                                                        <i class="fa fa-list"></i><a href="." class="hidden-sm">Más detalles</a>
+                                                    {% endif %}
+                                            </form>          
                                         </div>
                                         <div class="clearfix">
                                         </div>
@@ -96,7 +94,7 @@
                                             <div class="separator clear-left">
                                                 <form id="addToCartForm" action="{% url 'add_to_cart' %}" method="post">
                                                     {% csrf_token %}
-                                                    <input type="hidden" name="product_id" style="position: absolute;"  value="{{ motorcycle.id }}">
+                                                    <input type="hidden" name="product_id" style="position: absolute;"  value="{{ product.id }}">
                                                     <input type="hidden" name="product_quantity" style="position: absolute;" value="1">
                                                     <p class="btn-add">
                                                         <i class="fa fa-shopping-cart"></i>
