@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+import paypalrestsdk
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -146,3 +148,12 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+PAYPAL_CLIENT_ID = 'AUkHmwH6ogfAD37dz96UYFN01SXwVoAL-Cjj1lSkW4INLdjoFW5SPhrYV1Ilh9iY47TiiIBD93ld2W5g'
+PAYPAL_SECRET_KEY = 'EBx2jC9fTG5kVeLxxobG9b3NkFgV0PnfW1yQTTHH0oJjb5x3tqKpS1bdpMi6u79xWBWBb49nHw8OY5vw'
+
+paypalrestsdk.configure({
+    'mode': 'sandbox',  # O 'live' para producción
+    'client_id': PAYPAL_CLIENT_ID,
+    'client_secret': PAYPAL_SECRET_KEY,
+})
