@@ -1,13 +1,10 @@
 {% extends 'base_categories.html' %}
 
+{% load static %}
 
-<head>
-    {% load static %}
-    <link type="text/css" rel="stylesheet" href="{% static 'styles/storefront.css' %}" />
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-</head>
+{% block extrahead %}
+<link type="text/css" rel="stylesheet" href="{% static 'styles/storefront.css' %}" />
+{% endblock %}
 
 {% block content %}
 
@@ -46,10 +43,19 @@
                                             </div>
                                         </div>
                                         <div class="separator clear-left">
-                                            <p class="btn-add">
-                                                <i class="fa fa-shopping-cart"></i><a href="" class="hidden-sm">Añadir al carrito</a></p>
-                                            <p class="btn-details">
-                                                <i class="fa fa-list"></i><a href="" class="hidden-sm">Más detalles</a></p>
+                                            <form id="addToCartForm" action="{% url 'add_to_cart' %}" method="post">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="product_id" style="position: absolute;"  value="{{ motorcycle.id }}">
+                                                <input type="hidden" name="product_quantity" style="position: absolute;" value="1">
+                                                <p class="btn-add">
+                                                    <i class="fa fa-shopping-cart"></i>
+                                                    
+                                                        <button type="submit" class="sin-estilo">Añadir al carrito</button>
+                        
+                                                </p>
+                                                <p class="btn-details">
+                                                    <i class="fa fa-list"></i><a href="" class="hidden-sm">Más detalles</a></p>
+                                            </form>
                                         </div>
                                         <div class="clearfix">
                                         </div>
@@ -80,10 +86,19 @@
                                                 </div>
                                             </div>
                                             <div class="separator clear-left">
-                                                <p class="btn-add">
-                                                    <i class="fa fa-shopping-cart"></i><a href="" class="hidden-sm">Añadir al carrito</a></p>
-                                                <p class="btn-details">
-                                                    <i class="fa fa-list"></i><a href="" class="hidden-sm">Más detalles</a></p>
+                                                <form id="addToCartForm" action="{% url 'add_to_cart' %}" method="post">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="product_id" style="position: absolute;"  value="{{ motorcycle.id }}">
+                                                    <input type="hidden" name="product_quantity" style="position: absolute;" value="1">
+                                                    <p class="btn-add">
+                                                        <i class="fa fa-shopping-cart"></i>
+                                                        
+                                                            <button type="submit" class="sin-estilo">Añadir al carrito</button>
+                            
+                                                    </p>
+                                                    <p class="btn-details">
+                                                        <i class="fa fa-list"></i><a href="" class="hidden-sm">Más detalles</a></p>
+                                                </form>
                                             </div>
                                             <div class="clearfix">
                                             </div>
