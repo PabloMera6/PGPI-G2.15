@@ -4,6 +4,8 @@ from motorcycle.models import Motorcycle
 from manufacturer.models import Manufacturer 
 from part.models import Part
 from django.views.generic import TemplateView
+from manufacturer.models import Manufacturer
+from .forms import SearchForm
 import random
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
@@ -17,6 +19,45 @@ def welcome(request):
     other_groups = [combined_list[i:i+3] for i in range(3, len(combined_list), 3)]
 
     return render(request, 'index.html', {'user': request.user, 'active': active_group, 'others': other_groups})
+
+def search(request):
+    motorcycles = parts = manufacturers = ''
+    if request.method == 'GET':
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            search_type = form.cleaned_data['search_type']
+            if search_type == 'all':
+                motorcycles = Motorcycle.objects.filter(name__icontains=query)
+                parts = Part.objects.filter(name__icontains=query)
+                manufacturers = Manufacturer.objects.filter(name__icontains=query)
+            elif search_type == 'motorcycles':
+                motorcycles = Motorcycle.objects.filter(name__icontains=query)
+            elif search_type == 'parts':
+                parts = Part.objects.filter(name__icontains=query)
+            elif search_type == 'manufacturers':
+                manufacturers = Manufacturer.objects.filter(name__icontains=query)
+        else:
+            search_type = request.GET.get('search_type', 'all')
+            if search_type == 'all':
+                motorcycles = Motorcycle.objects.all()
+                parts = Part.objects.all()
+                manufacturers = Manufacturer.objects.all()
+            elif search_type == 'motorcycles':
+                motorcycles = Motorcycle.objects.all()
+            elif search_type == 'parts':
+                parts = Part.objects.all()
+            elif search_type == 'manufacturers':
+                manufacturers = Manufacturer.objects.all()
+    else:
+        form = SearchForm()
+        motorcycles = Motorcycle.objects.all()
+        parts = Part.objects.all()
+        manufacturers = Manufacturer.objects.all()
+
+    results = list(motorcycles) + list(parts) + list(manufacturers)
+    results = sorted(results, key=lambda x: getattr(x, 'name'))
+    return render(request, 'search.html', {'form': form, 'results': results, 'user': request.user})
 
 def view_cart(request):
     my_cart = Cart(request).cart

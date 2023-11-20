@@ -1,37 +1,30 @@
 @import url(http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css);
 
-.storefront-title {
+.title {
     position: relative;
     font-weight: bold;
     display: inline-block;
     text-align: left;
     margin-right: auto;
     white-space: nowrap;
+    margin-bottom: 10%;
 }
 
-.btn-primary {
+.items {
     position: relative;
-    align-self: right;
-    display: inline-block;
-    white-space: nowrap;
-    margin-top: 14%;
-}
-
-.left {
-    margin-left: 45%;
-}
-
-.hidden-xs {
-    display: block!important;
     width: 100%;
-    margin-bottom: 25px;
+    overflow: hidden;
+}
+
+.items-row {
+    display: flex;
+    margin-bottom: 3%;
 }
 
 .col-item {
     position: relative;
     border: 1px solid #E1E1E1;
     background: #FFF;
-    height: 150%;
 }
 
 .col-item .photo img {
@@ -120,18 +113,10 @@
     margin-right: 10px;
 }
 
-.sin-estilo {
-    color: #2a6496;
-    text-decoration: underline; 
-    border: none;
-    outline: none; 
-    color: var(--black-pearl-950);
-    font-weight: bold;
-    text-decoration: none;
-    background-color: transparent;
+.pagination>li>a, .pagination>li>span {
+    color: #031924;
 }
 
-.sin-estilo:hover {
-    color: #2a6496;
-    text-decoration: underline; 
+.pagination>li>a:hover {
+    color: #ba5f3c;
 }
