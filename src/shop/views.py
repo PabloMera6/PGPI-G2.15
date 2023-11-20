@@ -131,6 +131,7 @@ class Cart():
             for key, value in self.cart.items():
                 if key == product_id:
                     value = value + quantity
+                    self.cart[product_id] = value
                     break
         self.save()
 

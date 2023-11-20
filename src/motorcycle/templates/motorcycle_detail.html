@@ -42,13 +42,17 @@
                     </div>
                     <p class="category"><strong>Categoría:</strong> {{ motorcycle.category }}</p>
                     <div class="product-count">
-                        <label for="size">Cantidad</label>
-                        <form action="." class="display-flex">
-                            <div class="qtyminus">-</div>
-                            <input type="text" name="quantity" value="1" class="qty">
-                            <div class="qtyplus">+</div>
+                        <form id="addToCartForm" action="{% url 'add_to_cart' %}" method="post">
+                            {% csrf_token %}
+                            <label for="size">Cantidad</label>
+                            <div class="display-flex">
+                                <div class="qtyminus">-</div>
+                                <input type="text" name="product_quantity" value="1" class="qty">
+                                <div class="qtyplus">+</div>
+                            </div>
+                            <input type="hidden" name="product_id" style="position: absolute;"  value="{{ motorcycle.id }}">
+                            <button type="submit" class="round-black-btn"><i class="fa fa-shopping-cart"></i>  Añadir al carrito</button>
                         </form>
-                        <a href="." class="round-black-btn">Añadir al carrito</a>
                     </div>
                 </div>
             </div>

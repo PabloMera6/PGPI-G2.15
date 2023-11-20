@@ -78,7 +78,7 @@
                 <li class="divider"></li>
                 <form id="logoutForm" method="post" action="{% url 'logout' %}">
                   {% csrf_token %}
-                  <button type="submit">
+                  <button type="submit" style="margin-left: 15px;" class="sin-estilo">
                     <i class="icon-off"></i>
                     <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
                     Cerrar sesión
@@ -88,7 +88,9 @@
             </li>
           </ul>
         {% else %}
-          <div>
+          {% block estilo-inicio %}
+          {% endblock %}
+          <div class="inicio-sesion">
             <a href="{% url 'login' %}" class="btn btn-primary inline-btn">Iniciar Sesión</a>
             <a href="{% url 'register' %}" class="btn btn-primary inline-btn">Registrarse</a>
           </div>
