@@ -15,6 +15,12 @@ class Order(models.Model):
         ('cancelled', 'Cancelled'),
     ]
 
+    PAYMENT_CHOICES = [
+        ('cash', 'Contrarrembolso'),
+        ('card', 'Tarjeta'),
+    ]
+
+
     id = models.AutoField(primary_key=True)
     buyer = models.ForeignKey('users.UserProfile', on_delete=models.CASCADE,null=True)
     state = models.CharField(max_length=50, choices=STATE_CHOICES, default='pending')
@@ -22,7 +28,10 @@ class Order(models.Model):
     shipment = models.CharField(max_length=50, choices=SHIPMENT_CHOICES, default='pickup')
     address = models.CharField(max_length=255, null=True)
     products = models.ManyToManyField(Product, through='OrderProduct')
-
+    payment = models.CharField(max_length=50, choices=PAYMENT_CHOICES, default='cash')
+    buyer_mail = models.EmailField(max_length=254,null=False,blank=False,default='a@a.com')
+    buyer_name = models.CharField(max_length=50,null=False,blank=False,default='a')
+    buyer_phone = models.CharField(max_length=20, blank=True, null=True)
 
 class OrderProduct(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
