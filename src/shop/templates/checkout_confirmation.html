@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmación de Compra</title>
+</head>
+
+<body>
+    <h2>Detalles de tu compra en Motos Para Todos</h2>
+    <p>¡Hola {{ full_name }}!</p>
+
+    <p>Gracias por tu compra en Motos Para Todos. Aquí tienes los detalles de tu pedido:</p>
+
+    <h3>Resumen de la Compra</h3>
+    <p><strong>Total: </strong>{{ precio_total }}</p>
+
+    <h3>Productos</h3>
+
+    <h4>Motocicletas</h4>
+    <ul>
+        {% for moto, details in motos.items %}
+            <li>{{ moto.name }} - Precio: {{ details.price }} - Cantidad: {{ details.quantity }}</li>
+        {% endfor %}
+    </ul>
+
+    <h4>Partes</h4>
+    <ul>
+        {% for part, details in parts.items %}
+            <li>{{ part.name }} - Precio: {{ details.price }} - Cantidad: {{ details.quantity }}</li>
+        {% endfor %}
+    </ul>
+
+    <p><strong>Método de Pago: </strong>{{ payment_method }}</p>
+    <p><strong>Dirección de Envío: </strong>{{ address }}</p>
+
+    <p>¡Gracias por elegir Motos Para Todos!</p>
+</body>
+
+</html>

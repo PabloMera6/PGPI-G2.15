@@ -10,6 +10,9 @@ import random
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
 from order.models import Order
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 
 from paypalrestsdk import Payment
 
@@ -233,6 +236,24 @@ def checkout(request):
         create_order(precio_total, 'pickup', payment_method, email, full_name, phone, address, my_cart)
         del request.session['cart']
         messages.success(request, 'Pedido creado exitosamente.')
+        subject = 'Detalles de tu compra en Motos Para Todos'
+        from_email = 'motosparatodos@outlook.es'
+        to_email = [email]
+
+        context = {
+            'full_name': full_name,
+            'precio_total': precio_total,
+            'motos': motos,
+            'parts': parts,
+            'payment_method': payment_method,
+            'address': address,
+        }
+
+        html_message = render_to_string('checkout_confirmation.html', context)
+        plain_message = strip_tags(html_message)
+
+        send_mail(subject, plain_message, from_email, to_email, html_message=html_message)
+
         return redirect('/')
 
     return render(request, 'checkout.html', {
