@@ -49,6 +49,14 @@ body{
     margin-bottom: 0px;
 }
 
+.footer-col ul li p {
+    font-size: 16px;
+    text-decoration: none;
+    font-weight: 300;
+    color: var(--black-pearl-50);
+    display: block;
+}
+
 .categories {
     background-color: var(--antique-brass-200);
     width: 100%;
