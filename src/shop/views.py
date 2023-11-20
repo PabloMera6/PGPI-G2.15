@@ -75,13 +75,13 @@ def view_cart(request):
         if product.product_type == 'M':
             moto = get_object_or_404(Motorcycle, pk=key)
             motos[moto] = {
-                'price': float(product.price) * float(value),
+                'price': round(float(product.price) * float(value), 2),
                 'quantity': value
             }
         elif product.product_type == 'P':
             part = get_object_or_404(Part, pk=key)
             parts[part] = {
-                'price': float(product.price) * float(value),
+                'price': round(float(product.price) * float(value), 2),
                 'quantity': value
             }
     return render(request, 'cart.html', {
