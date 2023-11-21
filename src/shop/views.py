@@ -70,144 +70,6 @@ def search(request):
     results = sorted(results, key=lambda x: getattr(x, 'name'))
     return render(request, 'search.html', {'form': form, 'results': results, 'user': request.user})
 
-def view_cart(request):
-    my_cart = Cart(request).cart
-    motos = {}
-    parts = {}
-    manufacturers = Manufacturer.objects.all()
-    precio_total = 0.0
-    for key, value in my_cart.items():
-        product = get_object_or_404(Product, pk=key)
-        precio_total += float(product.price) * float(value)
-        if product.product_type == 'M':
-            moto = get_object_or_404(Motorcycle, pk=key)
-            motos[moto] = {
-                'price': round(float(product.price) * float(value), 2),
-                'quantity': value
-            }
-        elif product.product_type == 'P':
-            part = get_object_or_404(Part, pk=key)
-            parts[part] = {
-                'price': round(float(product.price) * float(value), 2),
-                'quantity': value
-            }
-    return render(request, 'cart.html', {
-        'motos': motos,
-        'parts': parts,
-        'manufacturers': manufacturers,
-        'precio': round(precio_total, 2)
-    })
-
-def add_to_cart(request):
-    if request.method == 'POST':
-        my_cart = Cart(request)
-        my_cart.add()
-    return view_cart(request)
-
-def remove_cart(request):
-    if request.method == 'POST':
-        product_id = request.POST.get('product_id')
-        my_cart = Cart(request)
-        my_cart.remove(product_id)
-    return view_cart(request)
-
-def refresh(request):
-    if request.method == 'POST':
-        my_cart = Cart(request)
-        product_id = request.POST.get('product_id')
-        quantity = int(request.POST.get('quantity'))
-        if quantity < 0:
-            messages.error(request,'La cantidad del producto no puede ser menor que 0')
-            return redirect('cart')
-        elif quantity == 0:
-            return remove_cart(request)
-        my_cart.refresh(product_id, quantity)
-    return view_cart(request)
-
-class Cart():
-    def __init__(self, request):
-        self.request = request
-        self.session = request.session
-        cart = self.session.get("cart")
-        if not cart:
-            cart = self.session["cart"] = {}
-        self.cart = cart
-
-    def check_stock(self, product_id, quantity):
-        product = get_object_or_404(Product, pk=product_id)
-        if product.product_type == 'P':
-            part = get_object_or_404(Part, pk=product_id)
-            if part.stock_quantity < quantity:
-                return False
-        elif product.product_type == 'M':
-            moto = get_object_or_404(Motorcycle, pk=product_id)
-            moto.calculate_motorcicle_stock()
-            if moto.stock_quantity < quantity:
-                return False
-        return True
-
-    def add(self):
-        quantity = int(self.request.POST.get('product_quantity'))
-        product_id = self.request.POST.get('product_id')
-        if not self.check_stock(product_id, quantity):
-            product = get_object_or_404(Product, pk=product_id)
-            if product.product_type == 'P':
-                part = get_object_or_404(Part, pk=product_id)
-                messages.error(request,f"No hay suficiente stock del producto {part.name}")
-                return redirect('cart')
-            elif product.product_type == 'M':
-                moto = get_object_or_404(Motorcycle, pk=product_id)
-                messages.error(request,f"No hay suficiente stock del producto {moto.name}")
-                return redirect('cart')
-        if product_id not in self.cart.keys():
-            self.cart[product_id] = quantity
-        else:
-            for key, value in self.cart.items():
-                if key == product_id:
-                    value = value + quantity
-                    self.cart[product_id] = value
-                    break
-        self.save()
-
-    def remove(self, product_id=None):
-        if product_id in self.cart:
-            del self.cart[product_id]
-            self.save()
-        elif product_id == None:
-            self.session["cart"] = {}
-            self.session.modified = True
-
-    def refresh(self, product_id, quantity):
-        if quantity < 1:
-            return Response({'error': "La cantidad no puede ser negativa."}, status=status.HTTP_400_BAD_REQUEST)
-        if not self.check_stock(product_id, quantity):
-            product = get_object_or_404(Product, pk=product_id)
-            if product.product_type == 'P':
-                part = get_object_or_404(Part, pk=product_id)
-                return Response({'error': f"No hay suficiente stock del producto {part.name}"}, status=status.HTTP_400_BAD_REQUEST)
-            elif product.product_type == 'M':
-                moto = get_object_or_404(Motorcycle, pk=product_id)
-                return Response({'error': f"No hay suficiente stock del producto {moto.name}"}, status=status.HTTP_400_BAD_REQUEST)
-        if product_id not in my_cart and quantity > 0:
-            self.cart[product_id] = quantity
-        else:
-            if quantity == 0:
-                my_cart.pop(product_id, None)
-            for key, value in my_cart:
-                if key == product_id:
-                    value = quantity
-                    break
-        self.save()
-
-    
-            
-
-    def save(self):
-        self.session["cart"] = self.cart
-        self.session.modified = True
-
-
-
 def checkout(request):
     my_cart = Cart(request).cart
     motos = {}
@@ -397,3 +259,143 @@ def confirmed(request, order_id):
         'parts': parts,
         'order': order,
         'manufacturers': manufacturers,})
+
+def view_cart(request):
+    my_cart = Cart(request).cart
+    motos = {}
+    parts = {}
+    manufacturers = Manufacturer.objects.all()
+    precio_total = 0.0
+    for key, value in my_cart.items():
+        product = get_object_or_404(Product, pk=key)
+        precio_total += float(product.price) * float(value)
+        if product.product_type == 'M':
+            moto = get_object_or_404(Motorcycle, pk=key)
+            motos[moto] = {
+                'price': round(float(product.price) * float(value), 2),
+                'quantity': value
+            }
+        elif product.product_type == 'P':
+            part = get_object_or_404(Part, pk=key)
+            parts[part] = {
+                'price': round(float(product.price) * float(value), 2),
+                'quantity': value
+            }
+    return render(request, 'cart.html', {
+        'motos': motos,
+        'parts': parts,
+        'manufacturers': manufacturers,
+        'precio': round(precio_total, 2)
+    })
+
+def add_to_cart(request):
+    if request.method == 'POST':
+        my_cart = Cart(request)
+        quantity = int(request.POST.get('product_quantity'))
+        product_id = request.POST.get('product_id')
+        if not my_cart.check_stock(product_id, quantity, already_in_cart=True):
+            product = get_object_or_404(Product, pk=product_id)
+            if product.product_type == 'P':
+                part = get_object_or_404(Part, pk=product_id)
+                messages.error(request,f"No hay suficiente stock del producto: {part.name}")
+                return redirect('cart')
+            elif product.product_type == 'M':
+                moto = get_object_or_404(Motorcycle, pk=product_id)
+                messages.error(request,f"No hay suficiente stock del producto: {moto.name}")
+                return redirect('cart')
+        my_cart.add(product_id, quantity)
+    return view_cart(request)
+
+def remove_cart(request):
+    if request.method == 'POST':
+        product_id = request.POST.get('product_id')
+        my_cart = Cart(request)
+        my_cart.remove(product_id)
+    return view_cart(request)
+
+def refresh_cart(request):
+    if request.method == 'POST':
+        my_cart = Cart(request)
+        product_id = request.POST.get('product_id')
+        quantity = int(request.POST.get('quantity'))
+        if quantity < 0:
+            messages.error(request,'La cantidad del producto no puede ser menor que 0')
+            return redirect('cart')
+        elif quantity == 0:
+            return remove_cart(request)
+        elif not my_cart.check_stock(product_id, quantity):
+            product = get_object_or_404(Product, pk=product_id)
+            if product.product_type == 'P':
+                part = get_object_or_404(Part, pk=product_id)
+                messages.error(request,f"No hay suficiente stock del producto: {part.name}")
+                return redirect('cart')
+            elif product.product_type == 'M':
+                moto = get_object_or_404(Motorcycle, pk=product_id)
+                messages.error(request,f"No hay suficiente stock del producto: {moto.name}")
+                return redirect('cart')
+        my_cart.refresh(product_id, quantity)
+    return view_cart(request)
+
+class Cart():
+    #Clase en la que se encuentran distintos metodos para trabajar con el carrito de la compra
+    def __init__(self, request):
+        self.request = request
+        self.session = request.session
+        cart = self.session.get("cart")
+        if not cart:
+            cart = self.session["cart"] = {}
+        self.cart = cart
+
+    def check_stock(self, product_id, quantity, already_in_cart=False):
+        # Already in cart significa que quiere comprobar el stock con la cantidad que ya esta en el carrito
+        product = get_object_or_404(Product, pk=product_id)
+        if already_in_cart:
+            for key, value in self.cart.items():
+                    if key == product_id:
+                        value = value + quantity
+                        if product.product_type == 'P':
+                            part = get_object_or_404(Part, pk=product_id)
+                            if part.stock_quantity < value :
+                                return False
+                        elif product.product_type == 'M':
+                            moto = get_object_or_404(Motorcycle, pk=product_id)
+                            if moto.stock_quantity < value:
+                                return False
+                        break
+        else:
+            if product.product_type == 'P':
+                part = get_object_or_404(Part, pk=product_id)
+                if part.stock_quantity < quantity:
+                    return False
+            elif product.product_type == 'M':
+                moto = get_object_or_404(Motorcycle, pk=product_id)
+                if moto.stock_quantity < quantity:
+                    return False
+        return True
+
+    def add(self, product_id, quantity=1):
+        if product_id not in self.cart.keys():
+            self.cart[product_id] = quantity
+        else:
+            for key, value in self.cart.items():
+                if key == product_id:
+                    value = value + quantity
+                    self.cart[product_id] = value
+                    break
+        self.save()
+
+    def remove(self, product_id=None):
+        if product_id in self.cart:
+            del self.cart[product_id]
+            self.save()
+        elif product_id == None:
+            self.session["cart"] = {}
+            self.session.modified = True
+
+    def refresh(self, product_id, quantity):
+        self.cart[product_id] = quantity
+        self.save()
+
+    def save(self):
+        self.session["cart"] = self.cart
+        self.session.modified = True
