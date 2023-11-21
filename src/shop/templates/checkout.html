@@ -6,6 +6,15 @@
 <link rel="stylesheet" href="{% static 'styles/cart.css' %}">
 {% endblock %}
 
+{% for message in messages %}
+    
+    <div class="container alert alert-danger">
+        <a class="close" href="#" data-dismiss="alert">x</a>
+           {{ message }}
+    </div>
+
+{% endfor %}
+
 {% block title %}Finalizar compra{% endblock %}
 
 {% block content %}

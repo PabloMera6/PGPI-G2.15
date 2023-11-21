@@ -11,9 +11,12 @@ from django.shortcuts import get_object_or_404
 from django.contrib import messages
 from order.models import Order
 from order.models import OrderProduct
+from rest_framework.response import Response
+from rest_framework import status
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
+
 
 from paypalrestsdk import Payment
 
@@ -130,9 +133,32 @@ class Cart():
             cart = self.session["cart"] = {}
         self.cart = cart
 
+    def check_stock(self, product_id, quantity):
+        product = get_object_or_404(Product, pk=product_id)
+        if product.product_type == 'P':
+            part = get_object_or_404(Part, pk=product_id)
+            if part.stock_quantity < quantity:
+                return False
+        elif product.product_type == 'M':
+            moto = get_object_or_404(Motorcycle, pk=product_id)
+            moto.calculate_motorcicle_stock()
+            if moto.stock_quantity < quantity:
+                return False
+        return True
+
     def add(self):
         quantity = int(self.request.POST.get('product_quantity'))
         product_id = self.request.POST.get('product_id')
+        if not self.check_stock(product_id, quantity):
+            product = get_object_or_404(Product, pk=product_id)
+            if product.product_type == 'P':
+                part = get_object_or_404(Part, pk=product_id)
+                messages.error(request,f"No hay suficiente stock del producto {part.name}")
+                return redirect('cart')
+            elif product.product_type == 'M':
+                moto = get_object_or_404(Motorcycle, pk=product_id)
+                messages.error(request,f"No hay suficiente stock del producto {moto.name}")
+                return redirect('cart')
         if product_id not in self.cart.keys():
             self.cart[product_id] = quantity
         else:
@@ -152,16 +178,29 @@ class Cart():
             self.session.modified = True
 
     def refresh(self, product_id, quantity):
-        my_cart = self.cart.items()
-        if product_id not in my_cart:
+        if quantity < 1:
+            return Response({'error': "La cantidad no puede ser negativa."}, status=status.HTTP_400_BAD_REQUEST)
+        if not self.check_stock(product_id, quantity):
+            product = get_object_or_404(Product, pk=product_id)
+            if product.product_type == 'P':
+                part = get_object_or_404(Part, pk=product_id)
+                return Response({'error': f"No hay suficiente stock del producto {part.name}"}, status=status.HTTP_400_BAD_REQUEST)
+            elif product.product_type == 'M':
+                moto = get_object_or_404(Motorcycle, pk=product_id)
+                return Response({'error': f"No hay suficiente stock del producto {moto.name}"}, status=status.HTTP_400_BAD_REQUEST)
+        if product_id not in my_cart and quantity > 0:
             self.cart[product_id] = quantity
         else:
+            if quantity == 0:
+                my_cart.pop(product_id, None)
             for key, value in my_cart:
                 if key == product_id:
                     value = quantity
                     break
         self.save()
 
+    
+            
 
     def save(self):
         self.session["cart"] = self.cart
@@ -195,6 +234,19 @@ def checkout(request):
     if precio_total < 30:
             precio_total += 5
     if request.method == 'POST':
+        for key, value in my_cart.items():
+            product = get_object_or_404(Product, pk=key)
+            if product.product_type == 'P':
+                part = get_object_or_404(Part, pk=key)
+                if part.stock_quantity < value:
+                    messages.error(request, f"No hay suficiente stock del producto {part.name}")
+                    return redirect('/checkout/')
+            elif product.product_type == 'M':
+                moto = get_object_or_404(Motorcycle, pk=key)
+                moto.calculate_motorcicle_stock()
+                if moto.stock_quantity < value:
+                    messages.error(request, f"No hay suficiente stock del producto {moto.name}")
+                    return redirect('/checkout/')
         
         payment_method = request.POST.get('payment_method')
         email = request.POST.get('email')
@@ -292,6 +344,15 @@ def create_order(price, shipment, payment, buyer_mail, buyer_name, buyer_phone, 
     for key, value in my_cart.items():
         product = get_object_or_404(Product, pk=key)
         order.products.add(product, through_defaults={'quantity': value})
+        if product.product_type == 'P':
+            part = get_object_or_404(Part, pk=key)
+            part.stock_quantity -= value
+            part.save()
+        elif product.product_type == 'M':
+            moto = get_object_or_404(Motorcycle, pk=key)
+            moto.calculate_motorcicle_stock()
+            moto.update_motorcicle_stock(value)
+            moto.save()
     return order
 
 def confirm(request):
