@@ -13,6 +13,7 @@
   <div class="container">
       {% csrf_token %}
     <div>
+    <h3>Tipo de envio: {{order.shipment}}</h3>
     <h3>Estado del pedido: {{order.state}}</h3>
     <h3>Email del comprador: {{order.buyer_mail}}</h3>
     <h3>Telefono del comprador: {{order.buyer_phone}}</h3>
@@ -92,7 +93,7 @@
                 <tr>
                     {% if precio < 30 %}
                     <tr>
-                        <td>Gastos de Envío</td>
+                        <td>Si el precio del pedido es menor de 30€ y pides que te lo enviemos, se sumarán 5 euros por gastos de envio</td>
                         <td></td>
                         <td></td>
                         <td class="text-center">5.00 €</td>

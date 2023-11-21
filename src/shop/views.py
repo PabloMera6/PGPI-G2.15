@@ -231,8 +231,6 @@ def checkout(request):
                 'price': float(product.price) * float(value),
                 'quantity': value
             }
-    if precio_total < 30:
-            precio_total += 5
     if request.method == 'POST':
         for key, value in my_cart.items():
             product = get_object_or_404(Product, pk=key)
@@ -247,7 +245,8 @@ def checkout(request):
                 if moto.stock_quantity < value:
                     messages.error(request, f"No hay suficiente stock del producto {moto.name}")
                     return redirect('/checkout/')
-        
+        if precio_total <30 and shipment == 'Envío a domicilio':
+            precio_total += 5
         payment_method = request.POST.get('payment_method')
         email = request.POST.get('email')
         full_name = request.POST.get('full_name')
@@ -255,6 +254,7 @@ def checkout(request):
         address = request.POST.get('address')
         city = request.POST.get('city')
         postal_code = request.POST.get('postal_code')
+        shipment = request.POST.get('shipment')
         if payment_method == 'Tarjeta' or payment_method == 'card': 
             request.session['checkout_data'] = {
                 'payment_method': payment_method,
@@ -264,7 +264,8 @@ def checkout(request):
                 'address': address,
                 'total_price': precio_total,
                 'city': city,
-                'postal_code': postal_code
+                'postal_code': postal_code,
+                'shipment': shipment
             }
             paypal_payment = Payment({
                 "intent": "sale",
@@ -291,7 +292,7 @@ def checkout(request):
                 return redirect('/checkout/')
 
 
-        order = create_order(precio_total, 'pickup', payment_method, email, full_name, phone, address, my_cart,city,postal_code,user)
+        order = create_order(precio_total, shipment, payment_method, email, full_name, phone, address, my_cart,city,postal_code,user)
         order_id = order.id
         del request.session['cart']
         messages.success(request, 'Pedido creado exitosamente.')
@@ -350,8 +351,9 @@ def create_order(price, shipment, payment, buyer_mail, buyer_name, buyer_phone, 
             part.save()
         elif product.product_type == 'M':
             moto = get_object_or_404(Motorcycle, pk=key)
-            moto.calculate_motorcicle_stock()
-            moto.update_motorcicle_stock(value)
+            moto.stock_quantity -= value
+            #moto.calculate_motorcicle_stock()
+            #moto.update_motorcicle_stock(value)
             moto.save()
     return order
 
@@ -367,8 +369,9 @@ def confirm(request):
     precio_total = checkout_data.get('total_price')
     city = checkout_data.get('city')
     postal_code = checkout_data.get('postal_code')
-    order = create_order(precio_total, 'pickup', payment_method, email, full_name, phone, address, my_cart,city,postal_code,user)
-    messages.success(request, 'Pago procesado correctamente.')
+    shipment = checkout_data.get('shipment')
+    order = create_order(precio_total, shipment, payment_method, email, full_name, phone, address, my_cart,city,postal_code,user)
+    #messages.success(request, 'Pago procesado correctamente.')
     del request.session['checkout_data']
     del request.session['cart']
     return redirect(f'/checkout/confirm/confirmed/{order.id}/')
