@@ -233,7 +233,7 @@ def checkout(request):
                 return redirect('/checkout/')
 
 
-        create_order(precio_total, 'pickup', payment_method, email, full_name, phone, address, my_cart)
+        order = create_order(precio_total, 'pickup', payment_method, email, full_name, phone, address, my_cart)
         del request.session['cart']
         messages.success(request, 'Pedido creado exitosamente.')
         subject = 'Detalles de tu compra en Motos Para Todos'
@@ -247,6 +247,7 @@ def checkout(request):
             'parts': parts,
             'payment_method': payment_method,
             'address': address,
+            'order': order,
         }
 
         html_message = render_to_string('checkout_confirmation.html', context)
@@ -276,6 +277,7 @@ def create_order(price, shipment, payment, buyer_mail, buyer_name, buyer_phone, 
     for key, value in my_cart.items():
         product = get_object_or_404(Product, pk=key)
         order.products.add(product, through_defaults={'quantity': value})
+    return order.id
 
 def confirm(request):
     my_cart = Cart(request).cart
