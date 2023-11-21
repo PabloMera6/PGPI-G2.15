@@ -4,8 +4,8 @@ from product.models import Product
 # Create your models here.
 class Order(models.Model):
     SHIPMENT_CHOICES = [
-        ('pickup', 'Pickup'),
-        ('delivery', 'Delivery'),
+        ('Recogida', 'Recogida'),
+        ('Envío a domicilio', 'Envío a domicilio'),
     ]
 
     STATE_CHOICES = [
