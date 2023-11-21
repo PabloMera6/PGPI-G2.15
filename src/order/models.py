@@ -9,15 +9,15 @@ class Order(models.Model):
     ]
 
     STATE_CHOICES = [
-        ('pending', 'Pending'),
-        ('confirmed', 'Confirmed'),
-        ('delivered', 'Delivered'),
-        ('cancelled', 'Cancelled'),
+        ('Pendiente', 'Pendiente'),
+        ('Confirmado', 'Confirmado'),
+        ('Entregado', 'Entregado'),
+        ('En reparto', 'En reparto'),
     ]
 
     PAYMENT_CHOICES = [
-        ('cash', 'Contrarrembolso'),
-        ('card', 'Tarjeta'),
+        ('Contrarrembolso', 'Contrarrembolso'),
+        ('Tarjeta', 'Tarjeta'),
     ]
 
 
@@ -32,6 +32,8 @@ class Order(models.Model):
     buyer_mail = models.EmailField(max_length=254,null=False,blank=False,default='a@a.com')
     buyer_name = models.CharField(max_length=50,null=False,blank=False,default='a')
     buyer_phone = models.CharField(max_length=20, blank=True, null=True)
+    city = models.CharField(max_length=50,null=False,blank=False,default='a')
+    postal_code = models.CharField(max_length=5,null=False,blank=False,default='41720')
 
 class OrderProduct(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
