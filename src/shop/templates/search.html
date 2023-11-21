@@ -1,115 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base_categories.html' %}
 
-<head>
-    {% load static %}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Motos Para Todos</title>
-    <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+{% block extrahead %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'styles/results.css' %}">
+{% endblock %}
 
-    <!-- SCRIPT BUSCADOR -->
-    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+{% block content %}
 
-    <!-- SCRIPT NAVBAR -->
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-
-    <!-- ESTILOS FOOTER -->
-    <link rel="stylesheet" type="text/css"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-
-    <!-- ESTILOS NAVBAR -->
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-
-    <!-- ESTILOS NUESTROS -->
-    <link type="text/css" rel="stylesheet" href="{% static 'styles/main.css' %}" />
-    <link type="text/css" rel="stylesheet" href="{% static 'styles/storefront.css' %}" />
-</head>
-
-
-<body>
-    <nav class="navbar">
-        <div class="lateral">
-        </div>
-        <div class="navbar container">
-            <a href="/"><img src="{% static 'images/icon.png' %}" alt="logo" width="90" height="90"></a>
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-xs-8 col-xs-offset-2">
-                        <form method="get" action="{% url 'search' %}">
-                            <div class="input-group">
-                                <div class="input-group-btn search-panel">
-                                    <button type="button" class="btn btn-default dropdown-toggle"
-                                        data-toggle="dropdown">
-                                        <span id="search_concept">Todos</span> <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li><a href="#" data-value="motorcycles">Motocicletas</a></li>
-                                        <li><a href="#" data-value="parts">Partes</a></li>
-                                        <li><a href="#" data-value="manufacturers">Fabricantes</a></li>
-                                        <li class="divider"></li>
-                                        <li><a href="#" data-value="all">Todos</a></li>
-                                    </ul>
-                                </div>
-                                <input type="hidden" name="search_type" value="all" id="search_type">
-                                <input type="text" class="form-control" name="query" placeholder="Buscar productos">
-
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="submit"><span
-                                            class="glyphicon glyphicon-search"></span></button>
-                                </span>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <a href="/cart"><img src="{% static 'images/cart.png' %}" alt="cart" width="90" height="90"></a>
-        </div>
-        <div class="lateral">
-            <div class="collapse navbar-collapse js-navbar-collapse">
-                {% if user.is_authenticated %}
-                <ul class="nav navbar-nav">
-                    <li class="dropdown dropdown-large">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span
-                                class="glyphicon glyphicon-user" aria-hidden="true"></span> Bienvenido, {{
-                            user.full_name }} <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="/users/profile"><i class="icon-cog"></i> <span class="	glyphicon glyphicon-cog"
-                                        aria-hidden="true"></span> Perfil</a></li>
-                            <li class="divider"></li>
-                            <li><a href="/users/logout"><i class="icon-off"></i><span class="	glyphicon glyphicon-off"
-                                        aria-hidden="true"></span> Cerrar sesión</a></li>
-                        </ul>
-                    </li>
-                </ul>
-                {% else %}
-                <div>
-                    <a href="/users/login" class="btn btn-primary inline-btn">Iniciar Sesión</a>
-                    <a href="/users/register" class="btn btn-primary inline-btn">Registrarse</a>
-                </div>
-                {% endif %}
+<div class="container">
+    <div class="row">
+        <div class="row">
+            <div class="col-md-9">
+                <h3 class="title">PRODUCTOS BUSCADOS</h3>
             </div>
         </div>
-    </nav>
-    {% block categories %}
-    {% endblock %}
-    <div class="container">
-        <h2 class="card-title">
-            {% block title %}Búsqueda{% endblock %}
-        </h2>
-    </div>
-    <div class="container">
-        <div class="item">
-            <div class="row">
-                {% if not results %}
-                <h3>No se encontraron resultados</h3>
+        <div class="items">
+            {% for result in results %}
+                {% if forloop.counter0|divisibleby:3 %}
+                    <div class="items-row">
                 {% endif %}
-                {% for result in results %}
-                <div class="col-md-3">
-                    <div class="item-container">
+                    <div class="col-sm-4">
                         <div class="col-item">
                             <div class="photo">
-                                <img src="{{ result.photo }}" class="img-responsive" alt="a" />
+                                <img src={{ result.photo }} class="img-responsive" alt="a" />
                             </div>
                             <div class="info">
                                 <div class="row">
@@ -117,75 +30,60 @@
                                         <h5>{{ result.name }}</h5>
                                     </div>
                                     <div class="rating hidden-sm col-md-6">
-                                        <i class="price-text-color fa fa-star"></i><i
-                                            class="price-text-color fa fa-star">
-                                        </i><i class="price-text-color fa fa-star"></i><i
-                                            class="price-text-color fa fa-star">
+                                        <i class="price-text-color fa fa-star"></i><i class="price-text-color fa fa-star">
+                                        </i><i class="price-text-color fa fa-star"></i><i class="price-text-color fa fa-star">
                                         </i><i class="fa fa-star"></i>
                                     </div>
                                 </div>
                                 <div class="separator clear-left">
-                                    <p class="btn-add">
-                                        <i class="fa fa-shopping-cart"></i><a href="" class="hidden-sm">Añadir al
-                                            carrito</a>
-                                    </p>
                                     <p class="btn-details">
-                                        <i class="fa fa-list"></i><a href="" class="hidden-sm">Más detalles</a>
-                                    </p>
+                                        {% if result.product_type == "M"%}
+                                            <i class="fa fa-list"></i><a href="{% url 'motorcycle_details' result.id %}" class="hidden-sm">Más detalles</a></p>
+                                        {% elif result.product_type == "P"%}
+                                            <i class="fa fa-list"></i><a href="{% url 'part_details' result.id %}" class="hidden-sm">Más detalles</a></p>
+                                        {% else%}
+                                            <i class="fa fa-list"></i><a href="{% url 'manufacturer_details' result.id %}" class="hidden-sm">Más detalles</a></p>
+                                        {% endif %}
                                 </div>
-                                <div class="clearfix"></div>
+                                <div class="clearfix">
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                {% endfor %}
-            </div>
+                {% if forloop.counter|divisibleby:3 or forloop.last %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <div class="pagination-container text-center mt-4">
+            <ul class="pagination">
+                {% if results.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1">&laquo; Primera</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ results.previous_page_number }}">Anterior</a>
+                    </li>
+                {% endif %}
+        
+                <li class="page-item disabled">
+                    <span class="page-link">
+                        Página {{ results.number }} de {{ results.paginator.num_pages }}.
+                    </span>
+                </li>
+        
+                {% if results.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ results.next_page_number }}">Siguiente</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ results.paginator.num_pages }}">Última &raquo;</a>
+                    </li>
+                {% endif %}
+            </ul>
         </div>
     </div>
-    <footer class="footer container">
-        <div class="container-footer">
-            <div class="row">
-                <div class="footer-col">
-                    <h4>compañia</h4>
-                    <ul>
-                        <li><a href="#">sobre nosotros</a></li>
-                        <li><a href="#">nuestros servicios</a></li>
-                        <li><a href="#">políticas de privacidad</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h4>ayuda</h4>
-                    <ul>
-                        <li><a href="#">envíos</a></li>
-                        <li><a href="#">reclamaciones</a></li>
-                        <li><a href="#">opciones de pago</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h4>siguenos</h4>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                    </div>
-                </div>
-                <div class="footer-col">
-                    <div class="footer-icon">
-                        <a href="/"><img src="{% static 'images/icon.png' %}" alt="logo" width="140" height="140"></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
-</body>
+</div>
 
-</html>
-<script>
-    $(document).ready(function () {
-        $('.dropdown-menu a').click(function () {
-            var value = $(this).data('value');
-            $('#search_concept').text($(this).text());
-            $('#search_type').val(value);
-        });
-    });
-</script>
+{% endblock %}
