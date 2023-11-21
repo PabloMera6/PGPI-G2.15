@@ -241,7 +241,7 @@ def checkout(request):
                     return redirect('/checkout/')
             elif product.product_type == 'M':
                 moto = get_object_or_404(Motorcycle, pk=key)
-                moto.calculate_motorcicle_stock()
+                #moto.calculate_motorcicle_stock()
                 if moto.stock_quantity < value:
                     messages.error(request, f"No hay suficiente stock del producto {moto.name}")
                     return redirect('/checkout/')
