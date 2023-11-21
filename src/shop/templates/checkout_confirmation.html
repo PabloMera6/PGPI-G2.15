@@ -18,16 +18,14 @@
     <h3>Resumen de la Compra</h3>
     <p><strong>Total: </strong>{{ precio_total }}</p>
 
-    <h3>Productos</h3>
+    <h4>Productos</h4>
 
-    <h4>Motocicletas</h4>
     <ul>
         {% for moto, details in motos.items %}
             <li>{{ moto.name }} - Precio: {{ details.price }} - Cantidad: {{ details.quantity }}</li>
         {% endfor %}
     </ul>
 
-    <h4>Partes</h4>
     <ul>
         {% for part, details in parts.items %}
             <li>{{ part.name }} - Precio: {{ details.price }} - Cantidad: {{ details.quantity }}</li>
@@ -35,7 +33,7 @@
     </ul>
 
     <p><strong>Método de Pago: </strong>{{ payment_method }}</p>
-    <p><strong>Dirección de Envío: </strong>{{ address }}</p>
+    <p><strong>Dirección de Envío: </strong>{{ address }}, {{ postal_code }} {{ city }}</p>
 
     <p>¡Gracias por elegir Motos Para Todos!</p>
 </body>

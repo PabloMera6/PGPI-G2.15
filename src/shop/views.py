@@ -10,6 +10,7 @@ import random
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
 from order.models import Order
+from order.models import OrderProduct
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
@@ -174,6 +175,7 @@ def checkout(request):
     parts = {}
     manufacturers = Manufacturer.objects.all()
     precio_total = 0.0
+    user = request.user if request.user.is_authenticated else None
 
     for key, value in my_cart.items():
         product = get_object_or_404(Product, pk=key)
@@ -190,23 +192,27 @@ def checkout(request):
                 'price': float(product.price) * float(value),
                 'quantity': value
             }
-
-    if request.method == 'POST':
-        if precio_total < 30:
+    if precio_total < 30:
             precio_total += 5
+    if request.method == 'POST':
+        
         payment_method = request.POST.get('payment_method')
         email = request.POST.get('email')
         full_name = request.POST.get('full_name')
         phone = request.POST.get('phone')
         address = request.POST.get('address')
-        if payment_method == 'card': 
+        city = request.POST.get('city')
+        postal_code = request.POST.get('postal_code')
+        if payment_method == 'Tarjeta' or payment_method == 'card': 
             request.session['checkout_data'] = {
                 'payment_method': payment_method,
                 'email': email,
                 'full_name': full_name,
                 'phone': phone,
                 'address': address,
-                'total_price': precio_total
+                'total_price': precio_total,
+                'city': city,
+                'postal_code': postal_code
             }
             paypal_payment = Payment({
                 "intent": "sale",
@@ -233,7 +239,8 @@ def checkout(request):
                 return redirect('/checkout/')
 
 
-        order = create_order(precio_total, 'pickup', payment_method, email, full_name, phone, address, my_cart)
+        order = create_order(precio_total, 'pickup', payment_method, email, full_name, phone, address, my_cart,city,postal_code,user)
+        order_id = order.id
         del request.session['cart']
         messages.success(request, 'Pedido creado exitosamente.')
         subject = 'Detalles de tu compra en Motos Para Todos'
@@ -247,7 +254,9 @@ def checkout(request):
             'parts': parts,
             'payment_method': payment_method,
             'address': address,
-            'order': order,
+            'city': city,
+            'postal_code': postal_code,
+            'order': order_id,
         }
 
         html_message = render_to_string('checkout_confirmation.html', context)
@@ -255,7 +264,8 @@ def checkout(request):
 
         send_mail(subject, plain_message, from_email, to_email, html_message=html_message)
 
-        return redirect('/')
+
+        return redirect(f'/checkout/confirm/confirmed/{order.id}/')
 
     return render(request, 'checkout.html', {
         'motos': motos,
@@ -264,7 +274,7 @@ def checkout(request):
         'precio': round(precio_total, 2)
     })
 
-def create_order(price, shipment, payment, buyer_mail, buyer_name, buyer_phone, address, my_cart):
+def create_order(price, shipment, payment, buyer_mail, buyer_name, buyer_phone, address, my_cart,city,postal_code,user):
     order = Order.objects.create(
             price=price,
             shipment=shipment,
@@ -272,14 +282,20 @@ def create_order(price, shipment, payment, buyer_mail, buyer_name, buyer_phone, 
             buyer_mail=buyer_mail,
             buyer_name=buyer_name,
             buyer_phone=buyer_phone,
-            address=address
+            address=address,
+            city=city,
+            postal_code=postal_code
         )
+    if user != None:
+        order.buyer = user
+        order.save()
     for key, value in my_cart.items():
         product = get_object_or_404(Product, pk=key)
         order.products.add(product, through_defaults={'quantity': value})
-    return order.id
+    return order
 
 def confirm(request):
+    user = request.user if request.user.is_authenticated else None
     my_cart = Cart(request).cart
     checkout_data = request.session.get('checkout_data', {})
     payment_method = checkout_data.get('payment_method')
@@ -288,8 +304,35 @@ def confirm(request):
     phone = checkout_data.get('phone')
     address = checkout_data.get('address')
     precio_total = checkout_data.get('total_price')
-    create_order(precio_total, 'pickup', payment_method, email, full_name, phone, address, my_cart)
+    city = checkout_data.get('city')
+    postal_code = checkout_data.get('postal_code')
+    order = create_order(precio_total, 'pickup', payment_method, email, full_name, phone, address, my_cart,city,postal_code,user)
     messages.success(request, 'Pago procesado correctamente.')
     del request.session['checkout_data']
     del request.session['cart']
-    return redirect('/')
+    return redirect(f'/checkout/confirm/confirmed/{order.id}/')
+
+def confirmed(request, order_id):
+    manufacturers = Manufacturer.objects.all()
+    order = get_object_or_404(Order, pk=order_id)
+    op = OrderProduct.objects.filter(order=order)
+    motos = {}
+    parts = {}
+    for x in op:
+        product = x.product
+        if product.product_type == 'M':
+            moto = get_object_or_404(Motorcycle, pk=product.id)
+            motos[moto] = {
+                'price': float(product.price) * float(x.quantity),
+                'quantity': x.quantity
+            }
+        elif product.product_type == 'P':
+            part = get_object_or_404(Part, pk=product.id)
+            parts[part] = {
+                'price': float(product.price) * float(x.quantity),
+                'quantity': x.quantity
+            }
+    return render(request, 'order_resume.html',{'motos': motos,
+        'parts': parts,
+        'order': order,
+        'manufacturers': manufacturers,})

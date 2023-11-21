@@ -12,4 +12,5 @@ urlpatterns = [
     path('search/', views.search, name='search'),
     path('checkout/', views.checkout, name='checkout'),
     path('checkout/confirm/', views.confirm, name='confirm'),
+    path('checkout/confirm/confirmed/<int:order_id>/', views.confirmed, name='confirmed'),
 ]
