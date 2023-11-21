@@ -127,7 +127,8 @@ def checkout(request):
                 'total_price': precio_total,
                 'city': city,
                 'postal_code': postal_code,
-                'shipment': shipment
+                'shipment': shipment,
+
             }
             paypal_payment = Payment({
                 "intent": "sale",
@@ -158,6 +159,20 @@ def checkout(request):
         order_id = order.id
         del request.session['cart']
         messages.success(request, 'Pedido creado exitosamente.')
+        
+
+
+        return redirect(f'/checkout/confirm/confirmed/{order.id}/')
+
+    return render(request, 'checkout.html', {
+        'motos': motos,
+        'parts': parts,
+        'manufacturers': manufacturers,
+        'precio': round(precio_total, 2)
+    })
+
+def enviar_correo(full_name, precio_total, motos, parts, payment_method, address, city, postal_code, order_id, email):
+    try:
         subject = 'Detalles de tu compra en Motos Para Todos'
         from_email = 'motosparatodos@outlook.es'
         to_email = [email]
@@ -172,24 +187,18 @@ def checkout(request):
             'city': city,
             'postal_code': postal_code,
             'order': order_id,
-        }
+            }
 
         html_message = render_to_string('checkout_confirmation.html', context)
         plain_message = strip_tags(html_message)
 
         send_mail(subject, plain_message, from_email, to_email, html_message=html_message)
-
-
-        return redirect(f'/checkout/confirm/confirmed/{order.id}/')
-
-    return render(request, 'checkout.html', {
-        'motos': motos,
-        'parts': parts,
-        'manufacturers': manufacturers,
-        'precio': round(precio_total, 2)
-    })
+    except:
+        pass
 
 def create_order(price, shipment, payment, buyer_mail, buyer_name, buyer_phone, address, my_cart,city,postal_code,user):
+    parts = {}
+    motos = {}
     order = Order.objects.create(
             price=price,
             shipment=shipment,
@@ -211,12 +220,22 @@ def create_order(price, shipment, payment, buyer_mail, buyer_name, buyer_phone, 
             part = get_object_or_404(Part, pk=key)
             part.stock_quantity -= value
             part.save()
+            parts[part] = {
+                'price': float(product.price) * float(value),
+                'quantity': value
+            }
         elif product.product_type == 'M':
             moto = get_object_or_404(Motorcycle, pk=key)
             moto.stock_quantity -= value
+            motos[moto] = {
+                'price': float(product.price) * float(value),
+                'quantity': value
+            }
             #moto.calculate_motorcicle_stock()
             #moto.update_motorcicle_stock(value)
             moto.save()
+    enviar_correo(buyer_name, price, motos, parts, payment, address, city, postal_code, order.id, buyer_mail)
+        
     return order
 
 def confirm(request):
@@ -236,6 +255,28 @@ def confirm(request):
     #messages.success(request, 'Pago procesado correctamente.')
     del request.session['checkout_data']
     del request.session['cart']
+    try:
+        subject = 'Detalles de tu compra en Motos Para Todos'
+        from_email = 'motosparatodos@outlook.es'
+        to_email = [email]
+        context = {
+            'full_name': full_name,
+            'precio_total': precio_total,
+            'motos': motos,
+            'parts': parts,
+            'payment_method': payment_method,
+            'address': address,
+            'city': city,
+            'postal_code': postal_code,
+            'order': order_id,
+            }
+
+        html_message = render_to_string('checkout_confirmation.html', context)
+        plain_message = strip_tags(html_message)
+
+        send_mail(subject, plain_message, from_email, to_email, html_message=html_message)
+    except:
+        pass    
     return redirect(f'/checkout/confirm/confirmed/{order.id}/')
 
 def confirmed(request, order_id):
