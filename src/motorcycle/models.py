@@ -43,5 +43,40 @@ class Motorcycle(Product):
     selected_chasis = models.ForeignKey(Part, on_delete=models.CASCADE, related_name='selected_chasis')
     compatible_chasis = models.ManyToManyField(Part, related_name='compatible_chasis')
 
+    def calculate_motorcicle_stock(self):
+        self.stock_quantity = min(self.selected_carrocería.stock_quantity, self.selected_motor.stock_quantity, self.selected_transmision.stock_quantity, self.selected_suspension.stock_quantity, self.selected_ruedas.stock_quantity, self.selected_frenos.stock_quantity, self.selected_manillar.stock_quantity, self.selected_combustible.stock_quantity, self.selected_chasis.stock_quantity)
+        self.save()
+    
+    def update_motorcicle_stock(self,value):
+        carroceria = self.selected_carrocería
+        carroceria.stock_quantity = carroceria.stock_quantity - value
+        carroceria.save()
+        motor = self.selected_motor
+        motor.stock_quantity = motor.stock_quantity - value
+        motor.save()
+        transmision = self.selected_transmision
+        transmision.stock_quantity = transmision.stock_quantity - value
+        transmision.save()
+        suspension = self.selected_suspension
+        suspension.stock_quantity = suspension.stock_quantity - value
+        suspension.save()
+        ruedas = self.selected_ruedas
+        ruedas.stock_quantity = ruedas.stock_quantity - value
+        ruedas.save()
+        frenos = self.selected_frenos
+        frenos.stock_quantity = frenos.stock_quantity - value
+        frenos.save()
+        manillar = self.selected_manillar
+        manillar.stock_quantity = manillar.stock_quantity - value
+        manillar.save()
+        combustible = self.selected_combustible
+        combustible.stock_quantity = combustible.stock_quantity - value
+        combustible.save()
+        chasis = self.selected_chasis
+        chasis.stock_quantity = chasis.stock_quantity - value
+        chasis.save()
+        self.stock_quantity = min(self.selected_carrocería.stock_quantity, self.selected_motor.stock_quantity, self.selected_transmision.stock_quantity, self.selected_suspension.stock_quantity, self.selected_ruedas.stock_quantity, self.selected_frenos.stock_quantity, self.selected_manillar.stock_quantity, self.selected_combustible.stock_quantity, self.selected_chasis.stock_quantity)
+        self.save()
+
     def __str__(self):
         return self.name
