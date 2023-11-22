@@ -221,7 +221,8 @@ def create_order(price, shipment, payment, buyer_mail, buyer_name, buyer_phone, 
             buyer_phone=buyer_phone,
             address=address,
             city=city,
-            postal_code=postal_code
+            postal_code=postal_code,
+            state="Pendiente"
         )
     if user != None:
         order.buyer = user
