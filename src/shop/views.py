@@ -254,29 +254,7 @@ def confirm(request):
     order = create_order(precio_total, shipment, payment_method, email, full_name, phone, address, my_cart,city,postal_code,user)
     #messages.success(request, 'Pago procesado correctamente.')
     del request.session['checkout_data']
-    del request.session['cart']
-    try:
-        subject = 'Detalles de tu compra en Motos Para Todos'
-        from_email = 'motosparatodos@outlook.es'
-        to_email = [email]
-        context = {
-            'full_name': full_name,
-            'precio_total': precio_total,
-            'motos': motos,
-            'parts': parts,
-            'payment_method': payment_method,
-            'address': address,
-            'city': city,
-            'postal_code': postal_code,
-            'order': order_id,
-            }
-
-        html_message = render_to_string('checkout_confirmation.html', context)
-        plain_message = strip_tags(html_message)
-
-        send_mail(subject, plain_message, from_email, to_email, html_message=html_message)
-    except:
-        pass    
+    del request.session['cart'] 
     return redirect(f'/checkout/confirm/confirmed/{order.id}/')
 
 def confirmed(request, order_id):
