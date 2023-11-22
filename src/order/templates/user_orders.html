@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container-fluid">
+    <h1 class="text-center mb-4">Mis Pedidos</h1>
+    {% if orders %}
+      <div class="row">
+        {% for order in orders %}
+          <div class="col-md-3 mb-4">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Pedido con ID: {{ order.id }}</h5>
+                <p class="card-text"><strong>Estado:</strong> {{ order.get_state_display }}</p>
+                <p class="card-text"><strong>Precio:</strong> {{ order.price }}</p>
+                <a href="{% url 'checkout_confirmation' order.id %}" class="btn btn-primary btn-block">Ver Detalles</a>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="text-center">No has realizado ningún pedido</p>
+    {% endif %}
+  </div>
+{% endblock %}
