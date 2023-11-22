@@ -16,6 +16,7 @@ from rest_framework import status
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 from paypalrestsdk import Payment
@@ -68,6 +69,18 @@ def search(request):
 
     results = list(motorcycles) + list(parts) + list(manufacturers)
     results = sorted(results, key=lambda x: getattr(x, 'name'))
+
+    results_per_page = 12
+    page = request.GET.get('page')
+    paginator = Paginator(results, results_per_page)
+
+    try:
+        results = paginator.page(page)
+    except PageNotAnInteger:
+        results = paginator.page(1)
+    except EmptyPage:
+        results = paginator.page(paginator.num_pages)
+
     return render(request, 'search.html', {'form': form, 'results': results, 'user': request.user})
 
 def checkout(request):
