@@ -35,4 +35,16 @@ def view_motorcycle_details(request, motorcycle_id):
         motorcycle.compatible_chasis.all()
     ).distinct()
 
-    return render(request, 'motorcycle_detail.html', {'motorcycle': motorcycle, 'product': product, 'compatible_parts': compatible_parts})
+    selected_parts = (
+        motorcycle.selected_carrocería,
+        motorcycle.selected_motor,
+        motorcycle.selected_transmision,
+        motorcycle.selected_suspension,
+        motorcycle.selected_ruedas,
+        motorcycle.selected_frenos,
+        motorcycle.selected_manillar,
+        motorcycle.selected_combustible,
+        motorcycle.selected_chasis
+    )
+
+    return render(request, 'motorcycle_detail.html', {'motorcycle': motorcycle, 'product': product, 'compatible_parts': compatible_parts,'selected_parts': selected_parts})
