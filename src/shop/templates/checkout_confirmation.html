@@ -16,19 +16,19 @@
     <p>Gracias por tu compra en Motos Para Todos. Aquí tienes los detalles de tu pedido:</p>
 
     <h3>Resumen de la Compra</h3>
-    <p><strong>Total: </strong>{{ precio_total }}</p>
+    <p><strong>Total: </strong>{{ precio_total }}€</p>
 
     <h4>Productos</h4>
 
     <ul>
         {% for moto, details in motos.items %}
-            <li>{{ moto.name }} - Precio: {{ details.price }} - Cantidad: {{ details.quantity }}</li>
+            <li>{{ moto.name }} - Precio: {{ details.price }}€ - Cantidad: {{ details.quantity }}</li>
         {% endfor %}
     </ul>
 
     <ul>
         {% for part, details in parts.items %}
-            <li>{{ part.name }} - Precio: {{ details.price }} - Cantidad: {{ details.quantity }}</li>
+            <li>{{ part.name }} - Precio: {{ details.price }}€ - Cantidad: {{ details.quantity }}</li>
         {% endfor %}
     </ul>
 

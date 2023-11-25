@@ -327,7 +327,7 @@ def view_cart(request):
 def add_to_cart(request):
     if request.method == 'POST':
         my_cart = Cart(request)
-        quantity = int(request.POST.get('product_quantity'))
+        quantity = int(request.POST.get('product_quantity')) if request.POST.get('product_quantity') else 1
         product_id = request.POST.get('product_id')
         if not my_cart.check_stock(product_id, quantity, already_in_cart=True):
             product = get_object_or_404(Product, pk=product_id)

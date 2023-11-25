@@ -57,7 +57,7 @@
                         <td data-th="Price">{{ moto.price }}  €</td>
                         <td data-th="Quantity">
                             <form action="{% url 'refresh' %}" method="post">
-                                <input type="number" name="quantity" id="quantityInputPart" class="form-control text-center" value="{{ datos.quantity }}">
+                                <input type="number" name="quantity" id="quantityInputPart" class="form-control text-center" value="{{ datos.quantity }}" oninput="validateQuantity(this)">
                         </td>
                         <td data-th="Subtotal" class="text-center">{{ datos.price }} €</td>
                         <td class="actions" data-th="">
@@ -101,7 +101,7 @@
                         <td data-th="Price">{{ part.price }} €</td>
                         <td data-th="Quantity">
                             <form action="{% url 'refresh' %}" method="post">
-                            <input type="number" name="quantity" id="quantityInputPart" class="form-control text-center" value="{{ datos.quantity }}">
+                            <input type="number" name="quantity" id="quantityInputPart" class="form-control text-center" value="{{ datos.quantity }}" oninput="validateQuantity(this)">
                         </td>
                         <td data-th="Subtotal" class="text-center">{{ datos.price }} €</td>
                         <td class="actions" data-th="">
@@ -145,5 +145,13 @@
         </table>
     </div>
 </main>
+
+<script>
+    function validateQuantity(input) {
+        if (input.value < 0) {
+            input.value = 0;
+        }
+    }
+</script>
 
 {% endblock %}

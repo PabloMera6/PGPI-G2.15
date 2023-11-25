@@ -6,18 +6,19 @@
 <link rel="stylesheet" href="{% static 'styles/cart.css' %}">
 {% endblock %}
 
-{% for message in messages %}
-    
-    <div class="container alert alert-danger">
-        <a class="close" href="#" data-dismiss="alert">x</a>
-           {{ message }}
-    </div>
-
-{% endfor %}
-
 {% block title %}Finalizar compra{% endblock %}
 
 {% block content %}
+
+{% for message in messages %}
+    
+<div class="container alert alert-danger">
+    <a class="close" href="#" data-dismiss="alert">x</a>
+       {{ message }}
+</div>
+
+{% endfor %}
+
   <div class="container">
     <form method="post" action="{% url 'checkout' %}">
       {% csrf_token %}
@@ -57,7 +58,7 @@
                         <td data-th="Quantity">
                             {{ datos.quantity }}
                         </td>
-                        <td data-th="Subtotal" class="text-center">{{ datos.price }}</td>
+                        <td data-th="Subtotal" class="text-center">{{ datos.price }}  €</td>
                     </tr>
                 {% endfor %}
                 {% for part, datos in parts.items %}
@@ -85,7 +86,7 @@
                         <td data-th="Quantity">
                             {{ datos.quantity }}
                         </td>
-                        <td data-th="Subtotal" class="text-center">{{ datos.price }}</td>
+                        <td data-th="Subtotal" class="text-center">{{ datos.price }}  €</td>
                     </tr>
                 {% endfor %}
 

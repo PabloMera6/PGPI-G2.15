@@ -41,13 +41,14 @@
                         <div class="product-price"><span>{{ product.price }}€</span></div>
                     </div>
                     <p class="category"><strong>Categoría:</strong> {{ motorcycle.category }}</p>
+                    <p class="stock"><strong>Stock:</strong> {{ motorcycle.stock_quantity }}</p>
                     <div class="product-count">
                         <form id="addToCartForm" action="{% url 'add_to_cart' %}" method="post">
                             {% csrf_token %}
                             <label for="size">Cantidad</label>
                             <div class="display-flex">
                                 <div class="qtyminus">-</div>
-                                <input type="text" name="product_quantity" value="1" class="qty">
+                                <input type="number" name="product_quantity" value="1" class="qty" oninput="validateQuantity(this)" min="1" max="{{ motorcycle.stock_quantity }}">
                                 <div class="qtyplus">+</div>
                             </div>
                             <input type="hidden" name="product_id" style="position: absolute;"  value="{{ motorcycle.id }}">
