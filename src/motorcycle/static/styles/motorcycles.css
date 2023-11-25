@@ -120,3 +120,8 @@
 .pagination>li>a:hover {
     color: #ba5f3c;
 }
+
+.no-stock {
+    color: red;
+    font-weight: bold;
+}

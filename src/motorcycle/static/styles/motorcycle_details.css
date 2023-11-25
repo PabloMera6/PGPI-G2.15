@@ -421,10 +421,22 @@
 
 input[type="number"] {
     -moz-appearance: textfield;
-  }
+    appearance: textfield;
+}
 
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
-  }
+}
+
+.no-stock {
+    color: red;
+    font-weight: bold;
+    font-size: 2em;
+}
+
+.part-no-stock {
+    color: red;
+    font-weight: bold;
+}
