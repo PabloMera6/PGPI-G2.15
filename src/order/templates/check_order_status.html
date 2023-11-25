@@ -1,6 +1,15 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% for message in messages %}
+    
+    <div class="container alert alert-danger">
+        <a class="close" href="#" data-dismiss="alert">x</a>
+           {{ message }}
+    </div>
+
+{% endfor %}
+
   <div class="container mt-5">
     <div class="row d-flex align-items-center justify-content-center">
       <div class="col-12">
@@ -9,7 +18,7 @@
           {% csrf_token %}
           <div class="form-group">
             <label for="order_id">Ingrese el ID del pedido:</label>
-            <input type="number" name="order_id" class="form-control" required>
+            <input type="text" name="order_id" class="form-control" required>
           </div>
           <button type="submit" class="btn btn-primary">Verificar Estado</button>
         </form>

@@ -5,5 +5,5 @@ from shop.views import confirmed
 
 urlpatterns = [
     path('user_orders/', user_orders, name='user_orders'),
-    path('checkout/confirm/confirmed/<int:order_id>/', confirmed, name='checkout_confirmation'),
+    path('checkout/confirm/confirmed/<uuid:order_id>/', confirmed, name='checkout_confirmation'),
 ]
