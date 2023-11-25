@@ -108,8 +108,6 @@
 .col-item .btn-details {
     width: 50%;
     float: left;
-    /* padding-left: 10px;
-    margin-left: 24%; */
 }
 
 .control {
@@ -118,4 +116,9 @@
 
 [data-slide="prev"] {
     margin-right: 10px;
+}
+
+.no-stock {
+    color: red;
+    font-weight: bold;
 }

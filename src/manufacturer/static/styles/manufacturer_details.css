@@ -220,3 +220,8 @@
 .pagination>li>a:hover {
     color: #ba5f3c;
 }
+
+.motorcycle-no-stock {
+    color: red;
+    font-weight: bold;
+}
