@@ -46,18 +46,19 @@
                             <label for="size">Compatibilidad</label>
                             <select id="size" name="size" class="form-control">
                                 {% for motorcycle in compatible_motorcycles %}
-                                    <option>{{ motorcycle }}</option>
+                                <option>{{ motorcycle }}</option>
                                 {% endfor %}
                             </select>
                         </div>
                     </div>
+                    <p class="stock"><strong>Stock:</strong> {{ part.stock_quantity }}</p>
                     <div class="product-count">
                         <form id="addToCartForm" action="{% url 'add_to_cart' %}" method="post">
                             {% csrf_token %}
                             <label for="size">Cantidad</label>
                             <div class="display-flex">
                                 <div class="qtyminus">-</div>
-                                <input type="text" name="product_quantity" value="1" class="qty">
+                                <input type="number" name="product_quantity" value="1" class="qty" oninput="validateQuantity(this)" min="1" max="{{ part.stock_quantity }}">
                                 <div class="qtyplus">+</div>
                             </div>
                             <input type="hidden" name="product_id" style="position: absolute;"  value="{{ part.id }}">
