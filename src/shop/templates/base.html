@@ -35,9 +35,9 @@
     <div class="navbar container">
       <a href="{% url 'initial' %}"><img src="{% static 'images/icon.png' %}" alt="logo" width="90" height="90"></a>
       <div class="container-fluid">
+        <form method="get" action="{% url 'search' %}">
         <div class="row">
           <div class="col-xs-8 col-xs-offset-2">
-            <form method="get" action="{% url 'search' %}">
               <div class="input-group">
                 <div class="input-group-btn search-panel">
                   <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -47,6 +47,8 @@
                     <li><a href="#" data-value="motorcycles">Motocicletas</a></li>
                     <li><a href="#" data-value="parts">Partes</a></li>
                     <li><a href="#" data-value="manufacturers">Fabricantes</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#" data-value="price">Precio</a></li>
                     <li class="divider"></li>
                     <li><a href="#" data-value="all">Todos</a></li>
                   </ul>
@@ -59,10 +61,21 @@
                       class="glyphicon glyphicon-search"></span></button>
                 </span>
               </div>
-            </form>
+            </div>
           </div>
+          <div class="row2" style="display: none; justify-content: center; gap: 10px; padding-top: 10px;">
+            <div class="form-group">
+              <input type="number" step="0.01" class="form-control" id="min_price" name="min_price" placeholder="Min" oninput="validateQuantity(this)">
+            </div>
+            <svg width="20px" height="35px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M6 12L18 12" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            <div class="form-group">
+              <input type="number" step="0.01" class="form-control" id="max_price" name="max_price" placeholder="Max" oninput="validateQuantity(this)">
+            </div>
+          </div>
+        </form>
         </div>
-      </div>
       <a href="{% url 'cart' %}"><img src="{% static 'images/cart.png' %}" alt="cart" width="90" height="90"></a>
     </div>
     <div class="lateral">
@@ -152,8 +165,23 @@
   $(document).ready(function () {
       $('.dropdown-menu a').click(function () {
           var value = $(this).data('value');
-          $('#search_concept').text($(this).text());
-          $('#search_type').val(value);
+          if(value != 'price'){
+            $('#search_concept').text($(this).text());
+            $('#search_type').val(value);
+          }else{
+            if($('.row2').css('display') == 'flex')
+              $('.row2').css('display', 'none');
+            else if($('.row2').css('display') == 'none')
+              $('.row2').css('display', 'flex');
+            $('#search_concept').text('Todos');
+            $('#search_type').val('all');
+          }
       });
   });
+  function validateQuantity(input) {
+    var currentVal = parseInt(input.value);
+    if (currentVal < 0) {
+        input.value = 0;
+    }
+}
 </script>

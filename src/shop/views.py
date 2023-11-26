@@ -39,6 +39,14 @@ def search(request):
         if form.is_valid():
             query = form.cleaned_data['query']
             search_type = form.cleaned_data['search_type']
+            min_price = form.cleaned_data['min_price'] or 0
+            max_price = form.cleaned_data['max_price'] or 99999999
+            if min_price > max_price:
+                messages.error(request, 'El precio mínimo no puede ser mayor que el precio máximo.')
+                return redirect('/search/')
+            elif min_price < 0 or max_price < 0:
+                messages.error(request, 'Los precios no pueden ser negativos.')
+                return redirect('/search/')
             if search_type == 'all':
                 motorcycles = Motorcycle.objects.filter(name__icontains=query)
                 parts = Part.objects.filter(name__icontains=query)
@@ -51,14 +59,29 @@ def search(request):
                 manufacturers = Manufacturer.objects.filter(name__icontains=query)
         else:
             search_type = request.GET.get('search_type', 'all')
+            min_price = float(request.GET.get('min_price')) if request.GET.get('min_price') else None
+            max_price = float(request.GET.get('max_price')) if request.GET.get('max_price') else None
+            if min_price == None and max_price == None:
+                min_price = 0
+                max_price = 99999999
+            elif min_price == None:
+                min_price = 0
+            elif max_price == None:
+                max_price = 99999999
+            elif min_price > max_price:
+                messages.error(request, 'El precio mínimo no puede ser mayor que el precio máximo.')
+                return redirect('/search/')
+            elif min_price < 0 or max_price < 0:
+                messages.error(request, 'Los precios no pueden ser negativos.')
+                return redirect('/search/')
             if search_type == 'all':
-                motorcycles = Motorcycle.objects.all()
-                parts = Part.objects.all()
+                motorcycles = Motorcycle.objects.filter(price__range=(min_price, max_price))
+                parts = Part.objects.filter(price__range=(min_price, max_price))
                 manufacturers = Manufacturer.objects.all()
             elif search_type == 'motorcycles':
-                motorcycles = Motorcycle.objects.all()
+                motorcycles = Motorcycle.objects.filter(price__range=(min_price, max_price))
             elif search_type == 'parts':
-                parts = Part.objects.all()
+                parts = Part.objects.filter(price__range=(min_price, max_price))
             elif search_type == 'manufacturers':
                 manufacturers = Manufacturer.objects.all()
     else:
