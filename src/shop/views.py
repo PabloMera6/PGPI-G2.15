@@ -48,13 +48,13 @@ def search(request):
                 messages.error(request, 'Los precios no pueden ser negativos.')
                 return redirect('/search/')
             if search_type == 'all':
-                motorcycles = Motorcycle.objects.filter(name__icontains=query)
-                parts = Part.objects.filter(name__icontains=query)
+                motorcycles = Motorcycle.objects.filter(name__icontains=query, price__range=(min_price, max_price))
+                parts = Part.objects.filter(name__icontains=query, price__range=(min_price, max_price))
                 manufacturers = Manufacturer.objects.filter(name__icontains=query)
             elif search_type == 'motorcycles':
-                motorcycles = Motorcycle.objects.filter(name__icontains=query)
+                motorcycles = Motorcycle.objects.filter(name__icontains=query, price__range=(min_price, max_price))
             elif search_type == 'parts':
-                parts = Part.objects.filter(name__icontains=query)
+                parts = Part.objects.filter(name__icontains=query, price__range=(min_price, max_price))
             elif search_type == 'manufacturers':
                 manufacturers = Manufacturer.objects.filter(name__icontains=query)
         else:
