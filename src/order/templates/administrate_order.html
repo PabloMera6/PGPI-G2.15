@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+
+
+{% block extrahead %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'styles/cart.css' %}">
+{% endblock %}
+
+{% block title %}Cambiar estado del pedido{% endblock %}
+
+{% block content %}
+
+  <div class="container">
+      {% csrf_token %}
+    <div>
+        <h3>Tipo de envio: {{ order.shipment }}</h3>
+        <h3>Estado del pedido: {{ order.state }}</h3>
+        
+        {% if user.is_authenticated and user.email == order.buyer_mail %}
+          <h3>Email del comprador: {{ order.buyer_mail }}</h3>
+          <h3>Telefono del comprador: {{ order.buyer_phone }}</h3>
+          <h3>Dirección de entrega: {{ order.city }}, {{ order.postal_code }} - {{ order.address }}</h3>
+        {% endif %}
+        
+        <h3>Pago: {{ order.payment }}</h3>
+    </div>
+    <div>
+        <form method="post" action="{% url 'administrate_order' order.id %}">
+            {% csrf_token %}
+            <h3>Cambiar estado:</h3>
+            <select class="form-control" name="state" id="estado">
+                <option value="Pendiente" {% if order.state == 'Pendiente' %}selected{% endif %}>Pendiente</option>
+                <option value="Confirmado" {% if order.state == 'Confirmado' %}selected{% endif %}>Confirmado</option>
+                <option value="En reparto" {% if order.state == 'En reparto' %}selected{% endif %}>En reparto</option>
+                <option value="Entregado" {% if order.state == 'Entregado' %}selected{% endif %}>Entregado</option>
+            </select>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+        </form>
+    </div>
+    <div>
+        <table id="cart" class="table table-hover table-condensed">
+            <thead>
+                <tr>
+                    <th style="width:50%">Producto</th>
+                    <th style="width:10%">Precio</th>
+                    <th style="width:8%">Cantidad</th>
+                    <th style="width:22%" class="text-center">Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for moto, datos in motos.items %}
+                    <tr>
+                        <td data-th="Product">
+                            <div class="row">
+                                <div class="img-cart"><img src="{{ moto.photo }}" alt="..." 
+                                        class="img-responsive" /></div>
+                                <div class="cart-product col-sm-10">
+                                    <h4 class="nomargin" style="font-weight: bold;">{{ moto }}</h4>
+                                    <div>
+                                        <strong style="display: inline;">Categoria:</strong>
+                                        <p style="display: inline;"> Motocicleta - {{ moto.category}}</p>
+                                    </div>
+                                    {% for manufacturer in manufacturers %}
+                                        {% if manufacturer.id == moto.manufacturer_id %}
+                                            <strong style="display: inline;">Fabricante:</strong>
+                                            <p style="display: inline;"> {{ manufacturer.name}}</p>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </td>
+                        <td data-th="Price">{{ moto.price }}  €</td>
+                        <td data-th="Quantity">
+                            {{ datos.quantity }}
+                        </td>
+                        <td data-th="Subtotal" class="text-center">{{ datos.price }}  €</td>
+                    </tr>
+                {% endfor %}
+                {% for part, datos in parts.items %}
+                    <tr>
+                        <td data-th="Product">
+                            <div class="row">
+                                <div class="img-cart"><img src="{{ part.photo}}" alt="..."
+                                        class="img-responsive" /></div>
+                                <div class="cart-product col-sm-10">
+                                    <h4 class="nomargin" style="font-weight: bold;">{{ part }}</h4>
+                                    <div>
+                                        <strong style="display: inline;">Categoria:</strong>
+                                        <p style="display: inline;"> Parte - {{ part.category}}</p>
+                                    </div>
+                                    {% for manufacturer in manufacturers %}
+                                        {% if manufacturer.id == part.manufacturer_id %}
+                                            <strong style="display: inline;">Fabricante:</strong>
+                                            <p style="display: inline;"> {{ manufacturer.name}}</p>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </td>
+                        <td data-th="Price">{{ part.price }} €</td>
+                        <td data-th="Quantity">
+                            {{ datos.quantity }}
+                        </td>
+                        <td data-th="Subtotal" class="text-center">{{ datos.price }}  €</td>
+                    </tr>
+                {% endfor %}
+
+            </tbody>
+            <tfoot>
+                <tr>
+                    {% if precio < 30 %}
+                    <tr>
+                        <td>Si el precio del pedido es menor de 30€ y pides que te lo enviemos, se sumarán 5 euros por gastos de envio</td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-center">5.00 €</td>
+                    </tr>
+                    {% endif %}
+                </tr>
+                <tr class="visible-xs">
+                    <td class="text-center"><strong>Total {{ order.price }} €</strong></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td colspan="2" class="hidden-xs" style="text-align: center;">
+                        
+                    </td>
+                    <td class="hidden-xs text-center"><strong>Total 
+                        {{ order.price }} €</strong></td>
+                    <td>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+  </div>
+{% endblock %}

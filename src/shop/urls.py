@@ -1,6 +1,9 @@
 from django import views
 from django.urls import path
 from . import views
+from order.views import administrate,orders,administrate_order
+from manufacturer.models import Manufacturer
+
 
 
 urlpatterns = [
@@ -12,5 +15,8 @@ urlpatterns = [
     path('search/', views.search, name='search'),
     path('checkout/', views.checkout, name='checkout'),
     path('checkout/confirm/', views.confirm, name='confirm'),
-    path('checkout/confirm/confirmed/<int:order_id>/', views.confirmed, name='confirmed'),
+    path('checkout/confirm/confirmed/<uuid:order_id>/', views.confirmed, name='confirmed'),
+    path('administrate/', administrate, name='administrate'),
+    path('administrate/orders/',orders, name='orders'),
+    path('administrate/orders/<uuid:order_id>/', administrate_order, name='administrate_order'),
 ]
