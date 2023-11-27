@@ -2,6 +2,7 @@ from django import views
 from django.urls import path
 from . import views
 from order.views import administrate,orders,administrate_order
+from users.views import ListUsersView
 from manufacturer.models import Manufacturer
 
 
@@ -19,4 +20,5 @@ urlpatterns = [
     path('administrate/', administrate, name='administrate'),
     path('administrate/orders/',orders, name='orders'),
     path('administrate/orders/<uuid:order_id>/', administrate_order, name='administrate_order'),
+    path('administrate/users/', ListUsersView.as_view(), name='administrate_users'),
 ]
