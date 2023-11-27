@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container">
+    <h2 class="text-center mb-4">Reclamaciones</h2>
+    
+    {% if claims %}
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Autor</th>
+            <th>Fecha</th>
+            <th>Descripción</th>
+            <th>Respuesta</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for claim in claims %}
+            <tr>
+              <td>{{ claim.id }}</td>
+              <td>{{ claim.author }}</td>
+              <td>{{ claim.date }}</td>
+              <td>{{ claim.description }}</td>
+              <td>{{ claim.response }}</td>
+              <td>
+                {% if claim.response %}
+                  <a href="{% url 'view_claim' claim.id %}" class="btn btn-warning">Editar Respuesta</a>
+                {% else %}
+                  <a href="{% url 'view_claim' claim.id %}" class="btn btn-primary">Responder</a>
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="text-center">No hay reclamaciones.</p>
+    {% endif %}
+  </div>
+{% endblock %}
