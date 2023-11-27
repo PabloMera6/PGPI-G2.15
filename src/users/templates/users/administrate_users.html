@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block extrahead %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'styles/cart.css' %}">
+{% endblock %}
+
+{% block content %}
+{% for message in messages %}
+    
+    <div class="container alert alert-danger">
+        <a class="close" href="#" data-dismiss="alert">x</a>
+           {{ message }}
+    </div>
+
+{% endfor %}
+<div class="container">
+    <div class="row">
+        <h2>Listado de Usuarios</h2>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Email</th>
+            <th>Nombre Completo</th>
+            <th>Teléfono</th>
+            <th>Dirección</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for user in users %}
+            {% if not user.is_staff %}
+            <tr>
+              <td>{{ user.email }}</td>
+              <td>{{ user.full_name }}</td>
+              <td>{{ user.phone }}</td>
+              <td>{{ user.address }}</td>
+              <td>
+                <form method="post" action="{% url 'administrate_users' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="user_id" value="{{ user.id }}">
+                    {% if not user.is_active %}
+                      <input type="hidden" name="is_active" value="True">
+                      <button type="submit" name="action" value="activate">Dar de alta</button>
+                    {% else %}
+                      <input type="hidden" name="is_active" value="False">
+                      <button type="submit" name="action" value="deactivate">Dar de baja</button>
+                    {% endif %}
+                  </form>
+              </td>
+            </tr>
+            {% endif %}
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <div class="pagination">
+        <span class="step-links">
+          {% if users.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ users.previous_page_number }}">previous</a>
+          {% endif %}
+
+          <span class="current">
+            Página {{ users.number }} de {{ users.paginator.num_pages }}.
+          </span>
+
+          {% if users.has_next %}
+            <a href="?page={{ users.next_page_number }}">next</a>
+            <a href="?page={{ users.paginator.num_pages }}">last &raquo;</a>
+          {% endif %}
+        </span>
+      </div>
+    </div>
+  </div>
+{% endblock %}

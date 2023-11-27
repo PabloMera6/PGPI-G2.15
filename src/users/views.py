@@ -1,5 +1,6 @@
 from django.db import IntegrityError
 from django.contrib.auth import authenticate, login, logout
+from django.urls import reverse
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
@@ -9,6 +10,7 @@ from django.shortcuts import render, redirect
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseForbidden
 from django.shortcuts import redirect
+from django.contrib import messages
 
 
 
@@ -61,9 +63,11 @@ class LoginView(APIView):
 
         user = authenticate(request, username=email, password=password)
 
-        if user is not None:
+        if user is not None and user.is_active:
             login(request, user)
             token, _ = Token.objects.get_or_create(user=user)
+        else:
+            return Response({'error': 'Su cuenta ha sido dada de baja por un administrador.'}, status=status.HTTP_400_BAD_REQUEST)
         return redirect('initial')
 
 
@@ -103,3 +107,35 @@ class UserProfileView(APIView):
 
         user_profile.save()
         return redirect('initial')
+
+class ListUsersView(APIView):
+    template_name = 'users/administrate_users.html'
+
+    def get(self, request):
+        if not request.user.is_authenticated:
+            return HttpResponseForbidden("Acceso denegado. Debes iniciar sesión para ver este contenido.")
+        current_user = request.user
+        if current_user.is_staff:
+            users = UserProfile.objects.all()
+            return render(request, self.template_name, {'users': users})
+        else:
+            return HttpResponseForbidden("Acceso denegado. Debes iniciar sesión para ver este contenido.")
+        
+    def post(self, request):
+        user_id = request.POST.get('user_id')
+        action = request.POST.get('action')
+
+        user = UserProfile.objects.get(id=user_id)
+
+        if action == 'activate':
+            user.is_active = True
+            user.save()
+            messages.success(request, f'El usuario {user.email} ha sido dado de alta.')
+        elif action == 'deactivate':
+            user.is_active = False
+            user.save()
+            Token.objects.filter(user=user).delete()
+            messages.success(request, f'El usuario {user.email} ha sido dado de baja.')
+
+        return redirect(reverse('administrate_users'))
+
