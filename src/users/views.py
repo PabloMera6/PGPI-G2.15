@@ -26,16 +26,19 @@ class RegisterView(APIView):
         address = request.data.get('address', '')
 
         if not email or not password:
-            return Response({'error': 'Correo electrónico y contraseña son obligatorios.'}, status=status.HTTP_400_BAD_REQUEST)
+            messages.success(request, f'Correo electrónico y contraseña son obligatorios.')
+            return redirect('register')
 
         if UserProfile.objects.filter(email=email).exists():
-            return Response({'error': 'El correo electrónico ya está en uso.'}, status=status.HTTP_400_BAD_REQUEST)
+            messages.success(request, f'El correo electrónico {email} ya está registrado.')
+            return redirect('register')
 
         try:
             user = UserProfile.objects.create_user(email=email, password=password, full_name=full_name, phone=phone, address=address)
             return redirect('initial')
         except IntegrityError:
-            return Response({'error': 'Ha ocurrido un error al crear el usuario.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            messages.success(request, f'Ha ocurrido un error al crear un usuario.')
+            return redirect('register')
 
 class LogoutView(APIView):
     def post(self, request):
@@ -51,15 +54,18 @@ class LoginView(APIView):
         password = request.data.get('password', '')
 
         if not email or not password:
-            return Response({'error': 'Correo electrónico y contraseña son obligatorios.'}, status=status.HTTP_400_BAD_REQUEST)
+            messages.success(request, f'Correo electrónico y contraseña son obligatorios.')
+            return redirect('login')
 
         try:
             user = UserProfile.objects.get(email=email)
         except UserProfile.DoesNotExist:
-            return Response({'error': 'El correo electrónico no existe.'}, status=status.HTTP_404_NOT_FOUND)
+            messages.success(request, f'El correo electrónico {email} no está registrado.')
+            return redirect('login')
 
         if not user.check_password(password):
-            return Response({'error': 'Contraseña incorrecta.'}, status=status.HTTP_400_BAD_REQUEST)
+            messages.success(request, f'Contraseña incorrecta.')
+            return redirect('login')
 
         user = authenticate(request, username=email, password=password)
 
@@ -67,7 +73,8 @@ class LoginView(APIView):
             login(request, user)
             token, _ = Token.objects.get_or_create(user=user)
         else:
-            return Response({'error': 'Su cuenta ha sido dada de baja por un administrador.'}, status=status.HTTP_400_BAD_REQUEST)
+            messages.success(request, f'Su cuenta ha sido desactivada.')
+            return redirect('login')
         return redirect('initial')
 
 
@@ -76,14 +83,14 @@ class UserProfileView(APIView):
 
     def get(self, request):
         if not request.user.is_authenticated:
-            return HttpResponseForbidden("Acceso denegado. Debes iniciar sesión para ver este contenido.")
-        current_user = request.user  # Obtén el UserProfile del usuario actual
+            return redirect('/')
+        current_user = request.user
         return render(request, self.template_name, {'current_user': current_user})
     
 
     def post(self, request):
         if not request.user.is_authenticated:
-            return Response({'error': 'Acceso denegado. Debes iniciar sesión para actualizar tu perfil.'}, status=status.HTTP_403_FORBIDDEN)
+            return redirect('/')
 
         full_name = request.data.get('full_name', '')
         phone = request.data.get('phone', '')
@@ -93,10 +100,12 @@ class UserProfileView(APIView):
         try:
             user_profile = request.user
         except ObjectDoesNotExist:
-            return Response({'error': 'UserProfile no encontrado para este usuario.'}, status=status.HTTP_404_NOT_FOUND)
+            messages.success(request, f'El usuario no existe.')
+            return redirect('profile')
 
         if new_email and UserProfile.objects.exclude(pk=user_profile.pk).filter(email=new_email).exists():
-            return Response({'error': 'El nuevo correo electrónico ya está en uso.'}, status=status.HTTP_400_BAD_REQUEST)
+            messages.success(request, f'El correo electrónico {new_email} ya está registrado.')
+            return redirect('profile')
 
         user_profile.full_name = full_name
         user_profile.phone = phone
@@ -113,13 +122,13 @@ class ListUsersView(APIView):
 
     def get(self, request):
         if not request.user.is_authenticated:
-            return HttpResponseForbidden("Acceso denegado. Debes iniciar sesión para ver este contenido.")
+            return redirect('/')
         current_user = request.user
         if current_user.is_staff:
             users = UserProfile.objects.all()
             return render(request, self.template_name, {'users': users})
         else:
-            return HttpResponseForbidden("Acceso denegado. Debes iniciar sesión para ver este contenido.")
+            return redirect('/')
         
     def post(self, request):
         user_id = request.POST.get('user_id')
