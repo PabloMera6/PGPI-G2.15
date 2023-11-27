@@ -2,7 +2,7 @@
 
 {% block content %}
   <div class="container">
-    <h2 class="text-center mb-4">Reclamaciones</h2>
+    <h2 class="text-center mb-4">Mis Reclamaciones</h2>
     
     {% if user.is_authenticated %}
       <a href="{% url 'create_claim' %}" class="btn btn-success mb-4">Añadir Reclamación</a>
@@ -12,7 +12,6 @@
       <table class="table">
         <thead>
           <tr>
-            <th>Autor</th>
             <th>Fecha</th>
             <th>Descripción</th>
             <th>Respuesta</th>
@@ -22,7 +21,6 @@
         <tbody>
           {% for claim in claims %}
             <tr>
-              <td>{{ claim.author }}</td>
               <td>{{ claim.date }}</td>
               <td>{{ claim.description }}</td>
               <td>{{ claim.response }}</td>

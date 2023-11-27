@@ -5,10 +5,13 @@ from django.contrib.auth.decorators import login_required
 from .models import Claim
 from django.contrib import messages
 from django.shortcuts import get_object_or_404
-
+from django.http import HttpResponseForbidden
 
 @login_required
 def create_claim(request):
+    if request.user.is_staff:
+        return HttpResponseForbidden("Acceso prohibido. No puedes crear reclamaciones como administrador.")
+    
     if request.method == 'POST':
         description = request.POST.get('description')
         if description:
@@ -19,6 +22,7 @@ def create_claim(request):
             messages.error(request, 'La descripción de la reclamación no puede estar vacía.')
 
     return render(request, 'create_claim.html')
+
 
 @login_required
 def view_claims(request):
@@ -47,7 +51,7 @@ def view_claim(request, claim_id):
 
 @login_required
 def user_view_claims(request):
-    claims = Claim.objects.all()
+    claims = Claim.objects.filter(author=request.user)
     return render(request, 'user_view_claims.html', {'claims': claims})
 
 @login_required
