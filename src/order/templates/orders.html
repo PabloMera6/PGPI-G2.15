@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% for message in messages %}
+    
+    <div class="container alert alert-danger">
+        <a class="close" href="#" data-dismiss="alert">x</a>
+           {{ message }}
+    </div>
+
+{% endfor %}
+
+  <div class="container">
+    <div class="row">
+        <h2>Listado de Pedidos</h2>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Comprador (Email)</th>
+            <th>Precio</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for order in orders %}
+            <tr>
+              <td><a href="{% url 'administrate_order' order.id %}">{{ order.id }}</a></td>
+              <td>{{ order.buyer_mail }}</td>
+              <td>{{ order.price }}</td>
+              <td>{{ order.state }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <div class="pagination">
+        <span class="step-links">
+          {% if orders.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ orders.previous_page_number }}">previous</a>
+          {% endif %}
+
+          <span class="current">
+            Página {{ orders.number }} de {{ orders.paginator.num_pages }}.
+          </span>
+
+          {% if orders.has_next %}
+            <a href="?page={{ orders.next_page_number }}">next</a>
+            <a href="?page={{ orders.paginator.num_pages }}">last &raquo;</a>
+          {% endif %}
+        </span>
+      </div>
+    </div>
+  </div>
+{% endblock %}

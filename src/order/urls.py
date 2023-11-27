@@ -1,6 +1,8 @@
 from django.urls import path
 from .views import user_orders
 from shop.views import confirmed
+from .views import administrate
+from .views import orders
 
 
 urlpatterns = [

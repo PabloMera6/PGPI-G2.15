@@ -89,6 +89,10 @@
                 <li><a href="{% url 'profile' %}"><i class="icon-cog"></i> <span class="	glyphicon glyphicon-cog"
                       aria-hidden="true"></span> Perfil</a></li>
                 <li><a href="{% url 'user_orders' %}"><i class="fas fa-shopping-bag"></i> Mis Pedidos</a></li>
+                {% if user.is_superuser %}
+                    <li><a href="/administrate"><i class="fas fa-laptop">Administrar</i></a></li>
+                {% endif %}
+                
                 <li class="divider"></li>
                 <form id="logoutForm" method="post" action="{% url 'logout' %}">
                   {% csrf_token %}

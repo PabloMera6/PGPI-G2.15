@@ -108,6 +108,8 @@ def search(request):
 
 def checkout(request):
     my_cart = Cart(request).cart
+    if my_cart == {} or my_cart == None:
+        return redirect('/')
     motos = {}
     parts = {}
     manufacturers = Manufacturer.objects.all()
