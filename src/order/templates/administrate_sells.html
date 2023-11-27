@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}Información sobre las ventas{% endblock %}
+
+{% block content %}
+
+<div class="content" style="display: flex; flex-direction: row; justify-content: space-evenly;">
+    {% csrf_token %}
+    <div class="statistics" style="right: 100%; display: flex; flex-direction: column; gap: 20px;">
+        <h4>Producto más vendido: {{ producto_mas_vendido }}</h4>
+        <h4>Media de precios de productos vendidos: {{ media_precios }}</h4>
+        <h4>Tipo de producto preferido: {{ tipo_producto_preferido }}</h4>
+        <h4>Fabricante preferido: {{ fabricante_preferido }}</h4>
+        <h4>Tipo de envío preferido: {{ tipo_envio_preferido }}</h4>
+        <h4>Ciudad con más ventas: {{ ciudad_mas_ventas }}</h4>
+        <h4>Forma de pago preferida: {{ forma_pago_preferida }}</h4>
+        <h4>Cliente más activo: {{ cliente_mas_activo }}</h4>
+    </div>
+    <div class="buttons" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+        <h3>Gráficas</h3>
+        <button class="btn btn-primary" onclick="toggleVentasPorProducto()">Ventas por producto</button>
+        <button class="btn btn-primary" onclick="toggleVentasPorTipo()">Ventas por tipo de producto</button>
+        <button class="btn btn-primary" onclick="togglePedidosPorEstado()">Número de pedidos por estado</button>
+    </div>
+    <div class="plots" style="display: flex; flex-direction: column; justify-content: center; align-items: center; margin-left: 20px;">
+        <img class="ventas_por_producto" src="../../static/images/ventas_por_producto.png" width="420px" height="300px" alt="Gráfica de Ventas por Producto" style="display: none; margin-top: 20px;">
+        <img class="ventas_por_tipo" src="../../static/images/ventas_por_tipo.png" width="420px" height="300px" alt="Gráfica de Ventas por Tipo" style="display: none; margin-top: 20px;">
+        <img class="pedidos_por_estado" src="../../static/images/pedidos_por_estado.png" width="420px" height="300px" alt="Gráfica de Pedidos por Estado" style="display: none; margin-top: 20px;">
+    </div>
+</div>
+
+<script>
+    function toggleVentasPorProducto() {
+        var x = document.getElementsByClassName("ventas_por_producto")[0];
+        var y = document.getElementsByClassName("ventas_por_tipo")[0];
+        var z = document.getElementsByClassName("pedidos_por_estado")[0];
+        if (x.style.display === "none") {
+            x.style.display = "flex";
+            y.style.display = "none";
+            z.style.display = "none";
+        } else {
+            x.style.display = "none"
+        }
+    }
+
+    function toggleVentasPorTipo() {
+        var x = document.getElementsByClassName("ventas_por_tipo")[0];
+        var y = document.getElementsByClassName("ventas_por_producto")[0];
+        var z = document.getElementsByClassName("pedidos_por_estado")[0];
+        if (x.style.display === "none") {
+            x.style.display = "flex";
+            y.style.display = "none";
+            z.style.display = "none";
+        } else {
+            x.style.display = "none"
+        }
+    }
+
+    function togglePedidosPorEstado() {
+        var x = document.getElementsByClassName("pedidos_por_estado")[0];
+        var y = document.getElementsByClassName("ventas_por_producto")[0];
+        var z = document.getElementsByClassName("ventas_por_tipo")[0];
+        if (x.style.display === "none") {
+            x.style.display = "flex";
+            y.style.display = "none";
+            z.style.display = "none";
+        } else {
+            x.style.display = "none"
+        }
+    }
+</script>
+
+{% endblock %}
