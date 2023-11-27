@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}Añadir nueva pieza{% endblock %}
+
+{% block content %}
+{% for message in messages %}
+    
+    <div class="container alert alert-danger">
+        <a class="close" href="#" data-dismiss="alert">x</a>
+           {{ message }}
+    </div>
+
+{% endfor %}
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="name">Nombre del producto:</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="imagen">URL de la imagen:</label>
+                        <input type="url" class="form-control" id="imagen" name="imagen" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="category">Categoria de la pieza:</label>
+                        <select class="form-control" name="category" id="category">
+                            <option value="Carrocería">Carrocería</option>
+                            <option value="Motor">Motor</option>
+                            <option value="Suspensión">Suspensión</option>
+                            <option value="Transmisión">Transmisión</option>
+                            <option value="Ruedas">Ruedas</option>
+                            <option value="Frenos">Frenos</option>
+                            <option value="Manillar">Manillar</option>
+                            <option value="Sistema de combustible">Sistema de combustible</option>
+                            <option value="Chasis">Chasis</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="stock">Cantidad de Stock</label>
+                        <input type="number" class="form-control" id="stock" name="stock">
+                    </div>
+                    <div class="form-group">
+                        <label for="price">Precio:</label>
+                        <input type="price" class="form-control" id="price" name="price">
+                    </div>
+                    <div class="form-group">
+                        <label for="manufacturer">Fabricante:</label>
+                        <select class="form-control" name="manufacturer" id="manufacturer" required>
+                            <option value="" selected disabled>Selecciona un fabricante</option>
+                            {% for manufacturer in manufacturers %}
+                                <option value="{{ manufacturer.id }}">{{ manufacturer.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Añadir pieza</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
