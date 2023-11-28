@@ -49,7 +49,7 @@ def view_product(request, product_id):
                 motorcycle.selected_combustible,
                 motorcycle.selected_chasis
             )
-            return render(request, 'motorcycle_detail.html', {'motorcycle': motorcycle, 'product': product, 'compatible_parts': compatible_parts,'selected_parts': selected_parts})
+            return render(request, 'motorcycle_detail2.html', {'motorcycle': motorcycle, 'product': product, 'compatible_parts': compatible_parts,'selected_parts': selected_parts})
         else:
             part = Part.objects.get(pk=product_id)
             category = part.category
@@ -73,7 +73,7 @@ def view_product(request, product_id):
                 compatible_motorcycles = part.compatible_chasis.all()
             else:
                 compatible_motorcycles = None
-            return render(request, 'part_detail.html', {'part': part, 'product': product, 'compatible_motorcycles': compatible_motorcycles})
+            return render(request, 'part_detail2.html', {'part': part, 'product': product, 'compatible_motorcycles': compatible_motorcycles})
     else:
         return redirect('/')
 
