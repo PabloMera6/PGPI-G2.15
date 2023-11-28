@@ -58,6 +58,7 @@
                                 </div>
                                 <input type="hidden" name="product_id" style="position: absolute;"  value="{{ motorcycle.id }}">
                                 <button type="submit" class="round-black-btn"><i class="fa fa-shopping-cart"></i>  Añadir al carrito</button>
+                                <a href="{% url 'motorcycles_config' motorcycle.id %}" class="round-black-btn"><i class="fa fa-cog"></i>  Configurar a medida</a>
                             </form>
                         </div>
                     {% endif %}
