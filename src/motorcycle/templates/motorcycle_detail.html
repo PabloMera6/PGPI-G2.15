@@ -24,20 +24,45 @@
                 <div class="product-dtl">
                     <div class="product-info">
                         <div class="product-name">{{ motorcycle.name }}</div>
-                        <div class="reviews-counter">
-                            <div class="rate">
-                                <input type="radio" id="star5" name="rate" value="5" checked />
-                                <label for="star5" title="text">5 stars</label>
-                                <input type="radio" id="star4" name="rate" value="4" checked />
-                                <label for="star4" title="text">4 stars</label>
-                                <input type="radio" id="star3" name="rate" value="3" checked />
-                                <label for="star3" title="text">3 stars</label>
-                                <input type="radio" id="star2" name="rate" value="2" />
-                                <label for="star2" title="text">2 stars</label>
-                                <input type="radio" id="star1" name="rate" value="1" />
-                                <label for="star1" title="text">1 star</label>
-                              </div>
-                            <span>0 Opiniones</span>
+                        <div class="review-block-rate">
+                            {% if media_scores > 4.5 %}
+                                <i class="glyphicon glyphicon-star"></i>
+                                <i class="glyphicon glyphicon-star"></i>
+                                <i class="glyphicon glyphicon-star"></i>
+                                <i class="glyphicon glyphicon-star"></i>
+                                <i class="glyphicon glyphicon-star"></i>
+                            {% elif media_scores <= 4.5 and media_scores > 3.5 %}
+                                <i class="glyphicon glyphicon-star"></i>
+                                <i class="glyphicon glyphicon-star"></i>
+                                <i class="glyphicon glyphicon-star"></i>
+                                <i class="glyphicon glyphicon-star"></i>
+                                <i class="glyphicon glyphicon-star-empty"></i>
+                            {% elif media_scores <= 3.5 and media_scores > 2.5 %}
+                                <i class="glyphicon glyphicon-star"></i>
+                                <i class="glyphicon glyphicon-star"></i>
+                                <i class="glyphicon glyphicon-star"></i>
+                                <i class="glyphicon glyphicon-star-empty"></i>
+                                <i class="glyphicon glyphicon-star-empty"></i>
+                            {% elif media_scores <= 2.5 and media_scores > 1.5 %}
+                                <i class="glyphicon glyphicon-star"></i>
+                                <i class="glyphicon glyphicon-star"></i>
+                                <i class="glyphicon glyphicon-star-empty"></i>
+                                <i class="glyphicon glyphicon-star-empty"></i>
+                                <i class="glyphicon glyphicon-star-empty"></i>
+                            {% elif media_scores <= 1.5 and media_scores > 0.5 %}
+                                <i class="glyphicon glyphicon-star"></i>
+                                <i class="glyphicon glyphicon-star-empty"></i>
+                                <i class="glyphicon glyphicon-star-empty"></i>
+                                <i class="glyphicon glyphicon-star-empty"></i>
+                                <i class="glyphicon glyphicon-star-empty"></i>
+                            {% else %}
+                                <i class="glyphicon glyphicon-star-empty"></i>
+                                <i class="glyphicon glyphicon-star-empty"></i>
+                                <i class="glyphicon glyphicon-star-empty"></i>
+                                <i class="glyphicon glyphicon-star-empty"></i>
+                                <i class="glyphicon glyphicon-star-empty"></i>
+                            {% endif %}
+                            <span>({{ media_scores }}) {{ opinions|length }} Opiniones</span>
                         </div>
                         <div class="product-price"><span>{{ product.price }}€</span></div>
                     </div>
@@ -119,32 +144,103 @@
                     </div>
                 </div>
                 <div class="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
-                    <div class="review-heading">OPINIONES</div>
-				  		<p class="mb-20">No hay opiniones disponibles.</p>
-                        {% if not_reviewed and request.user.is_authenticated %}
-                            <form class="review-form" method="post">
-                                {% csrf_token %}
-                                <div class="form-group">
-                                    <label>Tu puntuación</label>
-                                    <div class="reviews-counter">
-                                        <div class="stars" data-rating="0">
-                                            <i class="fa-solid fa-star" data-value="1"></i>
-                                            <i class="fa-solid fa-star" data-value="2"></i>
-                                            <i class="fa-solid fa-star" data-value="3"></i>
-                                            <i class="fa-solid fa-star" data-value="4"></i>
-                                            <i class="fa-solid fa-star" data-value="5"></i>
+                    <div class="review-heading">OPINIONES DE LOS CLIENTES</div>
+                    {% if not opinions %}
+                        <p class="mb-20">No hay opiniones disponibles.</p>
+                    {% else %}
+                        <div class="col-sm-3">
+                            <h4 class="opinion-resume">Resumen de las opiniones</h4>
+                            {% for score, num_scores, percentage in rating_stats %}
+                                <div class="pull-left">
+                                    <div class="pull-left" style="width:35px; line-height:1;">
+                                        <div style="height:9px; margin:5px 0;">{{ score }} <span class="glyphicon glyphicon-star"></span></div>
+                                    </div>
+                                    <div class="pull-left" style="width:180px;">
+                                        <div class="progress" style="height:9px; margin:8px 0;">
+                                        <div class="progress-bar progress-bar" role="progressbar" style="width: {{ percentage }}%">
+                                            <span class="sr-only">80% Complete (danger)</span>
+                                        </div>
                                         </div>
                                     </div>
+                                    <div class="pull-right" style="margin-left:10px;">{{ num_scores }}</div>
                                 </div>
-                                <input type="hidden" name="score" id="selectedRating" value="0">
-                                <input type="hidden" name="product_id" value="{{ motorcycle.id }}">
-                                <div class="form-group">
-                                    <label for="description">Descripción</label>
-                                    <textarea class="form-control" rows="10" type="description" id="desccription" name="description" required></textarea>
+                            {% endfor %}
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-7">
+                                <hr/>
+                                <div class="review-block">
+                                    {% for opinion in opinions %}
+                                        <div class="row">
+                                            <div class="col-sm-16">
+                                                <div class="review-block-rate">
+                                                    {% if opinion.score == 5 %}
+                                                        <i class="glyphicon glyphicon-star"></i>
+                                                        <i class="glyphicon glyphicon-star"></i>
+                                                        <i class="glyphicon glyphicon-star"></i>
+                                                        <i class="glyphicon glyphicon-star"></i>
+                                                        <i class="glyphicon glyphicon-star"></i>
+                                                    {% elif opinion.score == 4 %}
+                                                        <i class="glyphicon glyphicon-star"></i>
+                                                        <i class="glyphicon glyphicon-star"></i>
+                                                        <i class="glyphicon glyphicon-star"></i>
+                                                        <i class="glyphicon glyphicon-star"></i>
+                                                        <i class="glyphicon glyphicon-star-empty"></i>
+                                                    {% elif opinion.score == 3 %}
+                                                        <i class="glyphicon glyphicon-star"></i>
+                                                        <i class="glyphicon glyphicon-star"></i>
+                                                        <i class="glyphicon glyphicon-star"></i>
+                                                        <i class="glyphicon glyphicon-star-empty"></i>
+                                                        <i class="glyphicon glyphicon-star-empty"></i>
+                                                    {% elif opinion.score == 2 %}
+                                                        <i class="glyphicon glyphicon-star"></i>
+                                                        <i class="glyphicon glyphicon-star"></i>
+                                                        <i class="glyphicon glyphicon-star-empty"></i>
+                                                        <i class="glyphicon glyphicon-star-empty"></i>
+                                                        <i class="glyphicon glyphicon-star-empty"></i>
+                                                    {% elif opinion.score == 1 %}
+                                                        <i class="glyphicon glyphicon-star"></i>
+                                                        <i class="glyphicon glyphicon-star-empty"></i>
+                                                        <i class="glyphicon glyphicon-star-empty"></i>
+                                                        <i class="glyphicon glyphicon-star-empty"></i>
+                                                        <i class="glyphicon glyphicon-star-empty"></i>
+                                                    {% endif %}
+                                                </div>
+                                                <div class="review-block-author">{{ opinion.author.full_name }}</div>
+                                                <div class="review-block-date">{{ opinion.date }}</div>
+                                                <div class="review-block-description">{{ opinion.description }}</div>
+                                            </div>
+                                        </div>
+                                        <hr/>
+                                    {% endfor %}
                                 </div>
-                                <button class="round-black-btn" type="submit">AÑADIR OPINIÓN</button>
-                            </form>
-                        {% endif %}
+                            </div>
+                        </div>
+                    {% endif %}	
+                    {% if not_reviewed and request.user.is_authenticated %}
+                        <form class="review-form" method="post">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label>Tu puntuación</label>
+                                <div class="reviews-counter">
+                                    <div class="stars" data-rating="0">
+                                        <i class="fa-solid fa-star" data-value="1"></i>
+                                        <i class="fa-solid fa-star" data-value="2"></i>
+                                        <i class="fa-solid fa-star" data-value="3"></i>
+                                        <i class="fa-solid fa-star" data-value="4"></i>
+                                        <i class="fa-solid fa-star" data-value="5"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="hidden" name="score" id="selectedRating" value="0">
+                            <input type="hidden" name="product_id" value="{{ motorcycle.id }}">
+                            <div class="form-group">
+                                <label for="description">Descripción</label>
+                                <textarea class="form-control" rows="10" type="description" id="desccription" name="description" required></textarea>
+                            </div>
+                            <button class="round-black-btn" type="submit">AÑADIR OPINIÓN</button>
+                        </form>
+                    {% endif %}
                 </div>
                 <div class="tab-pane fade" id="parts" role="tabpanel" aria-labelledby="description-tab">
                     <div class="items">
