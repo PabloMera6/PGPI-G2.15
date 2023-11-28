@@ -94,26 +94,5 @@ class DerivedMotorcycle(Product):
     combustible = models.ForeignKey(Part, on_delete=models.CASCADE, related_name='combustible', default= 0)
     chasis = models.ForeignKey(Part, on_delete=models.CASCADE, related_name='chasis', default= 0)
 
-    def calculate_price(self):
-        price = self.motorcycle.price
-        price += self.carrocería.price
-        price += self.motor.price
-        price += self.transmision.price
-        price += self.suspension.price
-        price += self.ruedas.price
-        price += self.frenos.price
-        price += self.manillar.price
-        price += self.combustible.price
-        price += self.chasis.price
-        price -= self.motorcycle.selected_carrocería.price
-        price -= self.motorcycle.selected_motor.price
-        price -= self.motorcycle.selected_transmision.price
-        price -= self.motorcycle.selected_suspension.price
-        price -= self.motorcycle.selected_ruedas.price
-        price -= self.motorcycle.selected_frenos.price
-        price -= self.motorcycle.selected_manillar.price
-        price -= self.motorcycle.selected_combustible.price
-        price -= self.motorcycle.selected_chasis.price
-
     def __str__(self):
-        return self.selected_motorcycle.name
+        return self.base_motorcycle.name + " modificada"

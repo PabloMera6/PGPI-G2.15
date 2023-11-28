@@ -1,6 +1,6 @@
 from product.models import Product
 from django.shortcuts import redirect, render
-from motorcycle.models import Motorcycle
+from motorcycle.models import Motorcycle, DerivedMotorcycle
 from manufacturer.models import Manufacturer 
 from part.models import Part
 from django.views.generic import TemplateView
@@ -323,12 +323,14 @@ def view_cart(request):
     my_cart = Cart(request).cart
     motos = {}
     parts = {}
+    derived_motos = {}
     manufacturers = Manufacturer.objects.all()
     precio_total = 0.0
     for key, value in my_cart.items():
         product = get_object_or_404(Product, pk=key)
         precio_total += float(product.price) * float(value)
         if product.product_type == 'M':
+            print("EOO")
             moto = get_object_or_404(Motorcycle, pk=key)
             motos[moto] = {
                 'price': round(float(product.price) * float(value), 2),
@@ -340,9 +342,17 @@ def view_cart(request):
                 'price': round(float(product.price) * float(value), 2),
                 'quantity': value
             }
+        if product.product_type == 'C':
+            derived_moto = get_object_or_404(DerivedMotorcycle, pk=key)
+            derived_motos[derived_moto] = {
+                'price': float(product.price) * float(value),
+                'quantity': value
+            }
+    print("EOO")
     return render(request, 'cart.html', {
         'motos': motos,
         'parts': parts,
+        'derived_motos': derived_motos,
         'manufacturers': manufacturers,
         'precio': round(precio_total, 2)
     })

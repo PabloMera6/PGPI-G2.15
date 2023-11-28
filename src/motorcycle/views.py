@@ -5,6 +5,7 @@ from motorcycle.models import Motorcycle, DerivedMotorcycle
 from product.models import Product
 from shop.views import Cart, view_cart
 from django.contrib import messages
+import secrets
 
 def view_motorcycles(request):
     motorcycles_list = Motorcycle.objects.all()
@@ -52,38 +53,70 @@ def view_motorcycle_details(request, motorcycle_id):
 
     return render(request, 'motorcycle_detail.html', {'motorcycle': motorcycle, 'product': product, 'compatible_parts': compatible_parts,'selected_parts': selected_parts})
 
+def generate_reference_number():
+    reference_number = secrets.token_hex(7).upper()[:15]
+    return reference_number
 
 def config(request, motorcycle_id):
     product = get_object_or_404(Product, pk=motorcycle_id)
     motorcycle = get_object_or_404(Motorcycle, pk=motorcycle_id)
     if request.method == 'POST':
         my_cart = Cart(request)
-        carroceria =   int(request.POST.get('carroceria'))
-        motor =  int(request.POST.get('motor'))
-        transmision = int(request.POST.get('transmision'))
-        suspension = int(request.POST.get('suspension'))
-        ruedas = int(request.POST.get('ruedas'))
-        frenos = int(request.POST.get('frenos'))
-        manillar = int(request.POST.get('manillar'))
-        combustible = int(request.POST.get('combustible'))
-        chasis = int(request.POST.get('chasis'))
-        my_moto = DerivedMotorcycle(
+        reference_number = product.reference_number + "-"
+        carroceria =   get_object_or_404(Part, pk=int(request.POST.get('carroceria')))
+        motor = get_object_or_404(Part, pk=int(request.POST.get('motor')))
+        transmision = get_object_or_404(Part, pk=int(request.POST.get('transmision')))
+        suspension = get_object_or_404(Part, pk=int(request.POST.get('suspension')))
+        ruedas = get_object_or_404(Part, pk=int(request.POST.get('ruedas')))
+        frenos = get_object_or_404(Part, pk=int(request.POST.get('frenos')))
+        manillar = get_object_or_404(Part, pk=int(request.POST.get('manillar')))
+        combustible = get_object_or_404(Part, pk=int(request.POST.get('combustible')))
+        chasis = get_object_or_404(Part, pk=int(request.POST.get('chasis')))
+
+        reference_number = generate_reference_number()
+        while True:
+            reference_number = generate_reference_number()
+            if not Product.objects.filter(reference_number=reference_number).exists():
+                break
+        price = motorcycle.price
+        price += carroceria.price
+        price += motor.price
+        price += transmision.price
+        price += suspension.price
+        price += ruedas.price
+        price += frenos.price
+        price += manillar.price
+        price += combustible.price
+        price += chasis.price
+        price -= motorcycle.selected_carrocería.price
+        price -= motorcycle.selected_motor.price
+        price -= motorcycle.selected_transmision.price
+        price -= motorcycle.selected_suspension.price
+        price -= motorcycle.selected_ruedas.price
+        price -= motorcycle.selected_frenos.price
+        price -= motorcycle.selected_manillar.price
+        price -= motorcycle.selected_combustible.price
+        price -= motorcycle.selected_chasis.price
+        my_moto = DerivedMotorcycle (
             base_motorcycle_id=motorcycle_id,
-            carroceria_id=carroceria,
-            motor_id=motor,
-            transmision_id=transmision,
-            suspension_id=suspension,
-            ruedas_id=ruedas,
-            frenos_id=frenos,
-            manillar_id=manillar,
-            combustible_id=combustible,
-            chasis_id=chasis,
+            carroceria_id=carroceria.id,
+            motor_id=motor.id,
+            transmision_id=transmision.id,
+            suspension_id=suspension.id,
+            ruedas_id=ruedas.id,
+            frenos_id=frenos.id,
+            manillar_id=manillar.id,
+            combustible_id=combustible.id,
+            chasis_id=chasis.id,
             manufacturer_id=product.manufacturer_id,
-            reference_number=product.reference_number,
             product_type=product.product_type,
+            price = price,
+            reference_number=reference_number,
         )
         my_moto.save() 
         my_cart.add(my_moto.id, 1)  
+        print(my_moto)
+        print(my_cart.cart)
         return view_cart(request)
     else:
         compatible_parts = (
