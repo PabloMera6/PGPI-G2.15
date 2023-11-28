@@ -49,7 +49,7 @@ def view_product(request, product_id):
                 motorcycle.selected_combustible,
                 motorcycle.selected_chasis
             )
-            return render(request, 'motorcycle_detail.html', {'motorcycle': motorcycle, 'product': product, 'compatible_parts': compatible_parts,'selected_parts': selected_parts})
+            return render(request, 'motorcycle_detail2.html', {'motorcycle': motorcycle, 'product': product, 'compatible_parts': compatible_parts,'selected_parts': selected_parts})
         else:
             part = Part.objects.get(pk=product_id)
             category = part.category
@@ -73,7 +73,7 @@ def view_product(request, product_id):
                 compatible_motorcycles = part.compatible_chasis.all()
             else:
                 compatible_motorcycles = None
-            return render(request, 'part_detail.html', {'part': part, 'product': product, 'compatible_motorcycles': compatible_motorcycles})
+            return render(request, 'part_detail2.html', {'part': part, 'product': product, 'compatible_motorcycles': compatible_motorcycles})
     else:
         return redirect('/')
 
@@ -330,6 +330,14 @@ def edit_motorcycle(request, motorcycle_id):
             return redirect('products')
         moto = Motorcycle.objects.get(pk=motorcycle_id)
         carroceria_id = [i.id for i in moto.compatible_carroceria.all()]
+        motores_id = [i.id for i in moto.compatible_motor.all()]
+        transmisiones_id = [i.id for i in moto.compatible_transmision.all()]
+        suspensiones_id = [i.id for i in moto.compatible_suspension.all()]
+        ruedas_id = [i.id for i in moto.compatible_ruedas.all()]
+        frenos_id = [i.id for i in moto.compatible_frenos.all()]
+        combustibles_id = [i.id for i in moto.compatible_combustible.all()]
+        chasis_id = [i.id for i in moto.compatible_chasis.all()]
+        manillares_id = [i.id for i in moto.compatible_manillar.all()]
         carrocerias = Part.objects.filter(category='Carrocería')
         motores = Part.objects.filter(category='Motor')
         transmisiones = Part.objects.filter(category='Transmisión')
@@ -340,6 +348,6 @@ def edit_motorcycle(request, motorcycle_id):
         combustibles = Part.objects.filter(category='Sistema de combustible')
         chasis = Part.objects.filter(category='Chasis')
         manufacturers = Manufacturer.objects.all()
-        return render(request, 'edit_motorcycle.html', {'motorcycle':moto,'manufacturers': manufacturers, 'carrocerias': carrocerias, 'motores': motores, 'transmisiones': transmisiones, 'suspensiones': suspensiones, 'ruedas': ruedas, 'frenos': frenos, 'manillares': manillares, 'combustibles': combustibles, 'chasis': chasis})
+        return render(request, 'edit_motorcycle.html', {'motorcycle':moto,'manufacturers': manufacturers, 'carrocerias': carrocerias, 'motores': motores, 'transmisiones': transmisiones, 'suspensiones': suspensiones, 'ruedas': ruedas, 'frenos': frenos, 'manillares': manillares, 'combustibles': combustibles, 'chasis': chasis,'carroceria_id':carroceria_id,'motores_id':motores_id,'transmisiones_id':transmisiones_id,'suspensiones_id':suspensiones_id,'ruedas_id':ruedas_id,'frenos_id':frenos_id,'combustibles_id':combustibles_id,'chasis_id':chasis_id,'manillares_id':manillares_id})
     else:
         return redirect('/')

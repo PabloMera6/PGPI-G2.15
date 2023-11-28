@@ -1,7 +1,13 @@
-from django.shortcuts import render, get_object_or_404
+from django.db import IntegrityError
+from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.views import View
+from rest_framework.response import Response
+from rest_framework import status
 from motorcycle.models import Motorcycle
 from product.models import Product
+from opinion.models import Opinion
+from rest_framework.views import APIView
 
 def view_motorcycles(request):
     motorcycles_list = Motorcycle.objects.all()
@@ -19,32 +25,71 @@ def view_motorcycles(request):
 
     return render(request, 'motorcycles.html', {'motorcycles': motorcycles})
 
-def view_motorcycle_details(request, motorcycle_id):
-    motorcycle = get_object_or_404(Motorcycle, pk=motorcycle_id)
-    product = get_object_or_404(Product, pk=motorcycle_id)
+class MotorcycleDetailView(APIView):
+    template_name = 'motorcycle_detail.html'
+    model = Motorcycle
 
-    compatible_parts = (
-        motorcycle.compatible_carroceria.all() |
-        motorcycle.compatible_motor.all() |
-        motorcycle.compatible_transmision.all() |
-        motorcycle.compatible_suspension.all() |
-        motorcycle.compatible_ruedas.all() |
-        motorcycle.compatible_frenos.all() |
-        motorcycle.compatible_manillar.all() |
-        motorcycle.compatible_combustible.all() |
-        motorcycle.compatible_chasis.all()
-    ).distinct()
+    def get(self, request, *args, **kwargs):
+        motorcycle = get_object_or_404(self.model, pk=kwargs['motorcycle_id'])
+        product = get_object_or_404(Product, pk=motorcycle.id)
 
-    selected_parts = (
-        motorcycle.selected_carrocería,
-        motorcycle.selected_motor,
-        motorcycle.selected_transmision,
-        motorcycle.selected_suspension,
-        motorcycle.selected_ruedas,
-        motorcycle.selected_frenos,
-        motorcycle.selected_manillar,
-        motorcycle.selected_combustible,
-        motorcycle.selected_chasis
-    )
+        not_reviewed = len(Opinion.objects.filter(author=request.user if request.user.is_authenticated else None, product=product)) == 0
+        opinions = Opinion.objects.filter(product=product)
 
-    return render(request, 'motorcycle_detail.html', {'motorcycle': motorcycle, 'product': product, 'compatible_parts': compatible_parts,'selected_parts': selected_parts})
+        compatible_parts = (
+            motorcycle.compatible_carroceria.all() |
+            motorcycle.compatible_motor.all() |
+            motorcycle.compatible_transmision.all() |
+            motorcycle.compatible_suspension.all() |
+            motorcycle.compatible_ruedas.all() |
+            motorcycle.compatible_frenos.all() |
+            motorcycle.compatible_manillar.all() |
+            motorcycle.compatible_combustible.all() |
+            motorcycle.compatible_chasis.all()
+        ).distinct()
+
+        selected_parts = (
+            motorcycle.selected_carrocería,
+            motorcycle.selected_motor,
+            motorcycle.selected_transmision,
+            motorcycle.selected_suspension,
+            motorcycle.selected_ruedas,
+            motorcycle.selected_frenos,
+            motorcycle.selected_manillar,
+            motorcycle.selected_combustible,
+            motorcycle.selected_chasis
+        )
+
+        context = {
+            'motorcycle': motorcycle,
+            'product': product,
+            'compatible_parts': compatible_parts,
+            'selected_parts': selected_parts,
+            'not_reviewed': not_reviewed,
+            'opinions': opinions
+        }
+
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        motorcycle = get_object_or_404(self.model, pk=kwargs['motorcycle_id'])
+        product = get_object_or_404(Product, pk=motorcycle.id)
+
+        not_reviewed = len(Opinion.objects.filter(author=request.user if request.user.is_authenticated else None, product=product)) == 0
+
+        if request.user.is_authenticated and not_reviewed:
+            score = int(request.POST.get('score'))
+            description = request.POST.get('description')
+            product_id =  int(request.POST.get('product_id'))
+            author = request.user
+
+            if not score or not description:
+                return Response({'error': 'Puntuación y descripción son obligatorios.'}, status=status.HTTP_400_BAD_REQUEST)
+            
+            try:
+                opinion = Opinion(score=score, description=description, author=author, product_id=product_id)
+                opinion.save()
+            except IntegrityError:
+                return Response({'error': 'Ha ocurrido un error al crear el usuario.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        return redirect('motorcycle_details', motorcycle_id=kwargs['motorcycle_id'])
