@@ -330,7 +330,6 @@ def view_cart(request):
         product = get_object_or_404(Product, pk=key)
         precio_total += float(product.price) * float(value)
         if product.product_type == 'M':
-            print("EOO")
             moto = get_object_or_404(Motorcycle, pk=key)
             motos[moto] = {
                 'price': round(float(product.price) * float(value), 2),
@@ -348,7 +347,6 @@ def view_cart(request):
                 'price': float(product.price) * float(value),
                 'quantity': value
             }
-    print("EOO")
     return render(request, 'cart.html', {
         'motos': motos,
         'parts': parts,
@@ -379,7 +377,7 @@ def remove_cart(request):
     if request.method == 'POST':
         product_id = request.POST.get('product_id')
         my_cart = Cart(request)
-        my_cart.remove(product_id)
+        my_cart.remove(38)
     return view_cart(request)
 
 def refresh_cart(request):

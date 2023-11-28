@@ -109,14 +109,12 @@ def config(request, motorcycle_id):
             combustible_id=combustible.id,
             chasis_id=chasis.id,
             manufacturer_id=product.manufacturer_id,
-            product_type=product.product_type,
+            product_type='C',
             price = price,
             reference_number=reference_number,
         )
         my_moto.save() 
         my_cart.add(my_moto.id, 1)  
-        print(my_moto)
-        print(my_cart.cart)
         return view_cart(request)
     else:
         compatible_parts = (
