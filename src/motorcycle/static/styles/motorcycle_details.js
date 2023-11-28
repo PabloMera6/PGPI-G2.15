@@ -25,10 +25,10 @@ $(document).ready(function () {
 
         if (selectedRating === 0) {
             alert('Por favor, selecciona una puntuación antes de enviar la opinión.');
-            return false; // Evita enviar el formulario si no se ha seleccionado una puntuación
+            return false;
         }
 
-        return true; // Envía el formulario si se ha seleccionado una puntuación
+        return true;
     }
 
     $(".round-black-btn").click(function () {

@@ -1,7 +1,7 @@
 from django.db import IntegrityError
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.views import View
+from django.db.models import Count, Avg
 from rest_framework.response import Response
 from rest_framework import status
 from motorcycle.models import Motorcycle
@@ -35,6 +35,19 @@ class MotorcycleDetailView(APIView):
 
         not_reviewed = len(Opinion.objects.filter(author=request.user if request.user.is_authenticated else None, product=product)) == 0
         opinions = Opinion.objects.filter(product=product)
+        
+        rating_stats = []
+        media_scores = 0
+        if (opinions.count() > 0):
+            opinion_counts = Opinion.objects.filter(product=product).values('score').annotate(count=Count('score')).order_by('score')
+            total_opinions = Opinion.objects.filter(product=product).count()
+            rating_stats = []
+            for score in range(1, 6):
+                count = next((entry['count'] for entry in opinion_counts if entry['score'] == score), 0)
+                percentage = (count / total_opinions) * 100 if total_opinions > 0 else 0
+                rating_stats.append((score, count, percentage))
+
+            media_scores = round(opinions.aggregate(avg_score=Avg('score'))['avg_score'], 1)
 
         compatible_parts = (
             motorcycle.compatible_carroceria.all() |
@@ -66,7 +79,9 @@ class MotorcycleDetailView(APIView):
             'compatible_parts': compatible_parts,
             'selected_parts': selected_parts,
             'not_reviewed': not_reviewed,
-            'opinions': opinions
+            'opinions': opinions,
+            'rating_stats': rating_stats,
+            'media_scores': media_scores
         }
 
         return render(request, self.template_name, context)
@@ -90,6 +105,6 @@ class MotorcycleDetailView(APIView):
                 opinion = Opinion(score=score, description=description, author=author, product_id=product_id)
                 opinion.save()
             except IntegrityError:
-                return Response({'error': 'Ha ocurrido un error al crear el usuario.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                return Response({'error': 'Ha ocurrido un error al crear la opinión.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         return redirect('motorcycle_details', motorcycle_id=kwargs['motorcycle_id'])
