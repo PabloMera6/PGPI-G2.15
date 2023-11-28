@@ -97,7 +97,7 @@
                     <label for="motorc">Motores compatibles:</label>
                     {% for part in motores %}
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="motorc" id="part_{{ part.id }}" value="{{ part.id }}" {% if part.id in motorcycle.compatible_motor %}checked{% endif %} multiple>
+                            <input class="form-check-input" type="checkbox" name="motorc" id="part_{{ part.id }}" value="{{ part.id }}" {% if part.id in motores_id %}checked{% endif %} multiple>
                             <label class="form-check-label" for="part_{{ part.id }}">
                                 <img src="{{ part.photo }}" alt="{{ part.name }}" width="100">
                                 {{ part.name }}
@@ -122,7 +122,7 @@
                     <label for="transmisionc">Transmisiones compatibles:</label>
                     {% for part in transmisiones %}
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="transmisionc" id="part_{{ part.id }}" value="{{ part.id }}"{% if part.id in motorcycle.compatible_transmision %}checked{% endif %} multiple>
+                            <input class="form-check-input" type="checkbox" name="transmisionc" id="part_{{ part.id }}" value="{{ part.id }}"{% if part.id in transmisiones_id %}checked{% endif %} multiple>
                             <label class="form-check-label" for="part_{{ part.id }}">
                                 <img src="{{ part.photo }}" alt="{{ part.name }}" width="100">
                                 {{ part.name }}
@@ -147,7 +147,7 @@
                     <label for="suspensionc">Suspensiones compatibles:</label>
                     {% for part in suspensiones %}
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="suspensionc" id="part_{{ part.id }}" value="{{ part.id }}" {% if part.id in motorcycle.compatible_suspension %}checked{% endif %} multiple>
+                            <input class="form-check-input" type="checkbox" name="suspensionc" id="part_{{ part.id }}" value="{{ part.id }}" {% if part.id in suspensiones_id %}checked{% endif %} multiple>
                             <label class="form-check-label" for="part_{{ part.id }}">
                                 <img src="{{ part.photo }}" alt="{{ part.name }}" width="100">
                                 {{ part.name }}
@@ -172,7 +172,7 @@
                     <label for="ruedac">Ruedas compatibles:</label>
                     {% for part in ruedas %}
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="ruedac" id="part_{{ part.id }}" value="{{ part.id }}"{% if part.id in motorcycle.compatible_ruedas %}checked{% endif %}  multiple>
+                            <input class="form-check-input" type="checkbox" name="ruedac" id="part_{{ part.id }}" value="{{ part.id }}"{% if part.id in ruedas_id %}checked{% endif %}  multiple>
                             <label class="form-check-label" for="part_{{ part.id }}">
                                 <img src="{{ part.photo }}" alt="{{ part.name }}" width="100">
                                 {{ part.name }}
@@ -197,7 +197,7 @@
                     <label for="frenoc">Frenos compatibles:</label>
                     {% for part in frenos %}
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="frenoc" id="part_{{ part.id }}" value="{{ part.id }}"{% if part.id in motorcycle.compatible_frenos %}checked{% endif %} multiple>
+                            <input class="form-check-input" type="checkbox" name="frenoc" id="part_{{ part.id }}" value="{{ part.id }}"{% if part.id in frenos_id %}checked{% endif %} multiple>
                             <label class="form-check-label" for="part_{{ part.id }}">
                                 <img src="{{ part.photo }}" alt="{{ part.name }}" width="100">
                                 {{ part.name }}
@@ -221,7 +221,7 @@
                     <label for="manillarc">Manillares compatibles:</label>
                     {% for part in manillares %}
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="manillarc" id="part_{{ part.id }}" value="{{ part.id }}"{% if part.id in motorcycle.compatible_manillar %}checked{% endif %} multiple>
+                            <input class="form-check-input" type="checkbox" name="manillarc" id="part_{{ part.id }}" value="{{ part.id }}"{% if part.id in manillares_id %}checked{% endif %} multiple>
                             <label class="form-check-label" for="part_{{ part.id }}">
                                 <img src="{{ part.photo }}" alt="{{ part.name }}" width="100">
                                 {{ part.name }}
@@ -245,7 +245,7 @@
                     <label for="combustiblec">Combustibles compatibles:</label>
                     {% for part in combustibles %}
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="combustiblec" id="part_{{ part.id }}" value="{{ part.id }}" {% if part.id in motorcycle.compatible_combustible %}checked{% endif %} multiple>
+                            <input class="form-check-input" type="checkbox" name="combustiblec" id="part_{{ part.id }}" value="{{ part.id }}" {% if part.id in combustibles_id %}checked{% endif %} multiple>
                             <label class="form-check-label" for="part_{{ part.id }}">
                                 <img src="{{ part.photo }}" alt="{{ part.name }}" width="100">
                                 {{ part.name }}
@@ -270,7 +270,7 @@
                     <label for="chasisc">Chasis compatibles:</label>
                     {% for part in chasis %}
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="chasisc" id="part_{{ part.id }}" value="{{ part.id }}" {% if part.id in motorcycle.compatible_chasis %}checked{% endif %} multiple>
+                            <input class="form-check-input" type="checkbox" name="chasisc" id="part_{{ part.id }}" value="{{ part.id }}" {% if part.id in chasis_id %}checked{% endif %} multiple>
                             <label class="form-check-label" for="part_{{ part.id }}">
                                 <img src="{{ part.photo }}" alt="{{ part.name }}" width="100">
                                 {{ part.name }}
