@@ -1,18 +1,23 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-md-6">
-        <h2 class="text-center">Crear Reclamación</h2>
-        <form method="post" action="{% url 'create_claim' %}">
-          {% csrf_token %}
-          <div class="form-group">
-            <textarea class="form-control" name="description" placeholder="Describa su problema" required></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary btn-block">Publicar</button>
-        </form>
+<div class="container mt-5">
+  <div class="card">
+      <div class="card-body">
+          <form method="post" action="{% url 'create_claim' %}">
+              {% csrf_token %}
+              <div class="form-group">
+                  <label for="title">Título:</label>
+                  <input type="text" class="form-control" id="title" name="title" placeholder="Ingrese el título" required>
+              </div>
+              <div class="form-group">
+                  <label for="description">Descripción:</label>
+                  <textarea class="form-control" id="description" name="description" placeholder="Describa su problema" required></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary btn-block">Publicar</button>
+          </form>
       </div>
-    </div>
   </div>
+</div>
+
 {% endblock %}

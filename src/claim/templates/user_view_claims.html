@@ -13,19 +13,18 @@
         <thead>
           <tr>
             <th>Fecha</th>
-            <th>Descripción</th>
-            <th>Respuesta</th>
-            <th>Acción</th>
+            <th>Título</th>
           </tr>
         </thead>
         <tbody>
           {% for claim in claims %}
             <tr>
               <td>{{ claim.date }}</td>
-              <td>{{ claim.description }}</td>
-              <td>{{ claim.response }}</td>
+              <td>{{ claim.title }}</td>
               <td>
-                <a href="{% url 'user_view_claim' claim.id %}" class="btn btn-info">Ver Detalles</a>
+                {% if claim.response %}
+                  <a href="{% url 'user_view_claim' claim.id %}" class="btn btn-info">Ver Respuesta</a>
+                {% endif %}
               </td>
             </tr>
           {% endfor %}
