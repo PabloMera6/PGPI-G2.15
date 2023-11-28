@@ -80,3 +80,40 @@ class Motorcycle(Product):
 
     def __str__(self):
         return self.name
+
+class DerivedMotorcycle(Product):
+    base_motorcycle = models.ForeignKey(Motorcycle, on_delete=models.CASCADE, related_name='base_motorcycle', default=0)
+    
+    carroceria = models.ForeignKey(Part, on_delete=models.CASCADE, related_name='carroceria', default= 0)
+    motor = models.ForeignKey(Part, on_delete=models.CASCADE, related_name='selemotor', default= 0)
+    transmision = models.ForeignKey(Part, on_delete=models.CASCADE, related_name='transmision', default= 0)
+    suspension = models.ForeignKey(Part, on_delete=models.CASCADE, related_name='suspension', default= 0)
+    ruedas = models.ForeignKey(Part, on_delete=models.CASCADE, related_name='ruedas', default= 0)
+    frenos = models.ForeignKey(Part, on_delete=models.CASCADE, related_name='frenos', default=0)
+    manillar = models.ForeignKey(Part, on_delete=models.CASCADE, related_name='manillar', default= 0)
+    combustible = models.ForeignKey(Part, on_delete=models.CASCADE, related_name='combustible', default= 0)
+    chasis = models.ForeignKey(Part, on_delete=models.CASCADE, related_name='chasis', default= 0)
+
+    def calculate_price(self):
+        price = self.motorcycle.price
+        price += self.carrocería.price
+        price += self.motor.price
+        price += self.transmision.price
+        price += self.suspension.price
+        price += self.ruedas.price
+        price += self.frenos.price
+        price += self.manillar.price
+        price += self.combustible.price
+        price += self.chasis.price
+        price -= self.motorcycle.selected_carrocería.price
+        price -= self.motorcycle.selected_motor.price
+        price -= self.motorcycle.selected_transmision.price
+        price -= self.motorcycle.selected_suspension.price
+        price -= self.motorcycle.selected_ruedas.price
+        price -= self.motorcycle.selected_frenos.price
+        price -= self.motorcycle.selected_manillar.price
+        price -= self.motorcycle.selected_combustible.price
+        price -= self.motorcycle.selected_chasis.price
+
+    def __str__(self):
+        return self.selected_motorcycle.name
