@@ -62,7 +62,11 @@
                                 <i class="glyphicon glyphicon-star-empty"></i>
                                 <i class="glyphicon glyphicon-star-empty"></i>
                             {% endif %}
-                            <span>({{ media_scores }}) {{ opinions|length }} Opiniones</span>
+                            {% if opinions|length == 1 %}
+                                <span>({{ media_scores }}) {{ opinions|length }} Opinión</span>
+                            {% else %}
+                                <span>({{ media_scores }}) {{ opinions|length }} Opiniones</span>
+                            {% endif %}
                         </div>
                         <div class="product-price"><span>{{ product.price }}€</span></div>
                     </div>

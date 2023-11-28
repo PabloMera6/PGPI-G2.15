@@ -105,6 +105,6 @@ class MotorcycleDetailView(APIView):
                 opinion = Opinion(score=score, description=description, author=author, product_id=product_id)
                 opinion.save()
             except IntegrityError:
-                return Response({'error': 'Ha ocurrido un error al crear el usuario.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                return Response({'error': 'Ha ocurrido un error al crear la opinión.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         return redirect('motorcycle_details', motorcycle_id=kwargs['motorcycle_id'])
