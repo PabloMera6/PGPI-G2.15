@@ -3,8 +3,9 @@
 {% block extrahead %}
 {% load static %}
 <link rel="stylesheet" href="{% static 'styles/motorcycle_details.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-<script src="{% static 'styles/motorcycle_details.js' %}"></script>
+<script src="{% static 'styles/motorcycle_details.js' %}" defer></script>
 {% endblock %}
 
 {% block content %}
@@ -119,9 +120,33 @@
                 </div>
                 <div class="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
                     <div class="review-heading">OPINIONES</div>
-                    <p class="mb-20">No hay opiniones disponibles.</p>
+				  		<p class="mb-20">No hay opiniones disponibles.</p>
+                        {% if not_reviewed and request.user.is_authenticated %}
+                            <form class="review-form" method="post">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label>Tu puntuación</label>
+                                    <div class="reviews-counter">
+                                        <div class="stars" data-rating="0">
+                                            <i class="fa-solid fa-star" data-value="1"></i>
+                                            <i class="fa-solid fa-star" data-value="2"></i>
+                                            <i class="fa-solid fa-star" data-value="3"></i>
+                                            <i class="fa-solid fa-star" data-value="4"></i>
+                                            <i class="fa-solid fa-star" data-value="5"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="score" id="selectedRating" value="0">
+                                <input type="hidden" name="product_id" value="{{ motorcycle.id }}">
+                                <div class="form-group">
+                                    <label for="description">Descripción</label>
+                                    <textarea class="form-control" rows="10" type="description" id="desccription" name="description" required></textarea>
+                                </div>
+                                <button class="round-black-btn" type="submit">AÑADIR OPINIÓN</button>
+                            </form>
+                        {% endif %}
                 </div>
-                <div class="tab-pane fade active in" id="parts" role="tabpanel" aria-labelledby="description-tab">
+                <div class="tab-pane fade" id="parts" role="tabpanel" aria-labelledby="description-tab">
                     <div class="items">
                         {% for part in selected_parts %}
                             {% if forloop.counter0|divisibleby:3 %}
