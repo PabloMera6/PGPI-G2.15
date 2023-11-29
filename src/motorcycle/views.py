@@ -113,7 +113,10 @@ def config(request, motorcycle_id):
             price = price,
             reference_number=reference_number,
         )
+        name = "Moto "+my_moto.base_motorcycle.name+" modificada"
+        my_moto.name = name
         my_moto.save() 
+        my_moto.calculate_deriver_motorcycle_stock()
         my_cart.add(my_moto.id, 1)  
         return view_cart(request)
     else:
