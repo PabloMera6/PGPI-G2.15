@@ -48,6 +48,16 @@ function validateQuantity(input) {
     }
 }
 
+
+$(function(){
+	$('div.product-chooser').not('.disabled').find('div.product-chooser-item').on('click', function(){
+		$(this).parent().parent().find('div.product-chooser-item').removeClass('selected');
+		$(this).addClass('selected');
+		$(this).find('input[type="radio"]').prop("checked", true);
+		
+	});
+});
+
 const starsContainer = document.querySelector('.stars');
 const stars = starsContainer.querySelectorAll('i');
 const ratingInput = document.getElementById('selectedRating');
@@ -67,3 +77,4 @@ function updateStars(value) {
         star.classList.toggle("active", starValue <= value);
     });
 }
+

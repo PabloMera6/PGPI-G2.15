@@ -1,0 +1,390 @@
+{% extends 'base.html' %}
+
+{% block extrahead %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'styles/motorcycle_details.css' %}">
+<script src="{% static 'styles/motorcycle_details.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="pd-wrap">
+    <div class="container">
+        <div class="heading-section">
+            <h2 class="section-title">Configurar {{ motorcycle.name }}</h2>
+        </div>
+        <div class="row">
+            <div class="col-md-5">
+                <div class="item" style="border: 2px solid black;">
+                    <img class="product-image mx-auto" src="{{ motorcycle.photo }}" />
+                </div>
+            </div>
+        </div>
+        <div class="product-info-tabs"> 
+            <form action="{% url 'motorcycles_config' motorcycle.id %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="product_id" style="position: absolute;"  value="{{ moto.id }}">
+                <ul class="nav nav-tabs" id="myTab" role="tablist" style="justify-content: space-between; display: flex;">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="carroceria-tab" data-toggle="tab" href="#carroceria" role="tab" aria-controls="carroceria" aria-selected="true">Carroceria</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="motor-tab" data-toggle="tab" href="#motor" role="tab" aria-controls="motor" aria-selected="false">Motor</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="transmision-tab" data-toggle="tab" href="#transmision" role="tab" aria-controls="transmision" aria-selected="false">Transmision</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="suspension-tab" data-toggle="tab" href="#suspension" role="tab" aria-controls="suspension" aria-selected="false">Suspension</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="ruedas-tab" data-toggle="tab" href="#ruedas" role="tab" aria-controls="ruedas" aria-selected="false">Ruedas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="frenos-tab" data-toggle="tab" href="#frenos" role="tab" aria-controls="frenos" aria-selected="false">Frenos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="manillar-tab" data-toggle="tab" href="#manillar" role="tab" 
+                            aria-controls="manillar" aria-selected="false">Manillar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="combustible-tab" data-toggle="tab" href="#combustible" role="tab" aria-controls="combustible" aria-selected="false">Combustible</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="chasis-tab" data-toggle="tab" href="#chasis" role="tab" aria-controls="chasis" aria-selected="false">Chasis</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade active in" id="carroceria" role="tabpanel" aria-labelledby="carroceria-tab">
+                        <div class="items">
+                            {% for part in motorcycle.compatible_carroceria.all %}
+                                <div class="col-sm-4">
+                                    <div class="col-item">
+                                        <div class="photo">
+                                            <img src='{{ part.photo }}' class="img-responsive" alt="a" />
+                                        </div>
+                                        <div class="info">
+                                            <div class="row">
+                                                <div class="price col-md-6">
+                                                    <h5>{{ part.name }}</h5>
+                                                    {% if part.stock_quantity == 0 %}
+                                                        <h5 class="part-no-stock">¡AGOTADO!</h5>
+                                                    {% endif %}
+                                                    <h5>{{ part.price }} €</h5>
+                                                    <h5>Stock:{{ part.stock_quantity }} </h5>
+                                                </div>
+                                            </div>
+                                            <div class="separator clear-left">
+                                                <p class="btn-details">
+                                                    {% if part.id == motorcycle.selected_carrocería.id %}
+                                                        <input type="radio" name="carroceria" value="{{ part.id }}" checked>
+                                                    {% else %}
+                                                        <input type="radio" name="carroceria" value="{{ part.id }}">
+                                                    {% endif %}
+                                                </p>
+                                            </div>
+                                            <div class="clearfix">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="tab-pane fade active in" id="motor" role="tabpanel" aria-labelledby="motor-tab">
+                        <div class="items">
+                            {% for part in motorcycle.compatible_motor.all %}
+                                <div class="col-sm-4">
+                                    <div class="col-item">
+                                        <div class="photo">
+                                            <img src='{{ part.photo }}' class="img-responsive" alt="a" />
+                                        </div>
+                                        <div class="info">
+                                            <div class="row">
+                                                <div class="price col-md-6">
+                                                    <h5>{{ part.name }}</h5>
+                                                    {% if part.stock_quantity == 0 %}
+                                                        <h5 class="part-no-stock">¡AGOTADO!</h5>
+                                                    {% endif %}
+                                                    <h5>{{ part.price }} €</h5>
+                                                    <h5>Stock:{{ part.stock_quantity }} </h5>
+                                                </div>
+                                            </div>
+                                            <div class="separator clear-left">
+                                                <p class="btn-details">
+                                                    {% if part.id == motorcycle.selected_motor.id %}
+                                                        <input type="radio" name="motor" value="{{ part.id }}" checked>
+                                                    {% else %}
+                                                        <input type="radio" name="motor" value="{{ part.id }}">
+                                                    {% endif %}
+                                                </p>
+                                            </div>
+                                            <div class="clearfix">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="tab-pane fade active in" id="transmision" role="tabpanel" aria-labelledby="transmision-tab">
+                        <div class="items">
+                            {% for part in motorcycle.compatible_transmision.all %}
+                                <div class="col-sm-4">
+                                    <div class="col-item">
+                                        <div class="photo">
+                                            <img src='{{ part.photo }}' class="img-responsive" alt="a" />
+                                        </div>
+                                        <div class="info">
+                                            <div class="row">
+                                                <div class="price col-md-6">
+                                                    <h5>{{ part.name }}</h5>
+                                                    {% if part.stock_quantity == 0 %}
+                                                        <h5 class="part-no-stock">¡AGOTADO!</h5>
+                                                    {% endif %}
+                                                    <h5>{{ part.price }} €</h5>
+                                                    <h5>Stock{{ part.stock_quantity }} </h5>
+                                                </div>
+                                            </div>
+                                            <div class="separator clear-left">
+                                                <p class="btn-details">
+                                                    {% if part.id == motorcycle.selected_transmision.id %}
+                                                        <input type="radio" name="transmision" value="{{ part.id }}" checked>
+                                                    {% else %}
+                                                        <input type="radio" name="transmision" value="{{ part.id }}">
+                                                    {% endif %}
+                                                </p>
+                                            </div>
+                                            <div class="clearfix">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="tab-pane fade active in" id="suspension" role="tabpanel" aria-labelledby="suspension-tab">
+                        <div class="items">
+                            {% for part in motorcycle.compatible_suspension.all %}
+                                <div class="col-sm-4">
+                                    <div class="col-item">
+                                        <div class="photo">
+                                            <img src='{{ part.photo }}' class="img-responsive" alt="a" />
+                                        </div>
+                                        <div class="info">
+                                            <div class="row">
+                                                <div class="price col-md-6">
+                                                    <h5>{{ part.name }}</h5>
+                                                    {% if part.stock_quantity == 0 %}
+                                                        <h5 class="part-no-stock">¡AGOTADO!</h5>
+                                                    {% endif %}
+                                                    <h5>{{ part.price }} €</h5>
+                                                    <h5>Stock:{{ part.stock_quantity }} </h5>
+                                                </div>
+                                            </div>
+                                            <div class="separator clear-left">
+                                                <p class="btn-details">
+                                                    {% if part.id == motorcycle.selected_suspension.id %}
+                                                        <input type="radio" name="suspension" value="{{ part.id }}" checked>
+                                                    {% else %}
+                                                        <input type="radio" name="suspension" value="{{ part.id }}">
+                                                    {% endif %}
+                                                </p>
+                                            </div>
+                                            <div class="clearfix">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="tab-pane fade active in" id="ruedas" role="tabpanel" aria-labelledby="ruedas-tab">
+                        <div class="items">
+                            {% for part in motorcycle.compatible_ruedas.all %}
+                                <div class="col-sm-4">
+                                    <div class="col-item">
+                                        <div class="photo">
+                                            <img src='{{ part.photo }}' class="img-responsive" alt="a" />
+                                        </div>
+                                        <div class="info">
+                                            <div class="row">
+                                                <div class="price col-md-6">
+                                                    <h5>{{ part.name }}</h5>
+                                                    {% if part.stock_quantity == 0 %}
+                                                        <h5 class="part-no-stock">¡AGOTADO!</h5>
+                                                    {% endif %}
+                                                    <h5>{{ part.price }} €</h5>
+                                                    <h5>Stock:{{ part.stock_quantity }} </h5>
+                                                </div>
+                                            </div>
+                                            <div class="separator clear-left">
+                                                <p class="btn-details">
+                                                    {% if part.id == motorcycle.selected_ruedas.id %}
+                                                        <input type="radio" name="ruedas" value="{{ part.id }}" checked>
+                                                    {% else %}
+                                                        <input type="radio" name="ruedas" value="{{ part.id }}">
+                                                    {% endif %}
+                                                </p>
+                                            </div>
+                                            <div class="clearfix">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="tab-pane fade active in" id="frenos" role="tabpanel" aria-labelledby="frenos-tab">
+                        <div class="items">
+                            {% for part in motorcycle.compatible_frenos.all %}
+                                <div class="col-sm-4">
+                                    <div class="col-item">
+                                        <div class="photo">
+                                            <img src='{{ part.photo }}' class="img-responsive" alt="a" />
+                                        </div>
+                                        <div class="info">
+                                            <div class="row">
+                                                <div class="price col-md-6">
+                                                    <h5>{{ part.name }}</h5>
+                                                    {% if part.stock_quantity == 0 %}
+                                                        <h5 class="part-no-stock">¡AGOTADO!</h5>
+                                                    {% endif %}
+                                                    <h5>{{ part.price }} €</h5>
+                                                    <h5>Stock:{{ part.stock_quantity }} </h5>
+                                                </div>
+                                            </div>
+                                            <div class="separator clear-left">
+                                                <p class="btn-details">
+                                                    {% if part.id == motorcycle.selected_frenos.id %}
+                                                        <input type="radio" name="frenos" value="{{ part.id }}" checked>
+                                                    {% else %}
+                                                        <input type="radio" name="frenos" value="{{ part.id }}">
+                                                    {% endif %}
+                                                </p>
+                                            </div>
+                                            <div class="clearfix">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="tab-pane fade active in" id="manillar" role="tabpanel" aria-labelledby="manillar-tab">
+                        <div class="items">
+                            {% for part in motorcycle.compatible_manillar.all %}
+                                <div class="col-sm-4">
+                                    <div class="col-item">
+                                        <div class="photo">
+                                            <img src='{{ part.photo }}' class="img-responsive" alt="a" />
+                                        </div>
+                                        <div class="info">
+                                            <div class="row">
+                                                <div class="price col-md-6">
+                                                    <h5>{{ part.name }}</h5>
+                                                    {% if part.stock_quantity == 0 %}
+                                                        <h5 class="part-no-stock">¡AGOTADO!</h5>
+                                                    {% endif %}
+                                                    <h5>{{ part.price }} €</h5>
+                                                    <h5>Stock:{{ part.stock_quantity }} </h5>
+                                                </div>
+                                            </div>
+                                            <div class="separator clear-left">
+                                                <p class="btn-details">
+                                                    {% if part.id == motorcycle.selected_manillar.id %}
+                                                        <input type="radio" name="manillar" value="{{ part.id }}" checked>
+                                                    {% else %}
+                                                        <input type="radio" name="manillar" value="{{ part.id }}">
+                                                    {% endif %}
+                                                </p>
+                                            </div>
+                                            <div class="clearfix">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="tab-pane fade active in" id="combustible" role="tabpanel" aria-labelledby="combustible-tab">
+                        <div class="items">
+                            {% for part in motorcycle.compatible_combustible.all %}
+                                <div class="col-sm-4">
+                                    <div class="col-item">
+                                        <div class="photo">
+                                            <img src='{{ part.photo }}' class="img-responsive" alt="a" />
+                                        </div>
+                                        <div class="info">
+                                            <div class="row">
+                                                <div class="price col-md-6">
+                                                    <h5>{{ part.name }}</h5>
+                                                    {% if part.stock_quantity == 0 %}
+                                                        <h5 class="part-no-stock">¡AGOTADO!</h5>
+                                                    {% endif %}
+                                                    <h5>{{ part.price }} €</h5>
+                                                    <h5>Stock:{{ part.stock_quantity }} </h5>
+                                                </div>
+                                            </div>
+                                            <div class="separator clear-left">
+                                                <p class="btn-details">
+                                                    {% if part.id == motorcycle.selected_combustible.id %}
+                                                        <input type="radio" name="combustible" value="{{ part.id }}" checked>
+                                                    {% else %}
+                                                        <input type="radio" name="combustible" value="{{ part.id }}">
+                                                    {% endif %}
+                                                </p>
+                                            </div>
+                                            <div class="clearfix">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="tab-pane fade active in" id="chasis" role="tabpanel" aria-labelledby="chasis-tab">
+                        <div class="items">
+                            {% for part in motorcycle.compatible_chasis.all %}
+                                <div class="col-sm-4">
+                                    <div class="col-item">
+                                        <div class="photo">
+                                            <img src='{{ part.photo }}' class="img-responsive" alt="a" />
+                                        </div>
+                                        <div class="info">
+                                            <div class="row">
+                                                <div class="price col-md-6">
+                                                    <h5>{{ part.name }}</h5>
+                                                    {% if part.stock_quantity == 0 %}
+                                                        <h5 class="part-no-stock">¡AGOTADO!</h5>
+                                                    {% endif %}
+                                                    <h5>{{ part.price }} €</h5>
+                                                    <h5>Stock{{ part.stock_quantity }} </h5>
+                                                </div>
+                                            </div>
+                                            <div class="separator clear-left">
+                                                <p class="btn-details">
+                                                    {% if part.id == motorcycle.selected_chasis.id %}
+                                                        <input type="radio" name="chasis" value="{{ part.id }}" checked>
+                                                    {% else %}
+                                                        <input type="radio" name="chasis" value="{{ part.id }}">
+                                                    {% endif %}
+                                                </p>
+                                            </div>
+                                            <div class="clearfix">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-info btn-sm">Finalizar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

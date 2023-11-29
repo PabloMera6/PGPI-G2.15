@@ -7,6 +7,11 @@ from order.views import check_order_status
 
 urlpatterns = [
     path('motorcycles/', views.view_motorcycles, name='motorcycles'),
+
+    path('motorcycles/config/<int:motorcycle_id>/', views.config, name='motorcycles_config'),
+    path('motorcycles/<int:motorcycle_id>/', views.view_motorcycle_details, name='motorcycle_details'),
+
     path('motorcycles/<int:motorcycle_id>/', MotorcycleDetailView.as_view(), name='motorcycle_details'),
+
     path('check_order_status/', check_order_status, name='check_order_status'),
 ]
