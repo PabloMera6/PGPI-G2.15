@@ -14,3 +14,8 @@ class SearchForm(forms.Form):
         required=False,
         widget=forms.NumberInput(attrs={'class': 'form-control'})
     )
+    score = forms.IntegerField(
+        label='Puntuación',
+        required=False,
+        widget=forms.NumberInput(attrs={'class': 'form-control'})
+    )
