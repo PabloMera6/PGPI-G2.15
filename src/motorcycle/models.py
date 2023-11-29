@@ -80,3 +80,60 @@ class Motorcycle(Product):
 
     def __str__(self):
         return self.name
+
+class DerivedMotorcycle(Product):
+    base_motorcycle = models.ForeignKey(Motorcycle, on_delete=models.CASCADE, related_name='base_motorcycle', default=0)
+    
+    carroceria = models.ForeignKey(Part, on_delete=models.CASCADE, related_name='carroceria', default= 0)
+    motor = models.ForeignKey(Part, on_delete=models.CASCADE, related_name='selemotor', default= 0)
+    transmision = models.ForeignKey(Part, on_delete=models.CASCADE, related_name='transmision', default= 0)
+    suspension = models.ForeignKey(Part, on_delete=models.CASCADE, related_name='suspension', default= 0)
+    ruedas = models.ForeignKey(Part, on_delete=models.CASCADE, related_name='ruedas', default= 0)
+    frenos = models.ForeignKey(Part, on_delete=models.CASCADE, related_name='frenos', default=0)
+    manillar = models.ForeignKey(Part, on_delete=models.CASCADE, related_name='manillar', default= 0)
+    combustible = models.ForeignKey(Part, on_delete=models.CASCADE, related_name='combustible', default= 0)
+    chasis = models.ForeignKey(Part, on_delete=models.CASCADE, related_name='chasis', default= 0)
+
+    stock_quantity = models.PositiveIntegerField(default=0)
+    name = models.CharField(max_length=50,default="Moto modificada")
+
+    def calculate_deriver_motorcycle_stock(self):
+        res =  min(self.base_motorcycle.stock_quantity,self.carroceria.stock_quantity, self.motor.stock_quantity, self.transmision.stock_quantity, self.suspension.stock_quantity, self.ruedas.stock_quantity, self.frenos.stock_quantity, self.manillar.stock_quantity, self.combustible.stock_quantity, self.chasis.stock_quantity)
+        self.stock_quantity = res
+        self.save()
+    
+    def update_deriver_motorcycle_stock(self,value):
+        carroceria = self.carroceria
+        carroceria.stock_quantity = carroceria.stock_quantity - value
+        carroceria.save()
+        motor = self.motor
+        motor.stock_quantity = motor.stock_quantity - value
+        motor.save()
+        transmision = self.transmision
+        transmision.stock_quantity = transmision.stock_quantity - value
+        transmision.save()
+        suspension = self.suspension
+        suspension.stock_quantity = suspension.stock_quantity - value
+        suspension.save()
+        ruedas = self.ruedas
+        ruedas.stock_quantity = ruedas.stock_quantity - value
+        ruedas.save()
+        frenos = self.frenos
+        frenos.stock_quantity = frenos.stock_quantity - value
+        frenos.save()
+        manillar= self.manillar
+        manillar.stock_quantity = manillar.stock_quantity - value
+        manillar.save()
+        combustible = self.combustible
+        combustible.stock_quantity = combustible.stock_quantity - value
+        combustible.save()
+        chasis = self.chasis
+        chasis.stock_quantity = chasis.stock_quantity - value
+        chasis.save()
+        moto = self.base_motorcycle
+        moto.stock_quantity = moto.stock_quantity - value
+        moto.save()
+
+
+    def __str__(self):
+        return self.base_motorcycle.name + " modificada"

@@ -89,7 +89,56 @@
                         <td data-th="Subtotal" class="text-center">{{ datos.price }}  €</td>
                     </tr>
                 {% endfor %}
-
+                {% for derived_moto, datos in derived_motos.items %}
+                <tr>
+                    <td data-th="Product">
+                        <div class="row">
+                            <div class="img-cart"><img src="{{ derived_moto.base_motorcycle.photo }}" alt="..." 
+                                    class="img-responsive" /></div>
+                            <div class="cart-product col-sm-10">
+                                <a href="{% url 'motorcycle_details' derived_moto.base_motorcycle.id %}" class="hidden-sm">
+                                    <h4 class="nomargin" style="font-weight: bold;">{{ derived_moto.name }}</h4>
+                                </a>
+                                <div>
+                                    <strong style="display: inline;">Configurada a su gusto</strong>
+                                </div>
+                                <div>
+                                    <strong style="display: inline;">Categoria:</strong>
+                                    <p style="display: inline;"> Motocicleta - {{ derived_moto.base_motorcycle.category}}</p>
+                                </div>
+                                {% for manufacturer in manufacturers %}
+                                    {% if manufacturer.id == derived_moto.manufacturer_id %}
+                                        <strong style="display: inline;">Fabricante:</strong>
+                                        <p style="display: inline;"> {{ manufacturer.name}}</p>
+                                    {% endif %}
+                                {% endfor %}
+                                <div>
+                                    <strong style="display: inline;">Stock:</strong>
+                                    <p style="display: inline;"> {{ derived_moto.stock_quantity}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td data-th="Price">{{ derived_moto.price }}  €</td>
+                    <td data-th="Quantity">
+                        {{ datos.quantity }}
+                    </td>
+                    <td data-th="Subtotal" class="text-center">{{ datos.price }} €</td>
+                    <td class="actions" data-th="">
+                        <div class="form">
+                                {% csrf_token %}
+                                <input type="hidden" name="product_id" style="position: absolute;"  value="{{ derived_moto.id }}">
+                                <button type="submit" class="btn btn-info btn-sm"><i class="glyphicon glyphicon-refresh"></i></button>
+                            </form>
+                            <form action="{% url 'cart_remove' %}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="product_id" style="position: absolute;"  value="{{ derived_moto.id }}">
+                                <button class="btn btn-danger btn-sm"><i class="glyphicon glyphicon-trash"></i></button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
             </tbody>
             <tfoot>
                 <tr>

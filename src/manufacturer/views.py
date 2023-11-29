@@ -23,6 +23,5 @@ def view_manufacturers(request):
 def view_manufacturer_details(request, manufacturer_id):
     manufacturer = get_object_or_404(Manufacturer, pk=manufacturer_id)
     related_motorcycles = Motorcycle.objects.filter(name__icontains=manufacturer.name)
-    print(related_motorcycles)
 
     return render(request, 'manufacturer_details.html', {'manufacturer': manufacturer, 'motorcycles': related_motorcycles})

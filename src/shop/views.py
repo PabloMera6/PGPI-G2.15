@@ -1,6 +1,6 @@
 from product.models import Product
 from django.shortcuts import redirect, render
-from motorcycle.models import Motorcycle
+from motorcycle.models import Motorcycle, DerivedMotorcycle
 from manufacturer.models import Manufacturer 
 from part.models import Part
 from django.views.generic import TemplateView
@@ -110,6 +110,7 @@ def checkout(request):
     my_cart = Cart(request).cart
     motos = {}
     parts = {}
+    derived_motos = {}
     manufacturers = Manufacturer.objects.all()
     precio_total = 0.0
     user = request.user if request.user.is_authenticated else None
@@ -129,6 +130,12 @@ def checkout(request):
                 'price': float(product.price) * float(value),
                 'quantity': value
             }
+        if product.product_type == 'C':
+            derived_moto = get_object_or_404(DerivedMotorcycle, pk=key)
+            derived_motos[derived_moto] = {
+                'price': float(product.price) * float(value),
+                'quantity': value
+            }
     if request.method == 'POST':
         for key, value in my_cart.items():
             product = get_object_or_404(Product, pk=key)
@@ -142,6 +149,12 @@ def checkout(request):
                 #moto.calculate_motorcicle_stock()
                 if moto.stock_quantity < value:
                     messages.error(request, f"No hay suficiente stock del producto {moto.name}")
+                    return redirect('/checkout/')
+            elif product.product_type == 'C':
+                derived_moto = get_object_or_404(DerivedMotorcycle, pk=key)
+                derived_moto.calculate_deriver_motorcycle_stock()
+                if derived_moto.stock_quantity < value:
+                    messages.error(request, f"No hay suficiente stock de piezas de la moto que has configurado, cambia los componentes o reduce la cantidad de motos a comprar")
                     return redirect('/checkout/')
         if precio_total <30 and shipment == 'Envío a domicilio':
             precio_total += 5
@@ -203,6 +216,7 @@ def checkout(request):
     return render(request, 'checkout.html', {
         'motos': motos,
         'parts': parts,
+        'derived_motos': derived_motos,
         'manufacturers': manufacturers,
         'precio': round(precio_total, 2)
     })
@@ -235,6 +249,7 @@ def enviar_correo(full_name, precio_total, motos, parts, payment_method, address
 def create_order(price, shipment, payment, buyer_mail, buyer_name, buyer_phone, address, my_cart,city,postal_code,user):
     parts = {}
     motos = {}
+    derived_motos = {}
     order = Order.objects.create(
             price=price,
             shipment=shipment,
@@ -271,6 +286,14 @@ def create_order(price, shipment, payment, buyer_mail, buyer_name, buyer_phone, 
             #moto.calculate_motorcicle_stock()
             #moto.update_motorcicle_stock(value)
             moto.save()
+        if product.product_type == 'C':
+            derived_moto = get_object_or_404(DerivedMotorcycle, pk=key)
+            derived_moto.update_deriver_motorcycle_stock(value)
+            motos[derived_moto] = {
+                'price': float(product.price) * float(value),
+                'quantity': value
+            }
+    
     enviar_correo(buyer_name, price, motos, parts, payment, address, city, postal_code, order.id, buyer_mail)
         
     return order
@@ -300,6 +323,7 @@ def confirmed(request, order_id):
     op = OrderProduct.objects.filter(order=order)
     motos = {}
     parts = {}
+    derived_motos = {}
     for x in op:
         product = x.product
         if product.product_type == 'M':
@@ -314,15 +338,23 @@ def confirmed(request, order_id):
                 'price': float(product.price) * float(x.quantity),
                 'quantity': x.quantity
             }
+        if product.product_type == 'C':
+            derived_moto = get_object_or_404(DerivedMotorcycle, pk=product.id)
+            derived_motos[derived_moto] = {
+                'price': float(product.price) * float(x.quantity),
+                'quantity': x.quantity
+            }
     return render(request, 'order_resume.html',{'motos': motos,
         'parts': parts,
         'order': order,
+        'derived_motos': derived_motos,
         'manufacturers': manufacturers,})
 
 def view_cart(request):
     my_cart = Cart(request).cart
     motos = {}
     parts = {}
+    derived_motos = {}
     manufacturers = Manufacturer.objects.all()
     precio_total = 0.0
     for key, value in my_cart.items():
@@ -340,9 +372,16 @@ def view_cart(request):
                 'price': round(float(product.price) * float(value), 2),
                 'quantity': value
             }
+        if product.product_type == 'C':
+            derived_moto = get_object_or_404(DerivedMotorcycle, pk=key)
+            derived_motos[derived_moto] = {
+                'price': float(product.price) * float(value),
+                'quantity': value
+            }
     return render(request, 'cart.html', {
         'motos': motos,
         'parts': parts,
+        'derived_motos': derived_motos,
         'manufacturers': manufacturers,
         'precio': round(precio_total, 2)
     })
@@ -361,6 +400,10 @@ def add_to_cart(request):
             elif product.product_type == 'M':
                 moto = get_object_or_404(Motorcycle, pk=product_id)
                 messages.error(request,f"No hay suficiente stock del producto: {moto.name}")
+                return redirect('cart')
+            if product.product_type == 'C':
+                derived_moto = get_object_or_404(DerivedMotorcycle, pk=product_id)
+                messages.error(request,f"No hay suficiente stock de piezas de la moto que has configurado, cambia los componentes o reduce la cantidad de motos a comprar")
                 return redirect('cart')
         my_cart.add(product_id, quantity)
     return view_cart(request)
@@ -392,6 +435,10 @@ def refresh_cart(request):
                 moto = get_object_or_404(Motorcycle, pk=product_id)
                 messages.error(request,f"No hay suficiente stock del producto: {moto.name}")
                 return redirect('cart')
+            if product.product_type == 'C':
+                derived_moto = get_object_or_404(DerivedMotorcycle, pk=product_id)
+                messages.error(request,f"No hay suficiente stock de piezas de la moto que has configurado, cambia los componentes o reduce la cantidad de motos a comprar")
+                return redirect('cart')
         my_cart.refresh(product_id, quantity)
     return view_cart(request)
 
@@ -420,6 +467,11 @@ class Cart():
                             moto = get_object_or_404(Motorcycle, pk=product_id)
                             if moto.stock_quantity < value:
                                 return False
+                        if product.product_type == 'C':
+                            derived_moto = get_object_or_404(DerivedMotorcycle, pk=product_id)
+                            derived_moto.calculate_deriver_motorcycle_stock
+                            if derived_moto.stock_quantity < value:
+                                return False
                         break
         else:
             if product.product_type == 'P':
@@ -429,6 +481,12 @@ class Cart():
             elif product.product_type == 'M':
                 moto = get_object_or_404(Motorcycle, pk=product_id)
                 if moto.stock_quantity < quantity:
+                    return False
+            elif product.product_type == 'C':
+                derived_moto = get_object_or_404(DerivedMotorcycle, pk=product_id)
+                derived_moto.calculate_deriver_motorcycle_stock
+                print(derived_moto.stock_quantity)
+                if derived_moto.stock_quantity < quantity:
                     return False
         return True
 
