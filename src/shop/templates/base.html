@@ -7,7 +7,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Motos Para Todos</title>
   <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+  <script src="{% static 'styles/main.js' %}" defer></script>
+  
   <!-- SCRIPT BUSCADOR -->
   <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 
@@ -49,6 +51,7 @@
                     <li><a href="#" data-value="manufacturers">Fabricantes</a></li>
                     <li class="divider"></li>
                     <li><a href="#" data-value="price">Precio</a></li>
+                    <li><a href="#" data-value="score">Valoración</a></li>
                     <li class="divider"></li>
                     <li><a href="#" data-value="all">Todos</a></li>
                   </ul>
@@ -74,6 +77,16 @@
               <input type="number" step="0.01" class="form-control" id="max_price" name="max_price" placeholder="Max" oninput="validateQuantity(this)">
             </div>
           </div>
+          <div class="review" style="display: none; justify-content: center; gap: 10px; padding-top: 10px;">
+            <div class="base-stars" data-rating="0">
+                <i class="fa-solid fa-star" id="base-star" data-value="1"></i>
+                <i class="fa-solid fa-star" id="base-star" data-value="2"></i>
+                <i class="fa-solid fa-star" id="base-star" data-value="3"></i>
+                <i class="fa-solid fa-star" id="base-star" data-value="4"></i>
+                <i class="fa-solid fa-star" id="base-star" data-value="5"></i>
+            </div>
+          </div>
+          <input type="hidden" name="score" id="rating" value="0">
         </form>
         </div>
       <a href="{% url 'cart' %}"><img src="{% static 'images/cart.png' %}" alt="cart" width="90" height="90"></a>
@@ -167,29 +180,4 @@
     </div>
   </footer>
 </body>
-
 </html>
-<script>
-  $(document).ready(function () {
-      $('.dropdown-menu a').click(function () {
-          var value = $(this).data('value');
-          if(value != 'price'){
-            $('#search_concept').text($(this).text());
-            $('#search_type').val(value);
-          }else{
-            if($('.row2').css('display') == 'flex')
-              $('.row2').css('display', 'none');
-            else if($('.row2').css('display') == 'none')
-              $('.row2').css('display', 'flex');
-            $('#search_concept').text('Todos');
-            $('#search_type').val('all');
-          }
-      });
-  });
-  function validateQuantity(input) {
-    var currentVal = parseInt(input.value);
-    if (currentVal < 0) {
-        input.value = 0;
-    }
-}
-</script>

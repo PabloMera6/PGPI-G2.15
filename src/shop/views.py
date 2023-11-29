@@ -1,5 +1,7 @@
 from product.models import Product
 from django.shortcuts import redirect, render
+from django.db.models import Avg
+from opinion.models import Opinion
 from motorcycle.models import Motorcycle
 from manufacturer.models import Manufacturer 
 from part.models import Part
@@ -41,6 +43,20 @@ def search(request):
             search_type = form.cleaned_data['search_type']
             min_price = form.cleaned_data['min_price'] or 0
             max_price = form.cleaned_data['max_price'] or 99999999
+            score = form.cleaned_data['score'] or 0
+            products = Product.objects.all()
+            p_ids = {}
+            for product in products:
+                score_avg = Opinion.objects.filter(product=product).aggregate(Avg('score'))['score__avg']
+                if score_avg != None:
+                    p_ids[product.id] = round(score_avg,1)
+            prod_ids = dict(p_ids)
+            for key, value in p_ids.items():
+                if value != score:
+                    del prod_ids[key]
+            related_products = Product.objects.filter(id__in=prod_ids.keys())
+            related_motorcycles = set(Motorcycle.objects.filter(id__in=related_products))
+            related_parts = set(Part.objects.filter(id__in=related_products))
             if min_price > max_price:
                 messages.error(request, 'El precio mínimo no puede ser mayor que el precio máximo.')
                 return redirect('/search/')
@@ -61,6 +77,20 @@ def search(request):
             search_type = request.GET.get('search_type', 'all')
             min_price = float(request.GET.get('min_price')) if request.GET.get('min_price') else None
             max_price = float(request.GET.get('max_price')) if request.GET.get('max_price') else None
+            score = float(request.GET.get('score')) if request.GET.get('score') else None
+            products = Product.objects.all()
+            p_ids = {}
+            for product in products:
+                score_avg = Opinion.objects.filter(product=product).aggregate(Avg('score'))['score__avg']
+                if score_avg != None:
+                    p_ids[product.id] = round(score_avg,1)
+            prod_ids = dict(p_ids)
+            for key, value in p_ids.items():
+                if value != score:
+                    del prod_ids[key]
+            related_products = Product.objects.filter(id__in=prod_ids.keys())
+            related_motorcycles = set(Motorcycle.objects.filter(id__in=related_products))
+            related_parts = set(Part.objects.filter(id__in=related_products))
             if min_price == None and max_price == None:
                 min_price = 0
                 max_price = 99999999
@@ -90,6 +120,9 @@ def search(request):
         parts = Part.objects.all()
         manufacturers = Manufacturer.objects.all()
 
+    if(score != 0):
+        motorcycles = list(related_motorcycles.intersection(motorcycles))
+        parts = list(related_parts.intersection(parts))
     results = list(motorcycles) + list(parts) + list(manufacturers)
     results = sorted(results, key=lambda x: getattr(x, 'name'))
 
