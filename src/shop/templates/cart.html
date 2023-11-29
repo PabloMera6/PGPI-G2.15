@@ -132,8 +132,11 @@
                                         class="img-responsive" /></div>
                                 <div class="cart-product col-sm-10">
                                     <a href="{% url 'motorcycle_details' derived_moto.base_motorcycle.id %}" class="hidden-sm">
-                                        <h4 class="nomargin" style="font-weight: bold;">{{ moto }}</h4>
+                                        <h4 class="nomargin" style="font-weight: bold;">{{ derived_moto.base_motorcycle }}</h4>
                                     </a>
+                                    <div>
+                                        <strong style="display: inline;">Configurada a su gusto</strong>
+                                    </div>
                                     <div>
                                         <strong style="display: inline;">Categoria:</strong>
                                         <p style="display: inline;"> Motocicleta - {{ derived_moto.base_motorcycle.category}}</p>
