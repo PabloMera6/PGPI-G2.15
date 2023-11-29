@@ -168,6 +168,19 @@ class MotorcycleDetailView(APIView):
                 rating_stats.append((score, count, percentage))
 
             media_scores = round(opinions.aggregate(avg_score=Avg('score'))['avg_score'], 1)
+
+        compatible_parts = (
+            motorcycle.compatible_carroceria.all() |
+            motorcycle.compatible_motor.all() |
+            motorcycle.compatible_transmision.all() |
+            motorcycle.compatible_suspension.all() |
+            motorcycle.compatible_ruedas.all() |
+            motorcycle.compatible_frenos.all() |
+            motorcycle.compatible_manillar.all() |
+            motorcycle.compatible_combustible.all() |
+            motorcycle.compatible_chasis.all()
+        ).distinct()
+
         selected_parts = (
             motorcycle.selected_carrocería,
             motorcycle.selected_motor,
@@ -215,4 +228,3 @@ class MotorcycleDetailView(APIView):
                 return Response({'error': 'Ha ocurrido un error al crear la opinión.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         return redirect('motorcycle_details', motorcycle_id=kwargs['motorcycle_id'])
-
