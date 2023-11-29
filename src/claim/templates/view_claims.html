@@ -8,22 +8,18 @@
       <table class="table">
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Autor</th>
             <th>Fecha</th>
-            <th>Descripción</th>
-            <th>Respuesta</th>
+            <th>Autor</th>
+            <th>Título</th>
             <th>Acción</th>
           </tr>
         </thead>
         <tbody>
           {% for claim in claims %}
             <tr>
-              <td>{{ claim.id }}</td>
-              <td>{{ claim.author }}</td>
               <td>{{ claim.date }}</td>
-              <td>{{ claim.description }}</td>
-              <td>{{ claim.response }}</td>
+              <td>{{ claim.author }}</td>
+              <td>{{ claim.title }}</td>
               <td>
                 {% if claim.response %}
                   <a href="{% url 'view_claim' claim.id %}" class="btn btn-warning">Editar Respuesta</a>

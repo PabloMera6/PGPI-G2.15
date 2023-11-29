@@ -19,6 +19,22 @@ $(document).ready(function () {
             quantityInput.val(currentVal - 1);
         }
     });
+
+    function validateOpinion() {
+        var selectedRating = parseInt($('#selectedRating').val());
+
+        if (selectedRating === 0) {
+            alert('Por favor, selecciona una puntuación antes de enviar la opinión.');
+            return false;
+        }
+
+        return true;
+    }
+
+    $(".round-black-btn").click(function () {
+        return validateOpinion();
+    });
+
 });
 
 function validateQuantity(input) {
@@ -30,4 +46,24 @@ function validateQuantity(input) {
     }else if (currentVal > maxStock) {
         input.value = maxStock;
     }
+}
+
+const starsContainer = document.querySelector('.stars');
+const stars = starsContainer.querySelectorAll('i');
+const ratingInput = document.getElementById('selectedRating');
+
+stars.forEach((star) => {
+    star.addEventListener("click", () => {
+        const value = parseInt(star.getAttribute('data-value'));
+        starsContainer.setAttribute('data-rating', value);
+        updateStars(value);
+        ratingInput.value = value;
+    });
+});
+
+function updateStars(value) {
+    stars.forEach((star) => {
+        const starValue = parseInt(star.getAttribute('data-value'));
+        star.classList.toggle("active", starValue <= value);
+    });
 }

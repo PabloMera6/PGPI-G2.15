@@ -440,3 +440,47 @@ input[type="number"]::-webkit-outer-spin-button {
     color: red;
     font-weight: bold;
 }
+
+.reviews-counter i {
+    font-size: 18px;
+}
+
+.stars i{
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.stars i.active {
+    color: #ffc700;
+}
+
+.col-sm-3 .opinion-resume {
+    color: black;
+}
+
+.col-sm-3 .pull-left {
+    color: black;
+}
+
+.col-sm-3 .pull-left .progress-bar {
+    background-color: #ba5f3c;
+}
+
+.glyphicon-star {
+    color: #ffc700;
+}
+
+.glyphicon-star grey {
+    color: black;
+}
+
+.review-block-author {
+    color: black;
+	font-size: 18px;
+	font-weight: 700;
+	margin-bottom: 10px;
+}
+.review-block-description {
+    color: black;
+	font-size: 15px;
+}

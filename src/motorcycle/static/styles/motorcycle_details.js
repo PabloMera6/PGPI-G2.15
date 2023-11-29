@@ -3,10 +3,10 @@ $(document).ready(function () {
         var quantityInput = $(this).siblings(".qty");
         var currentVal = parseInt(quantityInput.val());
         var maxStock = parseInt(quantityInput.attr('max'));
-        
+
         if (currentVal < maxStock) {
             quantityInput.val(currentVal + 1);
-        }else{
+        } else {
             quantityInput.val(maxStock);
         }
     });
@@ -19,6 +19,22 @@ $(document).ready(function () {
             quantityInput.val(currentVal - 1);
         }
     });
+
+    function validateOpinion() {
+        var selectedRating = parseInt($('#selectedRating').val());
+
+        if (selectedRating === 0) {
+            alert('Por favor, selecciona una puntuación antes de enviar la opinión.');
+            return false;
+        }
+
+        return true;
+    }
+
+    $(".round-black-btn").click(function () {
+        return validateOpinion();
+    });
+
 });
 
 function validateQuantity(input) {
@@ -27,10 +43,11 @@ function validateQuantity(input) {
 
     if (currentVal < 1) {
         input.value = 1;
-    }else if (currentVal > maxStock) {
+    } else if (currentVal > maxStock) {
         input.value = maxStock;
     }
 }
+
 
 $(function(){
 	$('div.product-chooser').not('.disabled').find('div.product-chooser-item').on('click', function(){
@@ -40,3 +57,24 @@ $(function(){
 		
 	});
 });
+
+const starsContainer = document.querySelector('.stars');
+const stars = starsContainer.querySelectorAll('i');
+const ratingInput = document.getElementById('selectedRating');
+
+stars.forEach((star) => {
+    star.addEventListener("click", () => {
+        const value = parseInt(star.getAttribute('data-value'));
+        starsContainer.setAttribute('data-rating', value);
+        updateStars(value);
+        ratingInput.value = value;
+    });
+});
+
+function updateStars(value) {
+    stars.forEach((star) => {
+        const starValue = parseInt(star.getAttribute('data-value'));
+        star.classList.toggle("active", starValue <= value);
+    });
+}
+

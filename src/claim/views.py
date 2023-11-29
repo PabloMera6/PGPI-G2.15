@@ -13,10 +13,10 @@ def create_claim(request):
         return HttpResponseForbidden("Acceso prohibido. No puedes crear reclamaciones como administrador.")
     
     if request.method == 'POST':
+        title = request.POST.get('title')
         description = request.POST.get('description')
         if description:
-            claim = Claim.objects.create(author=request.user, description=description)
-            messages.success(request, 'Reclamación creada con éxito.')
+            claim = Claim.objects.create(author=request.user, description=description, title=title)
             return redirect('initial')
         else:
             messages.error(request, 'La descripción de la reclamación no puede estar vacía.')

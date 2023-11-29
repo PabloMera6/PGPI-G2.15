@@ -3,6 +3,14 @@
 {% block title %}Iniciar sesión{% endblock %}
 
 {% block content %}
+{% for message in messages %}
+    
+    <div class="container alert alert-danger">
+        <a class="close" href="#" data-dismiss="alert">x</a>
+           {{ message }}
+    </div>
+
+{% endfor %}
 <div class="container mt-5">
     <div class="card">
         <div class="card-body">
