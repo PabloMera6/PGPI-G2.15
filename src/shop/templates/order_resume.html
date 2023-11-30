@@ -13,6 +13,7 @@
   <div class="container">
       {% csrf_token %}
     <div>
+        <h3>ID del pedido: {{ order.id }}</h3>
         <h3>Tipo de envio: {{ order.shipment }}</h3>
         <h3>Estado del pedido: {{ order.state }}</h3>
         
