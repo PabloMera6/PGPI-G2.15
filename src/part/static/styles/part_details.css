@@ -484,3 +484,10 @@ input[type="number"]::-webkit-outer-spin-button {
     color: black;
 	font-size: 15px;
 }
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: auto;
+    justify-content: left;
+}

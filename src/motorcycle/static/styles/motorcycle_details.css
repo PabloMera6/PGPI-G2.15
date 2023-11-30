@@ -505,6 +505,7 @@ div.product-chooser div.product-chooser-item input {
     left: 0;
     top: 0;
     visibility: hidden;
+}
 
 .col-sm-3 .opinion-resume {
     color: black;
@@ -528,12 +529,18 @@ div.product-chooser div.product-chooser-item input {
 
 .review-block-author {
     color: black;
-	font-size: 18px;
-	font-weight: 700;
-	margin-bottom: 10px;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 10px;
 }
 .review-block-description {
     color: black;
-	font-size: 15px;
+    font-size: 15px;
+}
 
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: auto;
+    justify-content: left;
 }
