@@ -31,7 +31,7 @@ $(document).ready(function () {
         return true;
     }
 
-    $(".round-black-btn").click(function () {
+    $(".round-black-btn-opinion").click(function () {
         return validateOpinion();
     });
 
