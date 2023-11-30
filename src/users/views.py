@@ -24,6 +24,8 @@ class RegisterView(APIView):
         full_name = request.data.get('full_name', '')
         phone = request.data.get('phone', '')
         address = request.data.get('address', '')
+        postal_code = request.data.get('postal_code', '')
+        city = request.data.get('city', '')
 
         if not email or not password:
             messages.success(request, f'Correo electrónico y contraseña son obligatorios.')
@@ -34,7 +36,7 @@ class RegisterView(APIView):
             return redirect('register')
 
         try:
-            user = UserProfile.objects.create_user(email=email, password=password, full_name=full_name, phone=phone, address=address)
+            user = UserProfile.objects.create_user(email=email, password=password, full_name=full_name, phone=phone, address=address, postal_code=postal_code, city=city)
             return redirect('initial')
         except IntegrityError:
             messages.success(request, f'Ha ocurrido un error al crear un usuario.')
@@ -95,7 +97,8 @@ class UserProfileView(APIView):
         full_name = request.data.get('full_name', '')
         phone = request.data.get('phone', '')
         address = request.data.get('address', '')
-        new_email = request.data.get('email', '')
+        postal_code = request.data.get('postal_code', '')
+        city = request.data.get('city', '')
 
         try:
             user_profile = request.user
@@ -103,16 +106,12 @@ class UserProfileView(APIView):
             messages.success(request, f'El usuario no existe.')
             return redirect('profile')
 
-        if new_email and UserProfile.objects.exclude(pk=user_profile.pk).filter(email=new_email).exists():
-            messages.success(request, f'El correo electrónico {new_email} ya está registrado.')
-            return redirect('profile')
-
         user_profile.full_name = full_name
         user_profile.phone = phone
         user_profile.address = address
+        user_profile.postal_code = postal_code
+        user_profile.city = city
 
-        if new_email:
-            user_profile.email = new_email
 
         user_profile.save()
         return redirect('initial')

@@ -4,43 +4,49 @@
 
 {% block content %}
 {% for message in messages %}
-    
     <div class="container alert alert-danger">
         <a class="close" href="#" data-dismiss="alert">x</a>
-           {{ message }}
+        {{ message }}
     </div>
-
 {% endfor %}
-    <div class="container mt-5">
-        <div class="card">
-            <div class="card-body">
-                <form method="post">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        <label for="email">Correo electrónico:</label>
-                        <input type="email" class="form-control" id="email" name="email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Contraseña:</label>
-                        <input type="password" class="form-control" id="password" name="password" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="full_name">Nombre completo:</label>
-                        <input type="text" class="form-control" id="full_name" name="full_name">
-                    </div>
-                    <div class="form-group">
-                        <label for="phone">Teléfono:</label>
-                        <input type="text" class="form-control" id="phone" name="phone">
-                    </div>
-                    <div class="form-group">
-                        <label for="address">Dirección:</label>
-                        <textarea class="form-control" id="address" name="address"></textarea>
-                    </div>
-                    <div class="submit">
-                        <button type="submit" class="btn btn-primary">Registrarse</button>
-                    </div>
-                </form>
-            </div>
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="email">Correo electrónico:</label>
+                    <input type="email" class="form-control" id="email" name="email" required placeholder="motosparatodos@outlook.com">
+                </div>
+                <div class="form-group">
+                    <label for="password">Contraseña:</label>
+                    <input type="password" class="form-control" id="password" name="password" required pattern=".{8,}" title="La contraseña debe tener al menos 8 caracteres" placeholder="********">
+                </div>
+                <div class="form-group">
+                    <label for="full_name">Nombre completo:</label>
+                    <input type="text" class="form-control" id="full_name" name="full_name" required placeholder="Nombre Apellidos">
+                </div>
+                <div class="form-group">
+                    <label for="phone">Teléfono:</label>
+                    <input type="tel" class="form-control" id="phone" name="phone" required pattern="[0-9]{10}" title="Ingrese un número de teléfono válido" placeholder="656565656">
+                </div>
+                <div class="form-group">
+                    <label for="address">Dirección:</label>
+                    <textarea class="form-control" id="address" name="address" required placeholder="Calle, Número, Puerta"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="city">Ciudad:</label>
+                    <input type="text" class="form-control" id="city" name="city" required placeholder="Madrid">
+                </div>
+                <div class="form-group">
+                    <label for="postal_code">Código postal:</label>
+                    <input type="text" class="form-control" id="postal_code" name="postal_code" required pattern="[0-9]{5}" title="Ingrese un código postal válido" placeholder="11150">
+                </div>
+                <div class="submit">
+                    <button type="submit" class="btn btn-primary">Registrarse</button>
+                </div>
+            </form>
         </div>
     </div>
+</div>
 {% endblock %}
