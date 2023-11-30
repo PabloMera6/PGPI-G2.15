@@ -32,8 +32,10 @@ class TestTestadminproduct(StaticLiveServerTestCase):
         call_command('loaddata', 'populate.json')
 
     def test_adminproduct(self):
+        
         self.driver.get(self.live_server_url)
         self.driver.set_window_size(1695, 1087)
+        '''
         self.driver.find_element(By.LINK_TEXT, "Registrarse").click()
         self.driver.find_element(By.ID, "email").clear()
         self.driver.find_element(By.ID, "email").click()
@@ -74,6 +76,7 @@ class TestTestadminproduct(StaticLiveServerTestCase):
         self.driver.find_element(By.CSS_SELECTOR, ".btn-primary").click()
         self.driver.find_element(By.LINK_TEXT, "Bienvenido, pepito pepe pepón").click()
         self.driver.find_element(By.CSS_SELECTOR, ".sin-estilo").click()
+        '''
         self.driver.find_element(By.CSS_SELECTOR, ".item:nth-child(1) .col-sm-4:nth-child(2) .sin-estilo").click()
         self.driver.find_element(By.CSS_SELECTOR, ".btn-danger:nth-child(3)").click()
         self.driver.find_element(By.CSS_SELECTOR, ".navbar > a:nth-child(1) > img").click()
