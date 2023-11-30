@@ -155,11 +155,14 @@
           <h4>ayuda</h4>
           <ul>
             <li><a href="#">envíos</a></li>
-            {% if user.is_staff %}
-              <li><a href="{% url 'view_claims' %}">reclamaciones</a></li>
-            {% else %}
-              <li><a href="{% url 'user_view_claims' %}">reclamaciones</a></li>
+            {% if user.is_authenticated %}
+              {% if user.is_staff %}
+                <li><a href="{% url 'view_claims' %}">reclamaciones</a></li>
+              {% else %}
+                <li><a href="{% url 'user_view_claims' %}">reclamaciones</a></li>
+              {% endif %}
             {% endif %}
+
             <li><a href="#">opciones de pago</a></li>
             <li><a href="{% url 'check_order_status' %}">seguimiento de pedidos</a></li>
           </ul>
