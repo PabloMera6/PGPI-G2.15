@@ -202,11 +202,11 @@
                     </div>
                     <div class="form-group">
                         <label for="city">Ciudad:</label>
-                        <input class="form-control" type="text" name="city" required>
+                        <input class="form-control" type="text" name="city" value="{{ request.user.city}}" required>
                     </div>
                     <div class="form-group">
                         <label for="postal_code">Código postal:</label>
-                        <input class="form-control" type="text" name="postal_code" required>
+                        <input class="form-control" type="text" name="postal_code" value="{{ request.user.postal_code}}" required>
                     </div>
                     <div class="form-group">
                         <label for="address">Dirección:</label>
