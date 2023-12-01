@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "manufacturer",
     "opinion",
     "product",
     "users",
@@ -47,7 +48,6 @@ INSTALLED_APPS = [
     "order",
     "part",
     "shop",
-    "manufacturer",
     "rest_framework.authtoken",
     "rest_framework",
 ]
