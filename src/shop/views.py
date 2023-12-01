@@ -169,6 +169,9 @@ def checkout(request):
                 'price': float(product.price) * float(value),
                 'quantity': value
             }
+    if precio_total == 0:
+        messages.error(request, 'No puedes realizar un pedido sin productos.')
+        return redirect('cart')
     if request.method == 'POST':
         for key, value in my_cart.items():
             product = get_object_or_404(Product, pk=key)
@@ -240,7 +243,6 @@ def checkout(request):
         order = create_order(precio_total, shipment, payment_method, email, full_name, phone, address, my_cart,city,postal_code,user)
         order_id = order.id
         del request.session['cart']
-        messages.success(request, 'Pedido creado exitosamente.')
         
 
 

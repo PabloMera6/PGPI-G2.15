@@ -38,7 +38,7 @@
     width: 100% \9;
     max-width: 100%;
     height: auto;
-	max-height: 120px;
+	max-height: 150px;
 	display: inline-block;
 }
 
@@ -48,6 +48,13 @@
 
 form {
 	margin: 0 2px;
+}
+
+.resume-cart {
+	padding: 15px;
+	border-radius: 5px;
+    border: 2px solid #000000;
+    background-color: var(--antique-brass-100);
 }
 
 
