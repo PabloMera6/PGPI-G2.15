@@ -11,8 +11,8 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 from whitenoise import WhiteNoise
-from django.conf import settings
-BASE_DIR = settings.BASE_DIR
+
+BASE_DIR = os.path.join(BASE_DIR, 'staticfiles')
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "motos_para_todos.settings")
 
