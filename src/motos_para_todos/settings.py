@@ -152,7 +152,7 @@ USE_TZ = True
 
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = 'app/PGPI-G2.15/static'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'manufacturers', 'static'),
