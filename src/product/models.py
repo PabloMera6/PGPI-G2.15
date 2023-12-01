@@ -1,5 +1,5 @@
 from django.db import models
-from manufacturer.models import Manufacturer
+from manufacturers.models import Manufacturer
 
 # Create your models here.
 

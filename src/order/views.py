@@ -5,7 +5,7 @@ from .models import Order
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
 from django.shortcuts import get_object_or_404
-from manufacturer.models import Manufacturer
+from manufacturers.models import Manufacturer
 from order.models import Order,OrderProduct
 from product.models import Product
 from motorcycle.models import Motorcycle

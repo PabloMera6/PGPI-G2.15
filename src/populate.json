@@ -996,7 +996,7 @@
         }
     },
     {
-        "model": "manufacturer.manufacturer",
+        "model": "manufacturers.manufacturer",
         "pk": 1,
         "fields": {
             "name": "Ducati",
@@ -1004,7 +1004,7 @@
         }
     },
     {
-        "model": "manufacturer.manufacturer",
+        "model": "manufacturers.manufacturer",
         "pk": 2,
         "fields": {
             "name": "Honda",
@@ -1012,7 +1012,7 @@
         }
     },
     {
-        "model": "manufacturer.manufacturer",
+        "model": "manufacturers.manufacturer",
         "pk": 3,
         "fields": {
             "name": "Yamaha",
