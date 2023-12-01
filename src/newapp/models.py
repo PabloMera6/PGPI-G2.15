@@ -5,6 +5,7 @@ class Manufacturers(models.Model):
 
     name = models.CharField(max_length=50)
     photo = models.URLField(blank=True, default="", max_length=200)
+    gol = models.CharField(max_length=50)
 
     def __str__(self):
         return self.name

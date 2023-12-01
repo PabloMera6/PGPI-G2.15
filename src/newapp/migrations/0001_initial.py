@@ -12,12 +12,12 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Product',
+            name='Manufacturers',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('reference_number', models.CharField(max_length=15, unique=True)),
-                ('product_type', models.CharField(choices=[('M', 'Motorcycle'), ('P', 'Part'), ('C', 'Configured')], max_length=1)),
-                ('price', models.DecimalField(decimal_places=2, max_digits=10)),
+                ('name', models.CharField(max_length=50)),
+                ('photo', models.URLField(blank=True, default='')),
+                ('gol', models.CharField(max_length=50)),
             ],
         ),
     ]
