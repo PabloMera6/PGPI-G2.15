@@ -15,7 +15,9 @@ import os
 import paypalrestsdk
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+BASE_DIR = str(BASE_DIR)
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(app, 'static') for app in BASE_DIR]
