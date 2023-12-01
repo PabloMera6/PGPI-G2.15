@@ -138,6 +138,29 @@
       {% endblock %}
     </h2>
   </div>
+   {% if messages %}
+      {% for message in messages %}
+          {% if message.tags == "error" %}
+              <div class="container alert alert-danger">
+                  <a class="close" href="#" data-dismiss="alert">x</a>
+                  {{ message }}
+              </div>
+          {% endif %}
+          {% if message.tags == "success" %}
+              <div class="container alert alert-success">
+                  <a class="close" href="#" data-dismiss="alert">x</a>
+                  {{ message }}
+              </div>
+          {% endif %}
+          {% if message.tags == "info" %}
+              <div class="container alert alert-info">
+                  <a class="close" href="#" data-dismiss="alert">x</a>
+                  {{ message }}
+              </div>
+          {% endif %}
+
+      {% endfor %}
+  {% endif %}
   {% block content %}
   {% endblock %}
   <footer class="footer container">

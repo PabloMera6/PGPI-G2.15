@@ -1,26 +1,21 @@
 {% extends 'base.html' %}
 
+{% block title %}Seguimiento de Pedidos{% endblock %}
+
 {% block content %}
-{% for message in messages %}
-    
-    <div class="container alert alert-danger">
-        <a class="close" href="#" data-dismiss="alert">x</a>
-           {{ message }}
-    </div>
 
-{% endfor %}
-
-  <div class="container mt-5">
-    <div class="row d-flex align-items-center justify-content-center">
-      <div class="col-12">
-        <h1 class="mb-4 text-center">Seguimiento de Pedidos</h1>
+  <div class="container">
+    <div class="card">
+      <div class="card-login">
         <form method="post" action="{% url 'check_order_status' %}" class="mb-3">
           {% csrf_token %}
           <div class="form-group">
             <label for="order_id">Ingrese el ID del pedido:</label>
             <input type="text" name="order_id" class="form-control" required>
           </div>
-          <button type="submit" class="btn btn-primary">Verificar Estado</button>
+          <div class="button-center">
+            <button type="submit" class="btn btn-primary">Verificar Estado</button>
+          </div>
         </form>
       </div>
     </div>

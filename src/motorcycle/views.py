@@ -5,7 +5,6 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from motorcycle.models import Motorcycle, DerivedMotorcycle
 from product.models import Product
 from shop.views import Cart, view_cart
-from django.contrib import messages
 import secrets
 from django.db import IntegrityError
 from django.shortcuts import render, redirect, get_object_or_404

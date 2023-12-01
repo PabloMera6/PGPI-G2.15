@@ -10,14 +10,6 @@
 
 {% block content %}
 
-{% for message in messages %}
-    
-<div class="container alert alert-danger">
-    <a class="close" href="#" data-dismiss="alert">x</a>
-       {{ message }}
-</div>
-
-{% endfor %}
 
   <div class="container">
     <form method="post" action="{% url 'checkout' %}">
@@ -124,19 +116,6 @@
                         {{ datos.quantity }}
                     </td>
                     <td data-th="Subtotal" class="text-center">{{ datos.price }} €</td>
-                    <td class="actions" data-th="">
-                        <div class="form">
-                                {% csrf_token %}
-                                <input type="hidden" name="product_id" style="position: absolute;"  value="{{ derived_moto.id }}">
-                                <button type="submit" class="btn btn-info btn-sm"><i class="glyphicon glyphicon-refresh"></i></button>
-                            </form>
-                            <form action="{% url 'cart_remove' %}" method="post">
-                                {% csrf_token %}
-                                <input type="hidden" name="product_id" style="position: absolute;"  value="{{ derived_moto.id }}">
-                                <button class="btn btn-danger btn-sm"><i class="glyphicon glyphicon-trash"></i></button>
-                            </form>
-                        </div>
-                    </td>
                 </tr>
             {% endfor %}
             </tbody>
@@ -161,14 +140,12 @@
                     </td>
                     <td class="hidden-xs text-center"><strong>Total 
                         {{ precio }} €</strong></td>
-                    <td>
-                    </td>
                 </tr>
             </tfoot>
         </table>
     </div>
 
-    <div class="container mt-5">
+    <div class="mt-5">
         <div class="card">
             <div class="card-body">
                 <div class="form-group">
@@ -189,58 +166,61 @@
                 
                 {% if request.user.is_authenticated %}
                     <div class="form-group">
-                        <label for="email">Correo Electrónico:</label>
+                        <label for="email">Correo Electrónico: *</label>
                         <input class="form-control" type="email" name="email" value="{{ request.user.email }}" required>
                     </div>
                     <div class="form-group">
-                        <label for="full_name">Nombre Completo:</label>
+                        <label for="full_name">Nombre Completo: *</label>
                         <input class="form-control" type="text" name="full_name" value="{{ request.user.full_name }}" required>
                     </div>
                     <div class="form-group">
-                        <label for="phone">Número de Teléfono:</label>
+                        <label for="phone">Número de Teléfono: *</label>
                         <input class="form-control" type="tel" name="phone" value="{{ request.user.phone }}" required>
                     </div>
                     <div class="form-group">
-                        <label for="city">Ciudad:</label>
+                        <label for="city">Ciudad: *</label>
                         <input class="form-control" type="text" name="city" value="{{ request.user.city}}" required>
                     </div>
                     <div class="form-group">
-                        <label for="postal_code">Código Postal:</label>
+                        <label for="postal_code">Código Postal: *</label>
                         <input class="form-control" type="text" name="postal_code" value="{{ request.user.postal_code}}" required>
                     </div>
                     <div class="form-group">
-                        <label for="address">Dirección:</label>
+                        <label for="address">Dirección: *</label>
                         <input class="form-control" type="text" name="address" value="{{ request.user.address }}" required>
                     </div>
                 {% else %}
                     <div class="form-group">
-                        <label for="email">Correo Electrónico:</label>
-                        <input type="email" class="form-control" name="email" required placeholder="motosparatodos@outlook.com">
+                        <label for="email">Correo Electrónico: *</label>
+                        <input type="email" class="form-control" name="email" required>
                     </div>
                     <div class="form-group">
-                        <label for="full_name">Nombre Completo:</label>
-                        <input class="form-control" type="text" name="full_name" required placeholder="Nombre Apellidos">
+                        <label for="full_name">Nombre Completo: *</label>
+                        <input class="form-control" type="text" name="full_name" required>
                     </div>
                     <div class="form-group">
-                        <label for="phone">Número de Teléfono:</label>
-                        <input type="tel" class="form-control" name="phone" required pattern="[0-9]{9}" title="Ingrese un número de teléfono válido" placeholder="656565656">
+                        <label for="phone">Número de Teléfono: *</label>
+                        <input type="tel" class="form-control" name="phone" required pattern="[0-9]{9}" title="Ingrese un número de teléfono válido">
                     </div>
                     <div class="form-group">
-                        <label for="city">Ciudad:</label>
-                        <input class="form-control" type="text" name="city" required placeholder="Madrid">
+                        <label for="city">Ciudad: *</label>
+                        <input class="form-control" type="text" name="city" required>
                     </div>
                     <div class="form-group">
-                        <label for="postal_code">Código postal:</label>
-                        <input type="text" class="form-control" id="postal_code" name="postal_code" required pattern="[0-9]{5}" title="Ingrese un código postal válido" placeholder="11150">
+                        <label for="postal_code">Código postal: *</label>
+                        <input type="text" class="form-control" id="postal_code" name="postal_code" required pattern="[0-9]{5}" title="Ingrese un código postal válido" >
                     </div>
                     <div class="form-group">
-                        <label for="address">Dirección:</label>
+                        <label for="address">Dirección: *</label>
                         <input class="form-control" type="text" name="address" required>
                     </div>
 
                 {% endif %}
-                <button type="submit" class="btn btn-primary">Finalizar Compra</button>
-    
+                <div class="button-center">
+                    {% if precio != 0 %}
+                        <button type="submit" class="btn btn-primary">Finalizar Compra</button>
+                    {% endif %}
+                </div>
             </div>   
         </div>
     </div>

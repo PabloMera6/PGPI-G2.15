@@ -28,18 +28,18 @@ class RegisterView(APIView):
         city = request.data.get('city', '')
 
         if not email or not password:
-            messages.success(request, f'Correo electrónico y contraseña son obligatorios.')
+            messages.info(request, f'Correo electrónico y contraseña son obligatorios.')
             return redirect('register')
 
         if UserProfile.objects.filter(email=email).exists():
-            messages.success(request, f'El correo electrónico {email} ya está registrado.')
+            messages.error(request, f'El correo electrónico {email} ya está registrado.')
             return redirect('register')
 
         try:
             user = UserProfile.objects.create_user(email=email, password=password, full_name=full_name, phone=phone, address=address, postal_code=postal_code, city=city)
             return redirect('initial')
         except IntegrityError:
-            messages.success(request, f'Ha ocurrido un error al crear un usuario.')
+            messages.error(request, f'Ha ocurrido un error al crear un usuario.')
             return redirect('register')
 
 class LogoutView(APIView):
@@ -56,17 +56,17 @@ class LoginView(APIView):
         password = request.data.get('password', '')
 
         if not email or not password:
-            messages.success(request, f'Correo electrónico y contraseña son obligatorios.')
+            messages.error(request, f'Correo electrónico y contraseña son obligatorios.')
             return redirect('login')
 
         try:
             user = UserProfile.objects.get(email=email)
         except UserProfile.DoesNotExist:
-            messages.success(request, f'El correo electrónico {email} no está registrado.')
+            messages.info(request, f'El correo electrónico {email} no está registrado.')
             return redirect('login')
 
         if not user.check_password(password):
-            messages.success(request, f'Contraseña incorrecta.')
+            messages.error(request, f'Contraseña incorrecta.')
             return redirect('login')
 
         user = authenticate(request, username=email, password=password)
@@ -75,7 +75,7 @@ class LoginView(APIView):
             login(request, user)
             token, _ = Token.objects.get_or_create(user=user)
         else:
-            messages.success(request, f'Su cuenta ha sido desactivada.')
+            messages.info(request, f'Su cuenta ha sido desactivada.')
             return redirect('login')
         return redirect('initial')
 
@@ -103,7 +103,7 @@ class UserProfileView(APIView):
         try:
             user_profile = request.user
         except ObjectDoesNotExist:
-            messages.success(request, f'El usuario no existe.')
+            messages.error(request, f'El usuario no existe.')
             return redirect('profile')
 
         user_profile.full_name = full_name
