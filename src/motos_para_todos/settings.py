@@ -161,7 +161,6 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'order', 'static'),
     os.path.join(BASE_DIR, 'part', 'static'),
     os.path.join(BASE_DIR, 'shop', 'static'),
-    # Agrega más líneas según sea necesario para cada aplicación
 ]
 
 
