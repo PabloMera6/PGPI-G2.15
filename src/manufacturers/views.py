@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from manufacturers.models import Manufacturer
+from newapp.models import Manufacturers as Manufacturer
 from motorcycle.models import Motorcycle
 
 

@@ -3,7 +3,7 @@ from django.urls import path
 from . import views
 from order.views import administrate,orders,administrate_order,administrate_sells
 from users.views import ListUsersView
-from manufacturers.models import Manufacturer
+from newapp.models import Manufacturers as Manufacturer
 
 
 

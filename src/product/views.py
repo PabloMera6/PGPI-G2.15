@@ -4,7 +4,7 @@ from .models import Product
 from motorcycle.models import Motorcycle
 from part.models import Part
 from django.contrib.auth.decorators import user_passes_test
-from manufacturers.models import Manufacturer
+from newapp.models import Manufacturers as Manufacturer
 from django.contrib import messages
 import secrets
 

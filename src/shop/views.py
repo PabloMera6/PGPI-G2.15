@@ -3,10 +3,10 @@ from django.shortcuts import redirect, render
 from django.db.models import Avg
 from opinion.models import Opinion
 from motorcycle.models import Motorcycle, DerivedMotorcycle
-from manufacturers.models import Manufacturer 
+from newapp.models import Manufacturers as Manufacturer
 from part.models import Part
 from django.views.generic import TemplateView
-from manufacturers.models import Manufacturer
+
 from .forms import SearchForm
 import random
 from django.shortcuts import get_object_or_404
