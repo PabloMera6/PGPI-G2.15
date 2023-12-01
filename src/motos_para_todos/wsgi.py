@@ -14,3 +14,5 @@ from django.core.wsgi import get_wsgi_application
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "motos_para_todos.settings")
 
 application = get_wsgi_application()
+
+application = WhiteNoise(application, root=os.path.join(os.path.dirname(os.path.dirname(__file__)), 'app', 'PGPI-G2.15', 'src', 'static'))
