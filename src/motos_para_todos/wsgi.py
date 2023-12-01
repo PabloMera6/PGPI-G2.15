@@ -8,11 +8,12 @@ https://docs.djangoproject.com/en/4.2/howto/deployment/wsgi/
 """
 
 import os
+from pathlib import Path
 
 from django.core.wsgi import get_wsgi_application
 from whitenoise import WhiteNoise
 
-BASE_DIR = os.path.join(BASE_DIR, 'staticfiles')
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "motos_para_todos.settings")
 
