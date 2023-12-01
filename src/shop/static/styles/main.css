@@ -39,6 +39,7 @@ body{
 }
 
 /* Header */
+
 .navbar {
     background-color: var(--antique-brass-600);
     width: 100%;
