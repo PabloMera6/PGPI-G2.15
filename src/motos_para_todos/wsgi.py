@@ -19,5 +19,5 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "motos_para_todos.settings")
 
 application = get_wsgi_application()
 
-application = WhiteNoise(application, root=os.path.join(BASE_DIR, 'staticfiles'))
+application = WhiteNoise(application, root=os.path.join(BASE_DIR, 'static/'))
 
