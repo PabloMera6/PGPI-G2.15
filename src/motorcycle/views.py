@@ -192,13 +192,19 @@ class MotorcycleDetailView(APIView):
             motorcycle.selected_chasis
         )
 
+        opinion_dates= {}
+        for opinion in opinions:
+            opinion_dates[opinion] = {
+                'date': opinion.date.strftime('%d-%m-%Y a las %H:%M'),
+            }
+
         context = {
             'motorcycle': motorcycle,
             'product': product,
             'compatible_parts': compatible_parts,
             'selected_parts': selected_parts,
             'not_reviewed': not_reviewed,
-            'opinions': opinions,
+            'opinions': opinion_dates,
             'rating_stats': rating_stats,
             'media_scores': media_scores
         }

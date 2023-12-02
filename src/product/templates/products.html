@@ -1,43 +1,44 @@
 {% extends 'base.html' %}
 
+{% block title %}Listado de productos{% endblock %}
+
 {% block content %}
 
-  <div class="container">
-    <div class="row">
-        <h2>Listado de productos</h2>
-        <div class="row">
-          <a href="/administrate/products/parts/new" class="btn btn-primary">Añadir pieza</a>
-          <a href="/administrate/products/motorcycles/new" class="btn btn-primary">Añadir moto</a>
-      </div>
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th>Imagen</th>
-            <th>Nombre</th>
-            <th>Precio</th>
-            <th>Cantidad de stock</th>
-          </tr>
-        </thead>
-        <tbody>
-            {% for moto in motos %}
-            <tr>
-              <td><img src="{{ moto.photo }}" alt="{{ moto.name }}" width="100"></td>
-              <td><a href="/administrate/products/{{moto.id}}">{{ moto.name }}</a></td>
-              <td>{{ moto.price }}</td>
-              <td>{{ moto.stock_quantity }}</td>
-            </tr>
-          {% endfor %}
-          {% for part in parts %}
-            <tr>
-              <td><img src="{{ part.photo }}" alt="{{ part.name }}" width="100"></td>
-              <td><a href="/administrate/products/{{part.id}}"> {{ part.name }} </a></td>
-              <td>{{ part.price }}</td>
-              <td>{{ part.stock_quantity }}</td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+<div class="container">
 
-    </div>
-  </div>
+      <div class="button-center" style="margin: 0 auto;">
+        <a href="/administrate/products/parts/new" class="btn btn-primary">Añadir pieza</a>
+        <a href="/administrate/products/motorcycles/new" class="btn btn-primary">Añadir moto</a>
+      </div>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Imagen</th>
+          <th>Nombre</th>
+          <th>Precio</th>
+          <th>Stock</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for moto in motos %}
+        <tr>
+          <td><img src="{{ moto.photo }}" alt="{{ moto.name }}" width="100"></td>
+          <td><a href="/administrate/products/{{moto.id}}">{{ moto.name }}</a></td>
+          <td>{{ moto.price }}</td>
+          <td>{{ moto.stock_quantity }}</td>
+          <td><a href="/administrate/products/{{moto.id}}" class="hidden-sm">Más detalles</a></td>
+        </tr>
+        {% endfor %}
+        {% for part in parts %}
+        <tr>
+          <td><img src="{{ part.photo }}" alt="{{ part.name }}" width="100"></td>
+          <td><a href="/administrate/products/{{part.id}}"> {{ part.name }} </a></td>
+          <td>{{ part.price }}</td>
+          <td>{{ part.stock_quantity }}</td>
+          <td><a href="/administrate/products/{{part.id}}" class="hidden-sm">Más detalles</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+</div>
 {% endblock %}

@@ -72,7 +72,13 @@ class PartDetailView(APIView):
         else:
             compatible_motorcycles = None
 
-        return render(request, 'part_detail.html', {'part': part, 'product': product, 'compatible_motorcycles': compatible_motorcycles, 'not_reviewed': not_reviewed, 'opinions': opinions, 'rating_stats': rating_stats, 'media_scores': media_scores})
+        opinion_dates= {}
+        for opinion in opinions:
+            opinion_dates[opinion] = {
+                'date': opinion.date.strftime('%d-%m-%Y a las %H:%M'),
+            }
+
+        return render(request, 'part_detail.html', {'part': part, 'product': product, 'compatible_motorcycles': compatible_motorcycles, 'not_reviewed': not_reviewed, 'opinions': opinion_dates, 'rating_stats': rating_stats, 'media_scores': media_scores})
 
     def post(self, request, *args, **kwargs):
         part = get_object_or_404(self.model, pk=kwargs['part_id'])
