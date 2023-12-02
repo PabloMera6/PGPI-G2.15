@@ -108,8 +108,8 @@
         </div>
         <div class="product-info-tabs">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
-                  <li class="nav-item">
-                    <a class="nav-link active" id="review-tab" data-toggle="tab" href="#review" role="tab" aria-controls="review" aria-selected="true">Opiniones</a>
+                  <li class="nav-item active">
+                    <a class="nav-link" id="review-tab" data-toggle="tab" href="#review" role="tab" aria-controls="review" aria-selected="true">Opiniones</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" id="description-tab" data-toggle="tab" href="#description" role="tab" aria-controls="description" aria-selected="false">Piezas compatibles</a>
@@ -193,7 +193,7 @@
                             </div>
                         </div>
                     {% endif %}	
-                    {% if not_reviewed and request.user.is_authenticated %}
+                    {% if not_reviewed and request.user.is_authenticated and not request.user.is_superuser %}
                         <form class="review-form" method="post">
                             {% csrf_token %}
                             <div class="form-group">
@@ -231,16 +231,14 @@
                                         </div>
                                         <div class="info">
                                             <div class="row">
-                                                <div class="price col-md-6">
+                                                <div class="name col-md-6">
                                                     <h5>{{ part.name }}</h5>
                                                     {% if part.stock_quantity == 0 %}
                                                         <h5 class="part-no-stock">¡AGOTADO!</h5>
                                                     {% endif %}
                                                 </div>
-                                                <div class="rating hidden-sm col-md-6">
-                                                    <i class="price-text-color fa fa-star"></i><i class="price-text-color fa fa-star">
-                                                    </i><i class="price-text-color fa fa-star"></i><i class="price-text-color fa fa-star">
-                                                    </i><i class="fa fa-star"></i>
+                                                <div class="price hidden-sm col-md-6">
+                                                    <p>{{ part.price }}€</p>
                                                 </div>
                                             </div>
                                             <div class="separator clear-left">
@@ -271,16 +269,14 @@
                                         </div>
                                         <div class="info">
                                             <div class="row">
-                                                <div class="price col-md-6">
+                                                <div class="name col-md-6">
                                                     <h5>{{ part.name }}</h5>
                                                     {% if part.stock_quantity == 0 %}
                                                         <h5 class="part-no-stock">¡AGOTADO!</h5>
                                                     {% endif %}
                                                 </div>
-                                                <div class="rating hidden-sm col-md-6">
-                                                    <i class="price-text-color fa fa-star"></i><i class="price-text-color fa fa-star">
-                                                    </i><i class="price-text-color fa fa-star"></i><i class="price-text-color fa fa-star">
-                                                    </i><i class="fa fa-star"></i>
+                                                <div class="price hidden-sm col-md-6">
+                                                    <p>{{ part.price }}€</p>
                                                 </div>
                                             </div>
                                             <div class="separator clear-left">

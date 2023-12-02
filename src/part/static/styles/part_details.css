@@ -237,7 +237,9 @@
 }
 
 .round-black-btn:hover,
-.round-black-btn:focus {
+.round-black-btn:focus,
+.round-black-btn-opinion:hover,
+.round-black-btn-opinion:focus {
 	background: transparent;
 	color: #031924;
 	text-decoration: none;
@@ -352,16 +354,27 @@
     background-color: #F5F5DC;
 }
 
-.col-item .info .rating {
-    color: #777;
+.col-item .price {
+    float: left;
+    font-size: 17px;
+    text-align: right;
+    line-height: 52px;
+    margin-bottom: 10px;
+    height: 52px;
 }
 
-.col-item .price {
+.col-item .info .price {
+    color: black;
+    font-weight: bold;
+}
+
+.col-item .name {
     float: left;
     margin-top: 5px;
 }
 
-.col-item .price h5 {
+.col-item .name h5 {
+    color: black;
     line-height: 20px;
     margin: 0;
 }

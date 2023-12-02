@@ -1,8 +1,10 @@
 from django.shortcuts import render, reverse
 from django.shortcuts import redirect
+from django.db.models import Count, Avg
 from .models import Product
 from motorcycle.models import Motorcycle
 from part.models import Part
+from opinion.models import Opinion
 from django.contrib.auth.decorators import user_passes_test
 from newapp.models import Manufacturers as Manufacturer
 from django.contrib import messages
@@ -25,6 +27,23 @@ def generate_reference_number():
 def view_product(request, product_id):
     if request.user.is_authenticated and request.user.is_superuser:
         product = Product.objects.get(pk=product_id)
+
+        not_reviewed = len(Opinion.objects.filter(author=request.user if request.user.is_authenticated else None, product=product)) == 0
+        opinions = Opinion.objects.filter(product=product)
+        
+        rating_stats = []
+        media_scores = 0
+        if (opinions.count() > 0):
+            opinion_counts = Opinion.objects.filter(product=product).values('score').annotate(count=Count('score')).order_by('score')
+            total_opinions = Opinion.objects.filter(product=product).count()
+            rating_stats = []
+            for score in range(1, 6):
+                count = next((entry['count'] for entry in opinion_counts if entry['score'] == score), 0)
+                percentage = (count / total_opinions) * 100 if total_opinions > 0 else 0
+                rating_stats.append((score, count, percentage))
+
+            media_scores = round(opinions.aggregate(avg_score=Avg('score'))['avg_score'], 1)
+
         if(product.product_type == 'M'):
             motorcycle = Motorcycle.objects.get(pk=product_id)
             compatible_parts = (
@@ -49,7 +68,7 @@ def view_product(request, product_id):
                 motorcycle.selected_combustible,
                 motorcycle.selected_chasis
             )
-            return render(request, 'motorcycle_detail2.html', {'motorcycle': motorcycle, 'product': product, 'compatible_parts': compatible_parts,'selected_parts': selected_parts})
+            return render(request, 'motorcycle_detail2.html', {'motorcycle': motorcycle, 'product': product, 'compatible_parts': compatible_parts,'selected_parts': selected_parts, 'not_reviewed': not_reviewed, 'opinions': opinions, 'rating_stats': rating_stats, 'media_scores': media_scores})
         else:
             part = Part.objects.get(pk=product_id)
             category = part.category
@@ -73,7 +92,7 @@ def view_product(request, product_id):
                 compatible_motorcycles = part.compatible_chasis.all()
             else:
                 compatible_motorcycles = None
-            return render(request, 'part_detail2.html', {'part': part, 'product': product, 'compatible_motorcycles': compatible_motorcycles})
+            return render(request, 'part_detail2.html', {'part': part, 'product': product, 'compatible_motorcycles': compatible_motorcycles, 'not_reviewed': not_reviewed, 'opinions': opinions, 'rating_stats': rating_stats, 'media_scores': media_scores})
     else:
         return redirect('/')
 
