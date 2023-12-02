@@ -20,9 +20,9 @@
           </tr>
         </thead>
         <tbody>
-          {% for claim in claims %}
+          {% for claim, fecha in claims.items %}
             <tr>
-              <td>{{ claim.date }}</td>
+              <td>{{ fecha.date }}</td>
               <td>{{ claim.title }}</td>
               <td>
                 <p class="btn-details">

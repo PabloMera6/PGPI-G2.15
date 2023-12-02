@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% block title %}Administración de Usuarios{% endblock %}
+
 {% block extrahead %}
 {% load static %}
 <link rel="stylesheet" href="{% static 'styles/cart.css' %}">
@@ -8,7 +10,6 @@
 {% block content %}
 <div class="container">
     <div class="row">
-        <h2>Listado de Usuarios</h2>
       <table class="table table-striped">
         <thead>
           <tr>
@@ -33,10 +34,10 @@
                     <input type="hidden" name="user_id" value="{{ user.id }}">
                     {% if not user.is_active %}
                       <input type="hidden" name="is_active" value="True">
-                      <button type="submit" class="btn btn-primary" name="action" value="activate">Dar de alta</button>
+                      <button type="submit" class="btn btn-success" name="action" value="activate">Dar de alta</button>
                     {% else %}
                       <input type="hidden" name="is_active" value="False">
-                      <button type="submit" class="btn btn-primary" name="action" value="deactivate">Dar de baja</button>
+                      <button type="submit" class="btn btn-danger" name="action" value="deactivate">Dar de baja</button>
                     {% endif %}
                   </form>
               </td>
@@ -46,22 +47,32 @@
         </tbody>
       </table>
 
-      <div class="pagination">
-        <span class="step-links">
-          {% if users.has_previous %}
-            <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ users.previous_page_number }}">previous</a>
-          {% endif %}
-
-          <span class="current">
-            Página {{ users.number }} de {{ users.paginator.num_pages }}.
-          </span>
-
-          {% if users.has_next %}
-            <a href="?page={{ users.next_page_number }}">next</a>
-            <a href="?page={{ users.paginator.num_pages }}">last &raquo;</a>
-          {% endif %}
-        </span>
+      <div class="pagination-container text-center mt-4">
+        <ul class="pagination">
+            {% if users.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1">&laquo; Primera</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ users.previous_page_number }}">Anterior</a>
+                </li>
+            {% endif %}
+    
+            <li class="page-item disabled">
+                <span class="page-link">
+                    Página {{ users.number }} de {{ users.paginator.num_pages }}.
+                </span>
+            </li>
+    
+            {% if users.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ users.next_page_number }}">Siguiente</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ users.paginator.num_pages }}">Última &raquo;</a>
+                </li>
+            {% endif %}
+        </ul>
       </div>
     </div>
   </div>

@@ -5,15 +5,12 @@
 <link rel="stylesheet" href="{% static 'styles/parts.css' %}">
 {% endblock %}
 
+{% block title %}Nuestras partes de Motocicletas{% endblock %}
+
 {% block content %}
 
 <div class="container">
     <div class="row">
-        <div class="row">
-            <div class="col-md-9">
-                <h3 class="title">PARTES PARA MOTOCICLETAS</h3>
-            </div>
-        </div>
         <div class="items">
             {% for part in parts %}
                 {% if forloop.counter0|divisibleby:3 %}

@@ -146,7 +146,7 @@
                             <div class="col-sm-7">
                                 <hr/>
                                 <div class="review-block">
-                                    {% for opinion in opinions %}
+                                    {% for opinion, fecha in opinions.items %}
                                         <div class="row">
                                             <div class="col-sm-16">
                                                 <div class="review-block-rate">
@@ -183,7 +183,7 @@
                                                     {% endif %}
                                                 </div>
                                                 <div class="review-block-author">{{ opinion.author.full_name }}</div>
-                                                <div class="review-block-date">{{ opinion.date }}</div>
+                                                <div class="review-block-date">{{ fecha.date }}</div>
                                                 <div class="review-block-description">{{ opinion.description }}</div>
                                             </div>
                                         </div>
