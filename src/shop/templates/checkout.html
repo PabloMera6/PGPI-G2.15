@@ -175,7 +175,7 @@
                     </div>
                     <div class="form-group">
                         <label for="phone">Número de Teléfono: *</label>
-                        <input class="form-control" type="tel" name="phone" value="{{ request.user.phone }}" required>
+                        <input class="form-control" type="tel" name="phone" value="{{ request.user.phone }}" required pattern="[0-9]{9}" title="Ingrese un número de teléfono válido (9 dígitos)">
                     </div>
                     <div class="form-group">
                         <label for="city">Ciudad: *</label>
@@ -183,7 +183,7 @@
                     </div>
                     <div class="form-group">
                         <label for="postal_code">Código Postal: *</label>
-                        <input class="form-control" type="text" name="postal_code" value="{{ request.user.postal_code}}" required>
+                        <input class="form-control" type="text" name="postal_code" value="{{ request.user.postal_code}}" required pattern="[0-9]{5}" title="Ingrese un código postal válido">
                     </div>
                     <div class="form-group">
                         <label for="address">Dirección: *</label>

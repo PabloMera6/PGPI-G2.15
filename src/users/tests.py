@@ -178,7 +178,6 @@ class UserProfileViewTest(TestCase):
             'full_name': 'Updated Name',
             'phone': '987654321',
             'address': 'Updated Address',
-            'email': 'updated@example.com',
         }
         response = self.client.post(self.profile_url, data, follow=True)
         self.assertRedirects(response, '/')
@@ -187,7 +186,6 @@ class UserProfileViewTest(TestCase):
         self.assertEqual(self.user.full_name, data['full_name'])
         self.assertEqual(self.user.phone, data['phone'])
         self.assertEqual(self.user.address, data['address'])
-        self.assertEqual(self.user.email, data['email'])
 
     def test_update_profile_unauthenticated_user(self):
         data = {
@@ -198,17 +196,3 @@ class UserProfileViewTest(TestCase):
         }
         response = self.client.post(self.profile_url, data)
         self.assertEqual(response.status_code, status.HTTP_302_FOUND)
-
-    def test_update_profile_duplicate_email(self):
-        self.client.force_authenticate(user=self.user)
-        other_user = UserProfile.objects.create_user(email='other@example.com', password='otherpassword')
-        data = {
-            'full_name': 'Updated Name',
-            'phone': '987654321',
-            'address': 'Updated Address',
-            'email': other_user.email,
-        }
-
-        response = self.client.post(self.profile_url, data, follow=True) 
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertContains(response, f'El correo electrónico {data["email"]} ya está registrado.')

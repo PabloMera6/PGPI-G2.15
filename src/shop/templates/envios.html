@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block extrahead %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'styles/cart.css' %}">
+{% endblock %}
+
+{% block title %}Información sobre los envíos{% endblock %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 0 auto;">
+    <p style="text-align: center;">Puede elegir entre <strong>envío a domicilio</strong> o <strong>recoger</strong> el producto en tienda. En caso de optar por el <strong>envío a domicilio</strong>, si el pedido es superior a 30€, se anularán los gastos de envío y por lo tanto el transporte sería <strong>complementamente gratuito</strong>. En caso de que el pedido no supere los 30€, el coste de envío será de 5€. Si, por el contrario, opta por <strong>recoger</strong> el producto en tienda, no se le cobrará ningún coste adicional.</p>
+</div>
+{% endblock %}
