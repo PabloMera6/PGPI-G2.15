@@ -123,7 +123,11 @@ def search(request):
     if(score != 0):
         motorcycles = list(related_motorcycles.intersection(motorcycles))
         parts = list(related_parts.intersection(parts))
-    results = list(motorcycles) + list(parts) + list(manufacturers)
+
+    if search_type == 'all':
+        results = list(motorcycles) + list(parts)
+    else:
+        results = list(motorcycles) + list(parts) + list(manufacturers)
     results = sorted(results, key=lambda x: getattr(x, 'name'))
 
     results_per_page = 12
