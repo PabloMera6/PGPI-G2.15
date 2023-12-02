@@ -397,7 +397,7 @@
         "model": "users.userprofile",
         "pk": 1,
         "fields": {
-            "password": "pbkdf2_sha256$600000$5G5lG5efNwhVyQoIOhbo8J$2qnxfsQhso0+5c2W4hfQ6JA/HBub4lQOKHYnp79psmg=",
+            "password": "pbkdf2_sha256$600000$r6hqNkhOESHCbtyMUX2IEF$hyidCU5O50D7CYSqoOIkCTlJO6xpa6qKg7CsHCyA52k=",
             "last_login": "2023-11-14T12:16:27.564Z",
             "email": "admin@admin.com",
             "full_name": "Admin",

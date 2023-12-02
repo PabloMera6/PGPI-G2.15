@@ -4,6 +4,7 @@ from . import views
 from order.views import administrate,orders,administrate_order,administrate_sells
 from users.views import ListUsersView
 from newapp.models import Manufacturers as Manufacturer
+from django.views.generic import TemplateView
 
 
 
@@ -22,4 +23,8 @@ urlpatterns = [
     path('administrate/orders/<uuid:order_id>/', administrate_order, name='administrate_order'),
     path('administrate/users/', ListUsersView.as_view(), name='administrate_users'),
     path('administrate/sells/', administrate_sells, name='administrate_sells'),
+    path('envios/', TemplateView.as_view(template_name='envios.html'), name='envios'),
+    path('pagos/', TemplateView.as_view(template_name='pagos.html'), name='pagos'),
+
+
 ]

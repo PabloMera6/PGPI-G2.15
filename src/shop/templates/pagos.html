@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block extrahead %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'styles/cart.css' %}">
+{% endblock %}
+
+{% block title %}Información sobre los pagos{% endblock %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 0 auto;">
+    <p style="text-align: center;">Para abonar el importe de la compra puede hacerlo a <strong>contrarrembolso</strong>, es decir, cuando el pedido llegue a su domicilio o cuando vaya a recogerlo en tienda, abonará la cantidad establecida. El otro tipo de pago que ofrecemos desde MotosParaTodos es a través de la pasarela de pago <strong>Paypal</strong> en el instante de compra online.</p>
+</div>
+{% endblock %}

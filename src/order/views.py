@@ -111,20 +111,33 @@ def administrate_order(request, order_id):
             'manufacturers': manufacturers})
     else:
         return redirect('/')
-    
+
 def administrate_sells(request):
     if request.user.is_authenticated and request.user.is_superuser:
-        producto_mas_vendido = obtener_producto_mas_vendido()
-        media_precios = obtener_media_precios()
-        tipo_producto_preferido = obtener_tipo_producto_preferido()
-        fabricante_preferido = obtener_fabricante_preferido()
-        tipo_envio_preferido = obtener_tipo_envio_preferido()
-        ciudad_mas_ventas = obtener_ciudad_mas_ventas()
-        forma_pago_preferida = obtener_forma_pago_preferida()
-        cliente_mas_activo = obtener_cliente_mas_activo()
-        grafica_ventas_por_producto = generar_grafica_ventas_por_producto()
-        grafica_ventas_por_tipo = generar_grafica_ventas_por_tipo()
-        grafica_pedidos_por_estado = generar_grafica_pedidos_por_estado()
+        if(Order.objects.all().count() == 0):
+            producto_mas_vendido = None
+            media_precios = None
+            tipo_producto_preferido = None
+            fabricante_preferido = None
+            tipo_envio_preferido = None
+            ciudad_mas_ventas = None
+            forma_pago_preferida = None
+            cliente_mas_activo = None
+            grafica_ventas_por_producto = None
+            grafica_ventas_por_tipo = None
+            grafica_pedidos_por_estado = None
+        else:
+            producto_mas_vendido = obtener_producto_mas_vendido()
+            media_precios = obtener_media_precios()
+            tipo_producto_preferido = obtener_tipo_producto_preferido()
+            fabricante_preferido = obtener_fabricante_preferido()
+            tipo_envio_preferido = obtener_tipo_envio_preferido()
+            ciudad_mas_ventas = obtener_ciudad_mas_ventas()
+            forma_pago_preferida = obtener_forma_pago_preferida()
+            cliente_mas_activo = obtener_cliente_mas_activo()
+            grafica_ventas_por_producto = generar_grafica_ventas_por_producto()
+            grafica_ventas_por_tipo = generar_grafica_ventas_por_tipo()
+            grafica_pedidos_por_estado = generar_grafica_pedidos_por_estado()
         return render(request, 'administrate_sells.html', {
         'producto_mas_vendido': producto_mas_vendido,
         'media_precios': media_precios,

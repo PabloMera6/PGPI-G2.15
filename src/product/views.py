@@ -94,8 +94,8 @@ def new_part(request):
             if(price <=0):
                 messages.error(request,'El precio no puede ser negativo ni 0')
                 return redirect('new_part')
-            if(stock<=0):
-                messages.error(request,'El stock no puede ser negativo ni 0')
+            if(stock<0):
+                messages.error(request,'El stock no puede ser negativo')
                 return redirect('new_part')
             reference_number = generate_reference_number()
             while True:
@@ -155,8 +155,8 @@ def new_motorcycle(request):
             if(price <=0):
                 messages.error(request,'El precio no puede ser negativo ni 0')
                 return redirect('new_part')
-            if(stock<=0):
-                messages.error(request,'El stock no puede ser negativo ni 0')
+            if(stock<0):
+                messages.error(request,'El stock no puede ser negativo')
                 return redirect('new_part')
             reference_number = generate_reference_number()
             while True:
@@ -186,14 +186,23 @@ def new_motorcycle(request):
             )
             nueva_moto.save()
             nueva_moto.compatible_carroceria.set(carrocerias_compatibles)
+            nueva_moto.compatible_carroceria.add(carroceria_id)
             nueva_moto.compatible_motor.set(motores_compatibles)
+            nueva_moto.compatible_motor.add(motor_id)
             nueva_moto.compatible_transmision.set(transmisiones_compatibles)
+            nueva_moto.compatible_transmision.add(transmision_id)
             nueva_moto.compatible_suspension.set(suspensiones_compatibles)
+            nueva_moto.compatible_suspension.add(suspension_id)
             nueva_moto.compatible_ruedas.set(ruedas_compatibles)
+            nueva_moto.compatible_ruedas.add(ruedas_id)
             nueva_moto.compatible_frenos.set(frenos_compatibles)
+            nueva_moto.compatible_frenos.add(frenos_id)
             nueva_moto.compatible_manillar.set(manillares_compatibles)
+            nueva_moto.compatible_manillar.add(manillar_id)
             nueva_moto.compatible_combustible.set(combustibles_compatibles)
+            nueva_moto.compatible_combustible.add(combustible_id)
             nueva_moto.compatible_chasis.set(chasis_compatibles)
+            nueva_moto.compatible_chasis.add(chasis_id)
             nueva_moto.save()
             messages.success(request,'Moto creada con éxito')
             return redirect('products')
@@ -228,8 +237,8 @@ def edit_part(request, part_id):
             if(price <=0):
                 messages.error(request,'El precio no puede ser negativo ni 0')
                 return redirect('new_part')
-            if(stock<=0):
-                messages.error(request,'El stock no puede ser negativo ni 0')
+            if(stock<0):
+                messages.error(request,'El stock no puede ser negativo')
                 return redirect('new_part')
             part = Part.objects.get(pk=part_id)
             part.name = name
@@ -282,8 +291,8 @@ def edit_motorcycle(request, motorcycle_id):
             if(price <=0):
                 messages.error(request,'El precio no puede ser negativo ni 0')
                 return redirect('new_part')
-            if(stock<=0):
-                messages.error(request,'El stock no puede ser negativo ni 0')
+            if(stock<0):
+                messages.error(request,'El stock no puede ser negativo')
                 return redirect('new_part')
             reference_number = generate_reference_number()
             while True:
@@ -317,14 +326,23 @@ def edit_motorcycle(request, motorcycle_id):
             nueva_moto.compatible_chasis.clear()
             nueva_moto.save()
             nueva_moto.compatible_carroceria.set(carrocerias_compatibles)
+            nueva_moto.compatible_carroceria.add(carroceria_id)
             nueva_moto.compatible_motor.set(motores_compatibles)
+            nueva_moto.compatible_motor.add(motor_id)
             nueva_moto.compatible_transmision.set(transmisiones_compatibles)
+            nueva_moto.compatible_transmision.add(transmision_id)
             nueva_moto.compatible_suspension.set(suspensiones_compatibles)
+            nueva_moto.compatible_suspension.add(suspension_id)
             nueva_moto.compatible_ruedas.set(ruedas_compatibles)
+            nueva_moto.compatible_ruedas.add(ruedas_id)
             nueva_moto.compatible_frenos.set(frenos_compatibles)
+            nueva_moto.compatible_frenos.add(frenos_id)
             nueva_moto.compatible_manillar.set(manillares_compatibles)
+            nueva_moto.compatible_manillar.add(manillar_id)
             nueva_moto.compatible_combustible.set(combustibles_compatibles)
+            nueva_moto.compatible_combustible.add(combustible_id)
             nueva_moto.compatible_chasis.set(chasis_compatibles)
+            nueva_moto.compatible_chasis.add(chasis_id)
             nueva_moto.save()
             messages.success(request,'Moto actualizada con éxito')
             return redirect('products')

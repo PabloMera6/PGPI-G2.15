@@ -31,7 +31,7 @@
                 </div>
                 <div class="form-group">
                     <label for="price">Precio:</label>
-                    <input type="price" class="form-control" id="price" name="price" value="{{ motorcycle.price }}">
+                    <input type="text" class="form-control" id="price" name="price" value="{{ motorcycle.price }}" pattern="\d+(\.\d{2})?" title="El precio debe ser del estilo '19.99'">
                 </div>
                 <div class="form-group">
                     <label for="manufacturer">Fabricante:</label>
