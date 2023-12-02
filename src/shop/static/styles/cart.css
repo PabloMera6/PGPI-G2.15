@@ -69,3 +69,16 @@ form {
 	.cart-product {
         width:60%; 
     }
+
+.info {
+text-align: center;
+margin-top: 20px; 
+}
+
+
+.imagen {
+width: 150px; 
+height: auto;
+display: inline-block; 
+margin: 0 10px; 
+}

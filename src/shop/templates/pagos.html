@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 
+
 {% block extrahead %}
 {% load static %}
 <link rel="stylesheet" href="{% static 'styles/cart.css' %}">
@@ -8,7 +9,15 @@
 {% block title %}Información sobre los pagos{% endblock %}
 
 {% block content %}
-<div style="max-width: 600px; margin: 0 auto;">
-    <p style="text-align: center;">Para abonar el importe de la compra puede hacerlo a <strong>contrarrembolso</strong>, es decir, cuando el pedido llegue a su domicilio o cuando vaya a recogerlo en tienda, abonará la cantidad establecida. El otro tipo de pago que ofrecemos desde MotosParaTodos es a través de la pasarela de pago <strong>Paypal</strong> en el instante de compra online.</p>
+
+<div class="container">
+    <div style="padding: 0px 100px; margin: 10px 0px;">
+        <div class="resume-cart info">
+            <p style="text-align: justify;">Para abonar el importe de la compra puede hacerlo a <strong>contrarrembolso</strong>, es decir, cuando el pedido llegue a su domicilio o cuando vaya a recogerlo en tienda, abonará la cantidad establecida. El otro tipo de pago que ofrecemos desde MotosParaTodos es a través de la pasarela de pago <strong>Paypal</strong> en el instante de compra online.</p>
+
+            <img src="{% static 'images/ContraRembolso.png' %}" alt="Imagen 1" class="imagen">
+            <img src="{% static 'images/Paypal.png' %}" alt="Imagen 2" class="imagen">
+        </div>
+    </div>
 </div>
 {% endblock %}
