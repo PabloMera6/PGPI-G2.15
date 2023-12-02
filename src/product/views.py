@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, reverse
 from django.shortcuts import redirect
 from .models import Product
 from motorcycle.models import Motorcycle
@@ -154,10 +154,10 @@ def new_motorcycle(request):
                 return render(request, self.template_name, {'error_message': 'Error al procesar los datos. Asegúrate de ingresar números válidos.'})
             if(price <=0):
                 messages.error(request,'El precio no puede ser negativo ni 0')
-                return redirect('new_part')
+                return redirect('new_motorcycle')
             if(stock<0):
                 messages.error(request,'El stock no puede ser negativo')
-                return redirect('new_part')
+                return redirect('new_motorcycle')
             reference_number = generate_reference_number()
             while True:
                 reference_number = generate_reference_number()
@@ -236,10 +236,10 @@ def edit_part(request, part_id):
                 return render(request, self.template_name, {'error_message': 'Error al procesar los datos. Asegúrate de ingresar números válidos.'})
             if(price <=0):
                 messages.error(request,'El precio no puede ser negativo ni 0')
-                return redirect('new_part')
+                return redirect(reverse('edit_part', args=[part_id]))
             if(stock<0):
                 messages.error(request,'El stock no puede ser negativo')
-                return redirect('new_part')
+                return redirect(reverse('edit_part', args=[part_id]))
             part = Part.objects.get(pk=part_id)
             part.name = name
             part.photo = imagen
@@ -290,10 +290,10 @@ def edit_motorcycle(request, motorcycle_id):
                 return render(request, self.template_name, {'error_message': 'Error al procesar los datos. Asegúrate de ingresar números válidos.'})
             if(price <=0):
                 messages.error(request,'El precio no puede ser negativo ni 0')
-                return redirect('new_part')
+                return redirect(reverse('edit_motorcycle', args=[motorcycle_id]))
             if(stock<0):
                 messages.error(request,'El stock no puede ser negativo')
-                return redirect('new_part')
+                return redirect(reverse('edit_motorcycle', args=[motorcycle_id]))
             reference_number = generate_reference_number()
             while True:
                 reference_number = generate_reference_number()
