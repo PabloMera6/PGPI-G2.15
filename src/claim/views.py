@@ -46,15 +46,21 @@ def view_claim(request, claim_id):
         claim.save()
         
         return redirect('view_claims')
+    
+    claim_formated = claim.date.strftime('%d-%m-%Y a las %H:%M')
 
-    return render(request, 'view_claim.html', {'claim': claim})
+    return render(request, 'view_claim.html', {'claim': claim, 'claim_formated': claim_formated})
 
 @login_required
 def user_view_claims(request):
     claims = Claim.objects.filter(author=request.user)
+
     return render(request, 'user_view_claims.html', {'claims': claims})
 
 @login_required
 def user_view_claim(request, claim_id):
     claim = get_object_or_404(Claim, id=claim_id)
-    return render(request, 'user_view_claim.html', {'claim': claim})
+
+    claim_formated = claim.date.strftime('%d-%m-%Y a las %H:%M')
+
+    return render(request, 'user_view_claim.html', {'claim': claim, 'claim_formated': claim_formated})

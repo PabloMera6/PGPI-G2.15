@@ -5,15 +5,12 @@
 <link rel="stylesheet" href="{% static 'styles/manufacturers.css' %}">
 {% endblock %}
 
+{% block title %}Fabricantes{% endblock %}
+
 {% block content %}
 
 <div class="container">
     <div class="row">
-        <div class="row">
-            <div class="col-md-9">
-                <h3 class="title">FABRICANTES</h3>
-            </div>
-        </div>
         <div class="items">
             {% for manufacturer in manufacturers %}
                 {% if forloop.counter0|divisibleby:3 %}

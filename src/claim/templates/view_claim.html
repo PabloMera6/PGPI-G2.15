@@ -1,39 +1,49 @@
 {% extends 'base.html' %}
 
+{% block title %}{% if claim.response %}Editar Respuesta{% else %}Responder a la Reclamación{% endif %}{% endblock %}
+
+{% block extrahead %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'styles/cart.css' %}">
+{% endblock %}
+
 {% block content %}
-<div class="container mt-5">
-    <div class="card">
-        <div class="card-body">
-            <h2 class="text-center mt-4">{% if claim.response %}Editar Respuesta{% else %}Responder a la Reclamación{% endif %}</h2>
 
-            <h3 class="mt-4">Reclamación:</h3>
-            <p>{{ claim.title }}</p>
-            <p>{{ claim.description }}</p>
+<div class="container">
+  <div style="padding: 0px 100px; margin: 10px 0px;">
+    <div class="resume-cart">
+      <h3><strong>Fecha:</strong> {{ claim_formated }}</h3>
+      <h3><strong>Título:</strong> {{ claim.title }}</h3>
+      <h3><strong>Descripción:</strong> {{ claim.description }}</h3>
 
+      {% if claim.response %}
+      <h3><strong>Respuesta:</strong> {{ claim.response }}</h3>
+      {% else %}
+      <h3><strong>Respuesta:</strong> Esperando respuesta...</h3>
+      {% endif %}
 
-            <form method="post" action="{% url 'view_claim' claim.id %}" class="mt-3">
-                {% csrf_token %}
-
-                <div class="form-group">
-                    <label for="response_text">Tu Respuesta:</label>
-                    <textarea class="form-control" name="response_text" placeholder="Escribe tu respuesta aquí" required>{% if claim.response %}{{ claim.response }}{% endif %}</textarea>
-                </div>
-
-                <input type="hidden" name="claim_id" value="{{ claim.id }}">
-
-                <div class="container">
-                  <div class="row">
-                    <button type="submit" class="btn btn-primary float-right">{% if claim.response %}Editar Respuesta{% else %}Enviar Respuesta{% endif %}</button>
-                  </div>
-                </div>
-            </form>
-
-            <div class="container">
-              <div class="row">
-                <a href="{% url 'view_claims' %}" class="btn btn-primary">Volver a la lista de reclamaciones</a>
-              </div>
-            </div>
-        </div>
     </div>
+  </div>
+  <div class="card">
+    <form method="post" action="{% url 'view_claim' claim.id %}" class="mt-3">
+      {% csrf_token %}
+  
+      <div class="form-group">
+          <label for="response_text">Tu Respuesta:</label>
+          <textarea class="form-control" name="response_text" placeholder="Escribe tu respuesta aquí" required>{% if claim.response %}{{ claim.response }}{% endif %}</textarea>
+      </div>
+  
+      <input type="hidden" name="claim_id" value="{{ claim.id }}">
+  
+      <div style="margin: 10px;">
+          <div class="button-center">
+            <button type="submit" class="btn btn-primary float-right">{% if claim.response %}Editar Respuesta{% else %}Enviar Respuesta{% endif %}</button>
+          </div>
+      </div>
+    </form>
+  </div>
+  <div class="button-center">
+    <a href="{% url 'view_claims' %}" class="btn btn-primary">Volver a la lista de reclamaciones</a>
+  </div>
 </div>
 {% endblock %}

@@ -12,6 +12,7 @@
             <th>Comprador (Email)</th>
             <th>Precio</th>
             <th>Estado</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -21,28 +22,39 @@
               <td>{{ order.buyer_mail }}</td>
               <td>{{ order.price }}</td>
               <td>{{ order.state }}</td>
+              <td><a href="{% url 'administrate_order' order.id %}" class="hidden-sm">Más detalles</a></td>
             </tr>
           {% endfor %}
         </tbody>
       </table>
 
-      <div class="pagination">
-        <span class="step-links">
-          {% if orders.has_previous %}
-            <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ orders.previous_page_number }}">previous</a>
-          {% endif %}
-
-          <span class="current">
-            Página {{ orders.number }} de {{ orders.paginator.num_pages }}.
-          </span>
-
-          {% if orders.has_next %}
-            <a href="?page={{ orders.next_page_number }}">next</a>
-            <a href="?page={{ orders.paginator.num_pages }}">last &raquo;</a>
-          {% endif %}
-        </span>
-      </div>
+      <div class="pagination-container text-center mt-4">
+        <ul class="pagination">
+            {% if orders.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1">&laquo; Primera</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ orders.previous_page_number }}">Anterior</a>
+                </li>
+            {% endif %}
+    
+            <li class="page-item disabled">
+                <span class="page-link">
+                    Página {{ orders.number }} de {{ orders.paginator.num_pages }}.
+                </span>
+            </li>
+    
+            {% if orders.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ orders.next_page_number }}">Siguiente</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ orders.paginator.num_pages }}">Última &raquo;</a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
     </div>
   </div>
 {% endblock %}

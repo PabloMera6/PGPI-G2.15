@@ -1,17 +1,31 @@
 {% extends 'base.html' %}
 
+{% block title %}Detalles de la Reclamación{% endblock %}
+
+{% block extrahead %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'styles/cart.css' %}">
+{% endblock %}
+
 {% block content %}
-  <div class="container">
-    <h2 class="text-center mb-4">Detalles de la Reclamación</h2>
-    
-    <p><strong>Fecha:</strong> {{ claim.date }}</p>
-    <p><strong>Título:</strong> {{ claim.title }}</p>
-    <p><strong>Descripción:</strong> {{ claim.description }}</p>
-    
-    {% if claim.response %}
-      <p><strong>Respuesta:</strong> {{ claim.response }}</p>
-    {% endif %}
-    
+
+<div class="container">
+  <div style="padding: 0px 100px; margin: 10px 0px;">
+    <div class="resume-cart">
+      <h3><strong>Fecha:</strong> {{ claim_formated }}</h3>
+      <h3><strong>Título:</strong> {{ claim.title }}</h3>
+      <h3><strong>Descripción:</strong> {{ claim.description }}</h3>
+
+      {% if claim.response %}
+      <h3><strong>Respuesta:</strong> {{ claim.response }}</h3>
+      {% else %}
+      <h3><strong>Respuesta:</strong> Esperando respuesta...</h3>
+      {% endif %}
+
+    </div>
+  </div>
+  <div class="button-center">
     <a href="{% url 'user_view_claims' %}" class="btn btn-primary">Volver a la lista de reclamaciones</a>
   </div>
+</div>
 {% endblock %}
