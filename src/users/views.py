@@ -11,7 +11,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseForbidden
 from django.shortcuts import redirect
 from django.contrib import messages
-
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 class RegisterView(APIView):
@@ -125,6 +125,17 @@ class ListUsersView(APIView):
         current_user = request.user
         if current_user.is_staff:
             users = UserProfile.objects.all()
+
+            users_per_page = 24
+            page = request.GET.get('page')
+            paginator = Paginator(users, users_per_page)
+
+            try:
+                users = paginator.page(page)
+            except PageNotAnInteger:
+                users = paginator.page(1)
+            except EmptyPage:
+                users = paginator.page(paginator.num_pages)
             return render(request, self.template_name, {'users': users})
         else:
             return redirect('/')
@@ -143,7 +154,7 @@ class ListUsersView(APIView):
             user.is_active = False
             user.save()
             Token.objects.filter(user=user).delete()
-            messages.success(request, f'El usuario {user.email} ha sido dado de baja.')
+            messages.info(request, f'El usuario {user.email} ha sido dado de baja.')
 
         return redirect(reverse('administrate_users'))
 

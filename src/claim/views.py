@@ -26,9 +26,14 @@ def create_claim(request):
 
 @login_required
 def view_claims(request):
+    claims_dates= {}
     if request.user.is_staff:
         claims = Claim.objects.all()
-        return render(request, 'view_claims.html', {'claims': claims})
+        for claim in claims:
+            claims_dates[claim] = {
+                'date': claim.date.strftime('%d-%m-%Y a las %H:%M'),
+            }
+        return render(request, 'view_claims.html', {'claims': claims_dates})
     else:
         return redirect('initial') 
     
@@ -54,8 +59,12 @@ def view_claim(request, claim_id):
 @login_required
 def user_view_claims(request):
     claims = Claim.objects.filter(author=request.user)
-
-    return render(request, 'user_view_claims.html', {'claims': claims})
+    claims_dates= {}
+    for claim in claims:
+        claims_dates[claim] = {
+            'date': claim.date.strftime('%d-%m-%Y a las %H:%M'),
+        }
+    return render(request, 'view_claims.html', {'claims': claims_dates})
 
 @login_required
 def user_view_claim(request, claim_id):

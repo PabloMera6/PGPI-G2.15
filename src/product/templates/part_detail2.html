@@ -3,46 +3,90 @@
 {% block extrahead %}
 {% load static %}
 <link rel="stylesheet" href="{% static 'styles/part_details.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-<script src="{% static 'styles/part_details.js' %}"></script>
+<script src="{% static 'styles/part_details.js' %}" defer></script>
 {% endblock %}
+
+{% block title %}Detalles del producto{% endblock %}
 
 {% block content %}
 <div class="pd-wrap">
     <div class="container">
-        <div class="heading-section">
-            <h2 class="section-title">Detalles del producto</h2>
-        </div>
         <div class="row">
             <div class="col-md-6">
                 <div class="item">
                     <img class="product-image" src="{{ part.photo }}" />
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="product-dtl">
-                    <div class="product-info">
-                        <div class="product-name">{{ part.name }}</div>
-                        <div class="reviews-counter">
-                            <div class="rate">
-                                <input type="radio" id="star5" name="rate" value="5" checked />
-                                <label for="star5" title="text">5 stars</label>
-                                <input type="radio" id="star4" name="rate" value="4" checked />
-                                <label for="star4" title="text">4 stars</label>
-                                <input type="radio" id="star3" name="rate" value="3" checked />
-                                <label for="star3" title="text">3 stars</label>
-                                <input type="radio" id="star2" name="rate" value="2" />
-                                <label for="star2" title="text">2 stars</label>
-                                <input type="radio" id="star1" name="rate" value="1" />
-                                <label for="star1" title="text">1 star</label>
-                              </div>
-                            <span>0 Opiniones</span>
+            <div class="col-md-6 card-details">
+                <div class="card-details-fond">
+                    <div class="product-dtl">
+                        <div class="product-info">
+                            <div style="text-align: center;">
+                                <div class="product-name">{{ part.name }}</div>
+                                <div class="review-block-rate">
+                                    {% if media_scores > 4.5 %}
+                                        <i class="glyphicon glyphicon-star"></i>
+                                        <i class="glyphicon glyphicon-star"></i>
+                                        <i class="glyphicon glyphicon-star"></i>
+                                        <i class="glyphicon glyphicon-star"></i>
+                                        <i class="glyphicon glyphicon-star"></i>
+                                    {% elif media_scores <= 4.5 and media_scores > 3.5 %}
+                                        <i class="glyphicon glyphicon-star"></i>
+                                        <i class="glyphicon glyphicon-star"></i>
+                                        <i class="glyphicon glyphicon-star"></i>
+                                        <i class="glyphicon glyphicon-star"></i>
+                                        <i class="glyphicon glyphicon-star-empty"></i>
+                                    {% elif media_scores <= 3.5 and media_scores > 2.5 %}
+                                        <i class="glyphicon glyphicon-star"></i>
+                                        <i class="glyphicon glyphicon-star"></i>
+                                        <i class="glyphicon glyphicon-star"></i>
+                                        <i class="glyphicon glyphicon-star-empty"></i>
+                                        <i class="glyphicon glyphicon-star-empty"></i>
+                                    {% elif media_scores <= 2.5 and media_scores > 1.5 %}
+                                        <i class="glyphicon glyphicon-star"></i>
+                                        <i class="glyphicon glyphicon-star"></i>
+                                        <i class="glyphicon glyphicon-star-empty"></i>
+                                        <i class="glyphicon glyphicon-star-empty"></i>
+                                        <i class="glyphicon glyphicon-star-empty"></i>
+                                    {% elif media_scores <= 1.5 and media_scores > 0.5 %}
+                                        <i class="glyphicon glyphicon-star"></i>
+                                        <i class="glyphicon glyphicon-star-empty"></i>
+                                        <i class="glyphicon glyphicon-star-empty"></i>
+                                        <i class="glyphicon glyphicon-star-empty"></i>
+                                        <i class="glyphicon glyphicon-star-empty"></i>
+                                    {% else %}
+                                        <i class="glyphicon glyphicon-star-empty"></i>
+                                        <i class="glyphicon glyphicon-star-empty"></i>
+                                        <i class="glyphicon glyphicon-star-empty"></i>
+                                        <i class="glyphicon glyphicon-star-empty"></i>
+                                        <i class="glyphicon glyphicon-star-empty"></i>
+                                    {% endif %}
+                                    {% if opinions|length == 1 %}
+                                        <span>({{ media_scores }}) {{ opinions|length }} Opinión</span>
+                                    {% else %}
+                                        <span>({{ media_scores }}) {{ opinions|length }} Opiniones</span>
+                                    {% endif %}
+                                </div>
+                                <div class="product-price"><span>{{ product.price }}€</span></div>
+                            </div>
                         </div>
-                        <div class="product-price"><span>{{ product.price }}€</span></div>
-                    </div>
-                    <p class="category"><strong>Categoría:</strong> {{ part.category }}</p>
-                    <div class="row">
-                        <a href="/administrate/products/parts/edit/{{part.id}}" class="btn btn-primary">Editar pieza</a>
+                        <div class="button-center">
+                            <p class="category"><strong>Categoría:</strong> {{ part.category }}</p>
+                        </div>
+                        <div>
+                            <div class="button-center">
+                                {% if part.stock_quantity == 0 %}
+                                    <h5 class="no-stock">¡AGOTADO!</h5>
+                                {% else %}
+                                    <p class="stock"><strong>Stock:</strong> {{ part.stock_quantity }}</p>
+                                {% endif %}
+                                <div class="product-count">
+                                    <a href="/administrate/products/parts/edit/{{part.id}}" class="btn btn-primary">Editar pieza</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -50,14 +94,113 @@
         <div class="product-info-tabs">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                   <li class="nav-item">
-                    <a class="nav-link active" id="description-tab" data-toggle="tab" href="#description" role="tab" aria-controls="description" aria-selected="true">Motocicletas compatibles</a>
+                    <a class="nav-link active" id="review-tab" data-toggle="tab" href="#review" role="tab" aria-controls="review" aria-selected="true">Opiniones</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" id="review-tab" data-toggle="tab" href="#review" role="tab" aria-controls="review" aria-selected="false">Opiniones</a>
+                    <a class="nav-link" id="description-tab" data-toggle="tab" href="#description" role="tab" aria-controls="description" aria-selected="false">Motocicletas compatibles</a>
                   </li>
             </ul>
             <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade active in" id="description" role="tabpanel" aria-labelledby="description-tab">
+                <div class="tab-pane fade active in" id="review" role="tabpanel" aria-labelledby="review-tab">
+                    <div class="review-heading">OPINIONES DE LOS CLIENTES</div>
+                    {% if not opinions %}
+                        <p class="mb-20">No hay opiniones disponibles.</p>
+                    {% else %}
+                        <div class="col-sm-3">
+                            <h4 class="opinion-resume">Resumen de las opiniones</h4>
+                            {% for score, num_scores, percentage in rating_stats %}
+                                <div class="pull-left">
+                                    <div class="pull-left" style="width:35px; line-height:1;">
+                                        <div style="height:9px; margin:5px 0;">{{ score }} <span class="glyphicon glyphicon-star"></span></div>
+                                    </div>
+                                    <div class="pull-left" style="width:180px;">
+                                        <div class="progress" style="height:9px; margin:8px 0;">
+                                        <div class="progress-bar progress-bar" role="progressbar" style="width: {{ percentage }}% ">
+                                            <span class="sr-only">80% Complete (danger)</span>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div class="pull-right" style="margin-left:10px;">{{ num_scores }}</div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-7">
+                                <hr/>
+                                <div class="review-block">
+                                    {% for opinion in opinions %}
+                                        <div class="row">
+                                            <div class="col-sm-16">
+                                                <div class="review-block-rate">
+                                                    {% if opinion.score == 5 %}
+                                                        <i class="glyphicon glyphicon-star"></i>
+                                                        <i class="glyphicon glyphicon-star"></i>
+                                                        <i class="glyphicon glyphicon-star"></i>
+                                                        <i class="glyphicon glyphicon-star"></i>
+                                                        <i class="glyphicon glyphicon-star"></i>
+                                                    {% elif opinion.score == 4 %}
+                                                        <i class="glyphicon glyphicon-star"></i>
+                                                        <i class="glyphicon glyphicon-star"></i>
+                                                        <i class="glyphicon glyphicon-star"></i>
+                                                        <i class="glyphicon glyphicon-star"></i>
+                                                        <i class="glyphicon glyphicon-star-empty"></i>
+                                                    {% elif opinion.score == 3 %}
+                                                        <i class="glyphicon glyphicon-star"></i>
+                                                        <i class="glyphicon glyphicon-star"></i>
+                                                        <i class="glyphicon glyphicon-star"></i>
+                                                        <i class="glyphicon glyphicon-star-empty"></i>
+                                                        <i class="glyphicon glyphicon-star-empty"></i>
+                                                    {% elif opinion.score == 2 %}
+                                                        <i class="glyphicon glyphicon-star"></i>
+                                                        <i class="glyphicon glyphicon-star"></i>
+                                                        <i class="glyphicon glyphicon-star-empty"></i>
+                                                        <i class="glyphicon glyphicon-star-empty"></i>
+                                                        <i class="glyphicon glyphicon-star-empty"></i>
+                                                    {% elif opinion.score == 1 %}
+                                                        <i class="glyphicon glyphicon-star"></i>
+                                                        <i class="glyphicon glyphicon-star-empty"></i>
+                                                        <i class="glyphicon glyphicon-star-empty"></i>
+                                                        <i class="glyphicon glyphicon-star-empty"></i>
+                                                        <i class="glyphicon glyphicon-star-empty"></i>
+                                                    {% endif %}
+                                                </div>
+                                                <div class="review-block-author">{{ opinion.author.full_name }}</div>
+                                                <div class="review-block-date">{{ opinion.date }}</div>
+                                                <div class="review-block-description">{{ opinion.description }}</div>
+                                            </div>
+                                        </div>
+                                        <hr/>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}	
+                    {% if not_reviewed and request.user.is_authenticated %}
+                        <form class="review-form" method="post">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label>Tu puntuación</label>
+                                <div class="reviews-counter">
+                                    <div class="stars" data-rating="0">
+                                        <i class="fa-solid fa-star" data-value="1"></i>
+                                        <i class="fa-solid fa-star" data-value="2"></i>
+                                        <i class="fa-solid fa-star" data-value="3"></i>
+                                        <i class="fa-solid fa-star" data-value="4"></i>
+                                        <i class="fa-solid fa-star" data-value="5"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="hidden" name="score" id="selectedRating" value="0">
+                            <input type="hidden" name="product_id" value="{{ part.id }}">
+                            <div class="form-group">
+                                <label for="description">Descripción</label>
+                                <textarea class="form-control" rows="10" type="description" id="desccription" name="description" required></textarea>
+                            </div>
+                            <button class="round-black-btn-opinion" type="submit">AÑADIR OPINIÓN</button>
+                        </form>
+                    {% endif %}
+                </div>
+                <div class="tab-pane fade" id="description" role="tabpanel" aria-labelledby="description-tab">
                     <div class="items">
                         {% for motorcycle in compatible_motorcycles %}
                             {% if forloop.counter0|divisibleby:3 %}
@@ -97,10 +240,7 @@
                         {% endfor %}
                     </div>
                 </div>
-                <div class="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
-                    <div class="review-heading">OPINIONES</div>
-                    <p class="mb-20">No hay opiniones disponibles.</p>
-                </div>
+                
             </div>
         </div>
     </div>
