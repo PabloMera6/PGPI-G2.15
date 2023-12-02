@@ -150,23 +150,23 @@ def checkout(request):
 
     for key, value in my_cart.items():
         product = get_object_or_404(Product, pk=key)
-        precio_total += float(product.price) * float(value)
+        precio_total += round(float(product.price) * float(value), 2)
         if product.product_type == 'M':
             moto = get_object_or_404(Motorcycle, pk=key)
             motos[moto] = {
-                'price': float(product.price) * float(value),
+                'price': round(float(product.price) * float(value), 2),
                 'quantity': value
             }
         elif product.product_type == 'P':
             part = get_object_or_404(Part, pk=key)
             parts[part] = {
-                'price': float(product.price) * float(value),
+                'price': round(float(product.price) * float(value), 2),
                 'quantity': value
             }
         if product.product_type == 'C':
             derived_moto = get_object_or_404(DerivedMotorcycle, pk=key)
             derived_motos[derived_moto] = {
-                'price': float(product.price) * float(value),
+                'price': round(float(product.price) * float(value), 2),
                 'quantity': value
             }
     if precio_total == 0:
@@ -308,14 +308,14 @@ def create_order(price, shipment, payment, buyer_mail, buyer_name, buyer_phone, 
             part.stock_quantity -= value
             part.save()
             parts[part] = {
-                'price': float(product.price) * float(value),
+                'price': round(float(product.price) * float(value), 2),
                 'quantity': value
             }
         elif product.product_type == 'M':
             moto = get_object_or_404(Motorcycle, pk=key)
             moto.stock_quantity -= value
             motos[moto] = {
-                'price': float(product.price) * float(value),
+                'price': round(float(product.price) * float(value), 2),
                 'quantity': value
             }
             #moto.calculate_motorcicle_stock()
@@ -325,7 +325,7 @@ def create_order(price, shipment, payment, buyer_mail, buyer_name, buyer_phone, 
             derived_moto = get_object_or_404(DerivedMotorcycle, pk=key)
             derived_moto.update_deriver_motorcycle_stock(value)
             motos[derived_moto] = {
-                'price': float(product.price) * float(value),
+                'price': round(float(product.price) * float(value), 2),
                 'quantity': value
             }
     
@@ -364,19 +364,19 @@ def confirmed(request, order_id):
         if product.product_type == 'M':
             moto = get_object_or_404(Motorcycle, pk=product.id)
             motos[moto] = {
-                'price': float(product.price) * float(x.quantity),
+                'price': round(float(product.price) * float(x.quantity), 2),
                 'quantity': x.quantity
             }
         elif product.product_type == 'P':
             part = get_object_or_404(Part, pk=product.id)
             parts[part] = {
-                'price': float(product.price) * float(x.quantity),
+                'price': round(float(product.price) * float(x.quantity), 2),
                 'quantity': x.quantity
             }
         if product.product_type == 'C':
             derived_moto = get_object_or_404(DerivedMotorcycle, pk=product.id)
             derived_motos[derived_moto] = {
-                'price': float(product.price) * float(x.quantity),
+                'price': round(float(product.price) * float(x.quantity), 2),
                 'quantity': x.quantity
             }
     return render(request, 'order_resume.html',{'motos': motos,
@@ -394,7 +394,7 @@ def view_cart(request):
     precio_total = 0.0
     for key, value in my_cart.items():
         product = get_object_or_404(Product, pk=key)
-        precio_total += float(product.price) * float(value)
+        precio_total += round(float(product.price) * float(value), 2)
         if product.product_type == 'M':
             moto = get_object_or_404(Motorcycle, pk=key)
             motos[moto] = {
@@ -410,7 +410,7 @@ def view_cart(request):
         if product.product_type == 'C':
             derived_moto = get_object_or_404(DerivedMotorcycle, pk=key)
             derived_motos[derived_moto] = {
-                'price': float(product.price) * float(value),
+                'price': round(float(product.price) * float(value), 2),
                 'quantity': value
             }
     return render(request, 'cart.html', {

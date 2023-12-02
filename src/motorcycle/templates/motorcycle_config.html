@@ -6,16 +6,29 @@
 <script src="{% static 'styles/motorcycle_details.js' %}"></script>
 {% endblock %}
 
+{% block title %}Configurar {{ motorcycle.name }}{% endblock %}
+
 {% block content %}
 <div class="pd-wrap">
     <div class="container">
-        <div class="heading-section">
-            <h2 class="section-title">Configurar {{ motorcycle.name }}</h2>
-        </div>
-        <div class="row">
+        <div class="row" style="display: flex; justify-content: center; align-items: center;">
             <div class="col-md-5">
                 <div class="item" style="border: 2px solid black;">
                     <img class="product-image mx-auto" src="{{ motorcycle.photo }}" />
+                </div>
+            </div>
+            <div class="col-md-6 card-details">
+                <div class="card-details-fond">
+                    <div class="product-dtl">
+                        <div class="product-info">
+                            <div style="text-align: center;">
+                                <div class="product-name">{{ motorcycle.name }}</div>
+                                <p class="category"><strong>Categoría:</strong> {{ motorcycle.category }}</p>
+                                <div class="product-price"><span>{{ product.price }}€</span></div>
+                                <span class="product-detail">*Precio con las partes predeterminadas*</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -57,330 +70,393 @@
                     <div class="tab-pane fade active in" id="carroceria" role="tabpanel" aria-labelledby="carroceria-tab">
                         <div class="items">
                             {% for part in motorcycle.compatible_carroceria.all %}
-                                <div class="col-sm-4">
-                                    <div class="col-item">
-                                        <div class="photo">
-                                            <img src='{{ part.photo }}' class="img-responsive" alt="a" />
-                                        </div>
-                                        <div class="info">
-                                            <div class="row">
-                                                <div class="price col-md-6">
-                                                    <h5>{{ part.name }}</h5>
-                                                    {% if part.stock_quantity == 0 %}
-                                                        <h5 class="part-no-stock">¡AGOTADO!</h5>
-                                                    {% endif %}
-                                                    <h5>{{ part.price }} €</h5>
-                                                    <h5>Stock:{{ part.stock_quantity }} </h5>
+                                {% if forloop.counter0|divisibleby:3 %}
+                                    <div class="items-row">
+                                {% endif %}
+                                    <div class="col-sm-4">
+                                        <div class="col-item">
+                                            <div class="photo">
+                                                <img src="{{ part.photo }}" class="img-responsive" alt="a" />
+                                            </div>
+                                            <div class="info">
+                                                <div class="row" style="display: flex; justify-content: center; align-items: center;">
+                                                    <div class="price">
+                                                        <h5>{{ part.name }}</h5>
+                                                        <h5>{{ part.price }} €</h5>
+                                                        <h5>Stock:{{ part.stock_quantity }} </h5>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="separator clear-left">
-                                                <p class="btn-details">
-                                                    {% if part.id == motorcycle.selected_carrocería.id %}
-                                                        <input type="radio" name="carroceria" value="{{ part.id }}" checked>
-                                                    {% else %}
-                                                        <input type="radio" name="carroceria" value="{{ part.id }}">
-                                                    {% endif %}
-                                                </p>
-                                            </div>
-                                            <div class="clearfix">
+                                                <div class="separator clear-left">
+                                                    <p class="btn-details">
+                                                        {% if part.stock_quantity == 0 %}
+                                                            <span class="no-stock">¡AGOTADO!</span>
+                                                        {% else %}
+                                                            {% if part.id == motorcycle.selected_carrocería.id %}
+                                                                <input type="radio" name="carroceria" value="{{ part.id }}" checked>
+                                                            {% else %}
+                                                                <input type="radio" name="carroceria" value="{{ part.id }}">
+                                                            {% endif %}
+                                                        {% endif %}
+                                                    </p>     
+                                                </div>
+                                                <div class="clearfix">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                {% if forloop.counter|divisibleby:3 or forloop.last %}
+                                    </div>
+                                {% endif %}
                             {% endfor %}
                         </div>
                     </div>
                     <div class="tab-pane fade" id="motor" role="tabpanel" aria-labelledby="motor-tab">
                         <div class="items">
                             {% for part in motorcycle.compatible_motor.all %}
-                                <div class="col-sm-4">
-                                    <div class="col-item">
-                                        <div class="photo">
-                                            <img src='{{ part.photo }}' class="img-responsive" alt="a" />
-                                        </div>
-                                        <div class="info">
-                                            <div class="row">
-                                                <div class="price col-md-6">
-                                                    <h5>{{ part.name }}</h5>
-                                                    {% if part.stock_quantity == 0 %}
-                                                        <h5 class="part-no-stock">¡AGOTADO!</h5>
-                                                    {% endif %}
-                                                    <h5>{{ part.price }} €</h5>
-                                                    <h5>Stock:{{ part.stock_quantity }} </h5>
+                                {% if forloop.counter0|divisibleby:3 %}
+                                    <div class="items-row">
+                                {% endif %}
+                                    <div class="col-sm-4">
+                                        <div class="col-item">
+                                            <div class="photo">
+                                                <img src="{{ part.photo }}" class="img-responsive" alt="a" />
+                                            </div>
+                                            <div class="info">
+                                                <div class="row" style="display: flex; justify-content: center; align-items: center;">
+                                                    <div class="price">
+                                                        <h5>{{ part.name }}</h5>
+                                                        <h5>{{ part.price }} €</h5>
+                                                        <h5>Stock:{{ part.stock_quantity }} </h5>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="separator clear-left">
-                                                <p class="btn-details">
-                                                    {% if part.id == motorcycle.selected_motor.id %}
-                                                        <input type="radio" name="motor" value="{{ part.id }}" checked>
-                                                    {% else %}
-                                                        <input type="radio" name="motor" value="{{ part.id }}">
-                                                    {% endif %}
-                                                </p>
-                                            </div>
-                                            <div class="clearfix">
+                                                <div class="separator clear-left">
+                                                    <p class="btn-details">
+                                                        {% if part.stock_quantity == 0 %}
+                                                            <span class="no-stock">¡AGOTADO!</span>
+                                                        {% else %}
+                                                            {% if part.id == motorcycle.selected_motor.id %}
+                                                                <input type="radio" name="motor" value="{{ part.id }}" checked>
+                                                            {% else %}
+                                                                <input type="radio" name="motor" value="{{ part.id }}">
+                                                            {% endif %}
+                                                        {% endif %}
+                                                    </p>     
+                                                </div>
+                                                <div class="clearfix">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                {% if forloop.counter|divisibleby:3 or forloop.last %}
+                                    </div>
+                                {% endif %}
                             {% endfor %}
                         </div>
                     </div>
                     <div class="tab-pane fade" id="transmision" role="tabpanel" aria-labelledby="transmision-tab">
                         <div class="items">
                             {% for part in motorcycle.compatible_transmision.all %}
-                                <div class="col-sm-4">
-                                    <div class="col-item">
-                                        <div class="photo">
-                                            <img src='{{ part.photo }}' class="img-responsive" alt="a" />
-                                        </div>
-                                        <div class="info">
-                                            <div class="row">
-                                                <div class="price col-md-6">
-                                                    <h5>{{ part.name }}</h5>
-                                                    {% if part.stock_quantity == 0 %}
-                                                        <h5 class="part-no-stock">¡AGOTADO!</h5>
-                                                    {% endif %}
-                                                    <h5>{{ part.price }} €</h5>
-                                                    <h5>Stock{{ part.stock_quantity }} </h5>
+                                {% if forloop.counter0|divisibleby:3 %}
+                                    <div class="items-row">
+                                {% endif %}
+                                    <div class="col-sm-4">
+                                        <div class="col-item">
+                                            <div class="photo">
+                                                <img src="{{ part.photo }}" class="img-responsive" alt="a" />
+                                            </div>
+                                            <div class="info">
+                                                <div class="row" style="display: flex; justify-content: center; align-items: center;">
+                                                    <div class="price">
+                                                        <h5>{{ part.name }}</h5>
+                                                        <h5>{{ part.price }} €</h5>
+                                                        <h5>Stock:{{ part.stock_quantity }} </h5>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="separator clear-left">
-                                                <p class="btn-details">
-                                                    {% if part.id == motorcycle.selected_transmision.id %}
-                                                        <input type="radio" name="transmision" value="{{ part.id }}" checked>
-                                                    {% else %}
-                                                        <input type="radio" name="transmision" value="{{ part.id }}">
-                                                    {% endif %}
-                                                </p>
-                                            </div>
-                                            <div class="clearfix">
+                                                <div class="separator clear-left">
+                                                    <p class="btn-details">
+                                                        {% if part.stock_quantity == 0 %}
+                                                            <span class="no-stock">¡AGOTADO!</span>
+                                                        {% else %}
+                                                            {% if part.id == motorcycle.selected_transmision.id %}
+                                                                <input type="radio" name="transmision" value="{{ part.id }}" checked>
+                                                            {% else %}
+                                                                <input type="radio" name="transmision" value="{{ part.id }}">
+                                                            {% endif %}
+                                                        {% endif %}
+                                                    </p>     
+                                                </div>
+                                                <div class="clearfix">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                {% if forloop.counter|divisibleby:3 or forloop.last %}
+                                    </div>
+                                {% endif %}
                             {% endfor %}
                         </div>
                     </div>
                     <div class="tab-pane fade" id="suspension" role="tabpanel" aria-labelledby="suspension-tab">
                         <div class="items">
                             {% for part in motorcycle.compatible_suspension.all %}
-                                <div class="col-sm-4">
-                                    <div class="col-item">
-                                        <div class="photo">
-                                            <img src='{{ part.photo }}' class="img-responsive" alt="a" />
-                                        </div>
-                                        <div class="info">
-                                            <div class="row">
-                                                <div class="price col-md-6">
-                                                    <h5>{{ part.name }}</h5>
-                                                    {% if part.stock_quantity == 0 %}
-                                                        <h5 class="part-no-stock">¡AGOTADO!</h5>
-                                                    {% endif %}
-                                                    <h5>{{ part.price }} €</h5>
-                                                    <h5>Stock:{{ part.stock_quantity }} </h5>
+                                {% if forloop.counter0|divisibleby:3 %}
+                                    <div class="items-row">
+                                {% endif %}
+                                    <div class="col-sm-4">
+                                        <div class="col-item">
+                                            <div class="photo">
+                                                <img src="{{ part.photo }}" class="img-responsive" alt="a" />
+                                            </div>
+                                            <div class="info">
+                                                <div class="row" style="display: flex; justify-content: center; align-items: center;">
+                                                    <div class="price">
+                                                        <h5>{{ part.name }}</h5>
+                                                        <h5>{{ part.price }} €</h5>
+                                                        <h5>Stock:{{ part.stock_quantity }} </h5>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="separator clear-left">
-                                                <p class="btn-details">
-                                                    {% if part.id == motorcycle.selected_suspension.id %}
-                                                        <input type="radio" name="suspension" value="{{ part.id }}" checked>
-                                                    {% else %}
-                                                        <input type="radio" name="suspension" value="{{ part.id }}">
-                                                    {% endif %}
-                                                </p>
-                                            </div>
-                                            <div class="clearfix">
+                                                <div class="separator clear-left">
+                                                    <p class="btn-details">
+                                                        {% if part.stock_quantity == 0 %}
+                                                            <span class="no-stock">¡AGOTADO!</span>
+                                                        {% else %}
+                                                            {% if part.id == motorcycle.selected_suspension.id %}
+                                                                <input type="radio" name="suspension" value="{{ part.id }}" checked>
+                                                            {% else %}
+                                                                <input type="radio" name="suspension" value="{{ part.id }}">
+                                                            {% endif %}
+                                                        {% endif %}
+                                                    </p>     
+                                                </div>
+                                                <div class="clearfix">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                {% if forloop.counter|divisibleby:3 or forloop.last %}
+                                    </div>
+                                {% endif %}
                             {% endfor %}
                         </div>
                     </div>
                     <div class="tab-pane fade" id="ruedas" role="tabpanel" aria-labelledby="ruedas-tab">
                         <div class="items">
                             {% for part in motorcycle.compatible_ruedas.all %}
-                                <div class="col-sm-4">
-                                    <div class="col-item">
-                                        <div class="photo">
-                                            <img src='{{ part.photo }}' class="img-responsive" alt="a" />
-                                        </div>
-                                        <div class="info">
-                                            <div class="row">
-                                                <div class="price col-md-6">
-                                                    <h5>{{ part.name }}</h5>
-                                                    {% if part.stock_quantity == 0 %}
-                                                        <h5 class="part-no-stock">¡AGOTADO!</h5>
-                                                    {% endif %}
-                                                    <h5>{{ part.price }} €</h5>
-                                                    <h5>Stock:{{ part.stock_quantity }} </h5>
+                                {% if forloop.counter0|divisibleby:3 %}
+                                    <div class="items-row">
+                                {% endif %}
+                                    <div class="col-sm-4">
+                                        <div class="col-item">
+                                            <div class="photo">
+                                                <img src="{{ part.photo }}" class="img-responsive" alt="a" />
+                                            </div>
+                                            <div class="info">
+                                                <div class="row" style="display: flex; justify-content: center; align-items: center;">
+                                                    <div class="price">
+                                                        <h5>{{ part.name }}</h5>
+                                                        <h5>{{ part.price }} €</h5>
+                                                        <h5>Stock:{{ part.stock_quantity }} </h5>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="separator clear-left">
-                                                <p class="btn-details">
-                                                    {% if part.id == motorcycle.selected_ruedas.id %}
-                                                        <input type="radio" name="ruedas" value="{{ part.id }}" checked>
-                                                    {% else %}
-                                                        <input type="radio" name="ruedas" value="{{ part.id }}">
-                                                    {% endif %}
-                                                </p>
-                                            </div>
-                                            <div class="clearfix">
+                                                <div class="separator clear-left">
+                                                    <p class="btn-details">
+                                                        {% if part.stock_quantity == 0 %}
+                                                            <span class="no-stock">¡AGOTADO!</span>
+                                                        {% else %}
+                                                            {% if part.id == motorcycle.selected_ruedas.id %}
+                                                                <input type="radio" name="ruedas" value="{{ part.id }}" checked>
+                                                            {% else %}
+                                                                <input type="radio" name="ruedas" value="{{ part.id }}">
+                                                            {% endif %}
+                                                        {% endif %}
+                                                    </p>     
+                                                </div>
+                                                <div class="clearfix">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                {% if forloop.counter|divisibleby:3 or forloop.last %}
+                                    </div>
+                                {% endif %}
                             {% endfor %}
                         </div>
                     </div>
                     <div class="tab-pane fade" id="frenos" role="tabpanel" aria-labelledby="frenos-tab">
                         <div class="items">
                             {% for part in motorcycle.compatible_frenos.all %}
-                                <div class="col-sm-4">
-                                    <div class="col-item">
-                                        <div class="photo">
-                                            <img src='{{ part.photo }}' class="img-responsive" alt="a" />
-                                        </div>
-                                        <div class="info">
-                                            <div class="row">
-                                                <div class="price col-md-6">
-                                                    <h5>{{ part.name }}</h5>
-                                                    {% if part.stock_quantity == 0 %}
-                                                        <h5 class="part-no-stock">¡AGOTADO!</h5>
-                                                    {% endif %}
-                                                    <h5>{{ part.price }} €</h5>
-                                                    <h5>Stock:{{ part.stock_quantity }} </h5>
+                                {% if forloop.counter0|divisibleby:3 %}
+                                    <div class="items-row">
+                                {% endif %}
+                                    <div class="col-sm-4">
+                                        <div class="col-item">
+                                            <div class="photo">
+                                                <img src="{{ part.photo }}" class="img-responsive" alt="a" />
+                                            </div>
+                                            <div class="info">
+                                                <div class="row" style="display: flex; justify-content: center; align-items: center;">
+                                                    <div class="price">
+                                                        <h5>{{ part.name }}</h5>
+                                                        <h5>{{ part.price }} €</h5>
+                                                        <h5>Stock:{{ part.stock_quantity }} </h5>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="separator clear-left">
-                                                <p class="btn-details">
-                                                    {% if part.id == motorcycle.selected_frenos.id %}
-                                                        <input type="radio" name="frenos" value="{{ part.id }}" checked>
-                                                    {% else %}
-                                                        <input type="radio" name="frenos" value="{{ part.id }}">
-                                                    {% endif %}
-                                                </p>
-                                            </div>
-                                            <div class="clearfix">
+                                                <div class="separator clear-left">
+                                                    <p class="btn-details">
+                                                        {% if part.stock_quantity == 0 %}
+                                                            <span class="no-stock">¡AGOTADO!</span>
+                                                        {% else %}
+                                                            {% if part.id == motorcycle.selected_frenos.id %}
+                                                                <input type="radio" name="frenos" value="{{ part.id }}" checked>
+                                                            {% else %}
+                                                                <input type="radio" name="frenos" value="{{ part.id }}">
+                                                            {% endif %}
+                                                        {% endif %}
+                                                    </p>     
+                                                </div>
+                                                <div class="clearfix">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                {% if forloop.counter|divisibleby:3 or forloop.last %}
+                                    </div>
+                                {% endif %}
                             {% endfor %}
                         </div>
                     </div>
                     <div class="tab-pane fade" id="manillar" role="tabpanel" aria-labelledby="manillar-tab">
                         <div class="items">
                             {% for part in motorcycle.compatible_manillar.all %}
-                                <div class="col-sm-4">
-                                    <div class="col-item">
-                                        <div class="photo">
-                                            <img src='{{ part.photo }}' class="img-responsive" alt="a" />
-                                        </div>
-                                        <div class="info">
-                                            <div class="row">
-                                                <div class="price col-md-6">
-                                                    <h5>{{ part.name }}</h5>
-                                                    {% if part.stock_quantity == 0 %}
-                                                        <h5 class="part-no-stock">¡AGOTADO!</h5>
-                                                    {% endif %}
-                                                    <h5>{{ part.price }} €</h5>
-                                                    <h5>Stock:{{ part.stock_quantity }} </h5>
+                                {% if forloop.counter0|divisibleby:3 %}
+                                    <div class="items-row">
+                                {% endif %}
+                                    <div class="col-sm-4">
+                                        <div class="col-item">
+                                            <div class="photo">
+                                                <img src="{{ part.photo }}" class="img-responsive" alt="a" />
+                                            </div>
+                                            <div class="info">
+                                                <div class="row" style="display: flex; justify-content: center; align-items: center;">
+                                                    <div class="price">
+                                                        <h5>{{ part.name }}</h5>
+                                                        <h5>{{ part.price }} €</h5>
+                                                        <h5>Stock:{{ part.stock_quantity }} </h5>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="separator clear-left">
-                                                <p class="btn-details">
-                                                    {% if part.id == motorcycle.selected_manillar.id %}
-                                                        <input type="radio" name="manillar" value="{{ part.id }}" checked>
-                                                    {% else %}
-                                                        <input type="radio" name="manillar" value="{{ part.id }}">
-                                                    {% endif %}
-                                                </p>
-                                            </div>
-                                            <div class="clearfix">
+                                                <div class="separator clear-left">
+                                                    <p class="btn-details">
+                                                        {% if part.stock_quantity == 0 %}
+                                                            <span class="no-stock">¡AGOTADO!</span>
+                                                        {% else %}
+                                                            {% if part.id == motorcycle.selected_manillar.id %}
+                                                                <input type="radio" name="manillar" value="{{ part.id }}" checked>
+                                                            {% else %}
+                                                                <input type="radio" name="manillar" value="{{ part.id }}">
+                                                            {% endif %}
+                                                        {% endif %}
+                                                    </p>     
+                                                </div>
+                                                <div class="clearfix">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                {% if forloop.counter|divisibleby:3 or forloop.last %}
+                                    </div>
+                                {% endif %}
                             {% endfor %}
                         </div>
                     </div>
                     <div class="tab-pane fade" id="combustible" role="tabpanel" aria-labelledby="combustible-tab">
                         <div class="items">
                             {% for part in motorcycle.compatible_combustible.all %}
-                                <div class="col-sm-4">
-                                    <div class="col-item">
-                                        <div class="photo">
-                                            <img src='{{ part.photo }}' class="img-responsive" alt="a" />
-                                        </div>
-                                        <div class="info">
-                                            <div class="row">
-                                                <div class="price col-md-6">
-                                                    <h5>{{ part.name }}</h5>
-                                                    {% if part.stock_quantity == 0 %}
-                                                        <h5 class="part-no-stock">¡AGOTADO!</h5>
-                                                    {% endif %}
-                                                    <h5>{{ part.price }} €</h5>
-                                                    <h5>Stock:{{ part.stock_quantity }} </h5>
+                                {% if forloop.counter0|divisibleby:3 %}
+                                    <div class="items-row">
+                                {% endif %}
+                                    <div class="col-sm-4">
+                                        <div class="col-item">
+                                            <div class="photo">
+                                                <img src="{{ part.photo }}" class="img-responsive" alt="a" />
+                                            </div>
+                                            <div class="info">
+                                                <div class="row" style="display: flex; justify-content: center; align-items: center;">
+                                                    <div class="price">
+                                                        <h5>{{ part.name }}</h5>
+                                                        <h5>{{ part.price }} €</h5>
+                                                        <h5>Stock:{{ part.stock_quantity }} </h5>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="separator clear-left">
-                                                <p class="btn-details">
-                                                    {% if part.id == motorcycle.selected_combustible.id %}
-                                                        <input type="radio" name="combustible" value="{{ part.id }}" checked>
-                                                    {% else %}
-                                                        <input type="radio" name="combustible" value="{{ part.id }}">
-                                                    {% endif %}
-                                                </p>
-                                            </div>
-                                            <div class="clearfix">
+                                                <div class="separator clear-left">
+                                                    <p class="btn-details">
+                                                        {% if part.stock_quantity == 0 %}
+                                                            <span class="no-stock">¡AGOTADO!</span>
+                                                        {% else %}
+                                                            {% if part.id == motorcycle.selected_combustible.id %}
+                                                                <input type="radio" name="combustible" value="{{ part.id }}" checked>
+                                                            {% else %}
+                                                                <input type="radio" name="combustible" value="{{ part.id }}">
+                                                            {% endif %}
+                                                        {% endif %}
+                                                    </p>     
+                                                </div>
+                                                <div class="clearfix">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                {% if forloop.counter|divisibleby:3 or forloop.last %}
+                                    </div>
+                                {% endif %}
                             {% endfor %}
                         </div>
                     </div>
                     <div class="tab-pane fade" id="chasis" role="tabpanel" aria-labelledby="chasis-tab">
                         <div class="items">
                             {% for part in motorcycle.compatible_chasis.all %}
-                                <div class="col-sm-4">
-                                    <div class="col-item">
-                                        <div class="photo">
-                                            <img src='{{ part.photo }}' class="img-responsive" alt="a" />
-                                        </div>
-                                        <div class="info">
-                                            <div class="row">
-                                                <div class="price col-md-6">
-                                                    <h5>{{ part.name }}</h5>
-                                                    {% if part.stock_quantity == 0 %}
-                                                        <h5 class="part-no-stock">¡AGOTADO!</h5>
-                                                    {% endif %}
-                                                    <h5>{{ part.price }} €</h5>
-                                                    <h5>Stock{{ part.stock_quantity }} </h5>
+                                {% if forloop.counter0|divisibleby:3 %}
+                                    <div class="items-row">
+                                {% endif %}
+                                    <div class="col-sm-4">
+                                        <div class="col-item">
+                                            <div class="photo">
+                                                <img src="{{ part.photo }}" class="img-responsive" alt="a" />
+                                            </div>
+                                            <div class="info">
+                                                <div class="row" style="display: flex; justify-content: center; align-items: center;">
+                                                    <div class="price button-center" >
+                                                        <h5>{{ part.name }}</h5>
+                                                        <h5>{{ part.price }} €</h5>
+                                                        <h5>Stock:{{ part.stock_quantity }} </h5>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="separator clear-left">
-                                                <p class="btn-details">
-                                                    {% if part.id == motorcycle.selected_chasis.id %}
-                                                        <input type="radio" name="chasis" value="{{ part.id }}" checked>
-                                                    {% else %}
-                                                        <input type="radio" name="chasis" value="{{ part.id }}">
-                                                    {% endif %}
-                                                </p>
-                                            </div>
-                                            <div class="clearfix">
+                                                <div class="separator clear-left">
+                                                    <p class="btn-details">
+                                                        {% if part.stock_quantity == 0 %}
+                                                            <span class="no-stock">¡AGOTADO!</span>
+                                                        {% else %}
+                                                            {% if part.id == motorcycle.selected_chasis.id %}
+                                                                <input type="radio" name="chasis" value="{{ part.id }}" checked>
+                                                            {% else %}
+                                                                <input type="radio" name="chasis" value="{{ part.id }}">
+                                                            {% endif %}
+                                                        {% endif %}
+                                                    </p>     
+                                                </div>
+                                                <div class="clearfix">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                {% if forloop.counter|divisibleby:3 or forloop.last %}
+                                    </div>
+                                {% endif %}
                             {% endfor %}
                         </div>
                     </div>
                 </div>
-                <div>
-                    <button type="submit" class="btn btn-info btn-sm">Finalizar</button>
+                <div class="button-center">
+                    <button type="submit" class="btn btn-primary">Finalizar</button>
                 </div>
             </form>
         </div>

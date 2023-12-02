@@ -8,147 +8,118 @@
 <script src="{% static 'styles/motorcycle_details.js' %}" defer></script>
 {% endblock %}
 
+{% block title %}Detalles del producto{% endblock %}
+
 {% block content %}
 <div class="pd-wrap">
     <div class="container">
-        <div class="heading-section">
-            <h2 class="section-title">Detalles del producto</h2>
-        </div>
         <div class="row">
             <div class="col-md-6">
                 <div class="item">
                     <img class="product-image" src="{{ motorcycle.photo }}" />
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="product-dtl">
-                    <div class="product-info">
-                        <div class="product-name">{{ motorcycle.name }}</div>
-                        <div class="review-block-rate">
-                            {% if media_scores > 4.5 %}
-                                <i class="glyphicon glyphicon-star"></i>
-                                <i class="glyphicon glyphicon-star"></i>
-                                <i class="glyphicon glyphicon-star"></i>
-                                <i class="glyphicon glyphicon-star"></i>
-                                <i class="glyphicon glyphicon-star"></i>
-                            {% elif media_scores <= 4.5 and media_scores > 3.5 %}
-                                <i class="glyphicon glyphicon-star"></i>
-                                <i class="glyphicon glyphicon-star"></i>
-                                <i class="glyphicon glyphicon-star"></i>
-                                <i class="glyphicon glyphicon-star"></i>
-                                <i class="glyphicon glyphicon-star-empty"></i>
-                            {% elif media_scores <= 3.5 and media_scores > 2.5 %}
-                                <i class="glyphicon glyphicon-star"></i>
-                                <i class="glyphicon glyphicon-star"></i>
-                                <i class="glyphicon glyphicon-star"></i>
-                                <i class="glyphicon glyphicon-star-empty"></i>
-                                <i class="glyphicon glyphicon-star-empty"></i>
-                            {% elif media_scores <= 2.5 and media_scores > 1.5 %}
-                                <i class="glyphicon glyphicon-star"></i>
-                                <i class="glyphicon glyphicon-star"></i>
-                                <i class="glyphicon glyphicon-star-empty"></i>
-                                <i class="glyphicon glyphicon-star-empty"></i>
-                                <i class="glyphicon glyphicon-star-empty"></i>
-                            {% elif media_scores <= 1.5 and media_scores > 0.5 %}
-                                <i class="glyphicon glyphicon-star"></i>
-                                <i class="glyphicon glyphicon-star-empty"></i>
-                                <i class="glyphicon glyphicon-star-empty"></i>
-                                <i class="glyphicon glyphicon-star-empty"></i>
-                                <i class="glyphicon glyphicon-star-empty"></i>
-                            {% else %}
-                                <i class="glyphicon glyphicon-star-empty"></i>
-                                <i class="glyphicon glyphicon-star-empty"></i>
-                                <i class="glyphicon glyphicon-star-empty"></i>
-                                <i class="glyphicon glyphicon-star-empty"></i>
-                                <i class="glyphicon glyphicon-star-empty"></i>
-                            {% endif %}
-                            {% if opinions|length == 1 %}
-                                <span>({{ media_scores }}) {{ opinions|length }} Opinión</span>
-                            {% else %}
-                                <span>({{ media_scores }}) {{ opinions|length }} Opiniones</span>
-                            {% endif %}
-                        </div>
-                        <div class="product-price"><span>{{ product.price }}€</span></div>
-                    </div>
-                    <p class="category"><strong>Categoría:</strong> {{ motorcycle.category }}</p>
-                    {% if motorcycle.stock_quantity == 0 %}
-                        <h5 class="no-stock">¡AGOTADO!</h5>
-                    {% else %}
-                        <p class="stock"><strong>Stock:</strong> {{ motorcycle.stock_quantity }}</p>
-                    {% endif %}
-                    {% if motorcycle.stock_quantity > 0 %}
-                        <div class="product-count">
-                            <form id="addToCartForm" action="{% url 'add_to_cart' %}" method="post">
-                                {% csrf_token %}
-                                <label for="size">Cantidad</label>
-                                <div class="display-flex">
-                                    <div class="qtyminus">-</div>
-                                    <input type="number" name="product_quantity" value="1" class="qty" oninput="validateQuantity(this)" min="1" max="{{ motorcycle.stock_quantity }}">
-                                    <div class="qtyplus">+</div>
+            <div class="col-md-6 card-details">
+                <div class="card-details-fond">
+                    <div class="product-dtl">
+                        <div class="product-info">
+                            <div style="text-align: center;">
+                                <div class="product-name">{{ motorcycle.name }}</div>
+                                <div class="review-block-rate">
+                                    {% if media_scores > 4.5 %}
+                                        <i class="glyphicon glyphicon-star"></i>
+                                        <i class="glyphicon glyphicon-star"></i>
+                                        <i class="glyphicon glyphicon-star"></i>
+                                        <i class="glyphicon glyphicon-star"></i>
+                                        <i class="glyphicon glyphicon-star"></i>
+                                    {% elif media_scores <= 4.5 and media_scores > 3.5 %}
+                                        <i class="glyphicon glyphicon-star"></i>
+                                        <i class="glyphicon glyphicon-star"></i>
+                                        <i class="glyphicon glyphicon-star"></i>
+                                        <i class="glyphicon glyphicon-star"></i>
+                                        <i class="glyphicon glyphicon-star-empty"></i>
+                                    {% elif media_scores <= 3.5 and media_scores > 2.5 %}
+                                        <i class="glyphicon glyphicon-star"></i>
+                                        <i class="glyphicon glyphicon-star"></i>
+                                        <i class="glyphicon glyphicon-star"></i>
+                                        <i class="glyphicon glyphicon-star-empty"></i>
+                                        <i class="glyphicon glyphicon-star-empty"></i>
+                                    {% elif media_scores <= 2.5 and media_scores > 1.5 %}
+                                        <i class="glyphicon glyphicon-star"></i>
+                                        <i class="glyphicon glyphicon-star"></i>
+                                        <i class="glyphicon glyphicon-star-empty"></i>
+                                        <i class="glyphicon glyphicon-star-empty"></i>
+                                        <i class="glyphicon glyphicon-star-empty"></i>
+                                    {% elif media_scores <= 1.5 and media_scores > 0.5 %}
+                                        <i class="glyphicon glyphicon-star"></i>
+                                        <i class="glyphicon glyphicon-star-empty"></i>
+                                        <i class="glyphicon glyphicon-star-empty"></i>
+                                        <i class="glyphicon glyphicon-star-empty"></i>
+                                        <i class="glyphicon glyphicon-star-empty"></i>
+                                    {% else %}
+                                        <i class="glyphicon glyphicon-star-empty"></i>
+                                        <i class="glyphicon glyphicon-star-empty"></i>
+                                        <i class="glyphicon glyphicon-star-empty"></i>
+                                        <i class="glyphicon glyphicon-star-empty"></i>
+                                        <i class="glyphicon glyphicon-star-empty"></i>
+                                    {% endif %}
+                                    {% if opinions|length == 1 %}
+                                        <span>({{ media_scores }}) {{ opinions|length }} Opinión</span>
+                                    {% else %}
+                                        <span>({{ media_scores }}) {{ opinions|length }} Opiniones</span>
+                                    {% endif %}
                                 </div>
-                                <input type="hidden" name="product_id" style="position: absolute;"  value="{{ motorcycle.id }}">
-                                <button type="submit" class="round-black-btn"><i class="fa fa-shopping-cart"></i>  Añadir al carrito</button>
-                                <a href="{% url 'motorcycles_config' motorcycle.id %}" class="round-black-btn"><i class="fa fa-cog"></i>  Configurar a medida</a>
-                            </form>
+                                <div class="product-price"><span>{{ product.price }}€</span></div>
+                            </div>
                         </div>
-                    {% endif %}
+                        <div class="button-center">
+                            <p class="category"><strong>Categoría:</strong> {{ motorcycle.category }}</p>
+                        </div>
+                        <div>
+                            <div class="button-center">
+                                {% if motorcycle.stock_quantity == 0 %}
+                                    <h5 class="no-stock">¡AGOTADO!</h5>
+                                {% else %}
+                                    <p class="stock"><strong>Stock:</strong> {{ motorcycle.stock_quantity }}</p>
+                                {% endif %}
+                                {% if motorcycle.stock_quantity > 0 %}
+                                <div class="product-count">
+                                    <form id="addToCartForm" action="{% url 'add_to_cart' %}" method="post">
+                                        {% csrf_token %}
+                                        <!-- <label for="size">Cantidad</label> -->
+                                        <div class="display-flex" style="display: flex; justify-content: center;">
+                                            <div class="qtyminus">-</div>
+                                                <input type="number" name="product_quantity" value="1" class="qty" oninput="validateQuantity(this)" min="1" max="{{ motorcycle.stock_quantity }}">
+                                            <div class="qtyplus">+</div>
+                                        </div>
+                                        <input type="hidden" name="product_id" style="position: absolute;"  value="{{ motorcycle.id }}">
+                                        <button type="submit" class="round-black-btn"><i class="fa fa-shopping-cart"></i>  Añadir al carrito</button>
+                                        <div>
+                                            <a href="{% url 'motorcycles_config' motorcycle.id %}" class="round-black-btn"><i class="fa fa-cog"></i>  Configurar a medida</a>
+                                        </div>
+                                    </form>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="product-info-tabs">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                   <li class="nav-item">
-                    <a class="nav-link active" id="description-tab" data-toggle="tab" href="#description" role="tab" aria-controls="description" aria-selected="true">Piezas compatibles</a>
+                    <a class="nav-link active" id="review-tab" data-toggle="tab" href="#review" role="tab" aria-controls="review" aria-selected="true">Opiniones</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" id="review-tab" data-toggle="tab" href="#review" role="tab" aria-controls="review" aria-selected="false">Opiniones</a>
+                    <a class="nav-link" id="description-tab" data-toggle="tab" href="#description" role="tab" aria-controls="description" aria-selected="false">Piezas compatibles</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" id="review-tab" data-toggle="tab" href="#parts" role="tab" aria-controls="review" aria-selected="false">Piezas de la moto</a>
                   </li>
             </ul>
             <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade active in" id="description" role="tabpanel" aria-labelledby="description-tab">
-                    <div class="items">
-                        {% for part in compatible_parts %}
-                            {% if forloop.counter0|divisibleby:3 %}
-                                <div class="items-row">
-                            {% endif %}
-                                <div class="col-sm-4">
-                                    <div class="col-item">
-                                        <div class="photo">
-                                            <img src='{{ part.photo }}' class="img-responsive" alt="a" />
-                                        </div>
-                                        <div class="info">
-                                            <div class="row">
-                                                <div class="price col-md-6">
-                                                    <h5>{{ part.name }}</h5>
-                                                    {% if part.stock_quantity == 0 %}
-                                                        <h5 class="part-no-stock">¡AGOTADO!</h5>
-                                                    {% endif %}
-                                                </div>
-                                                <div class="rating hidden-sm col-md-6">
-                                                    <i class="price-text-color fa fa-star"></i><i class="price-text-color fa fa-star">
-                                                    </i><i class="price-text-color fa fa-star"></i><i class="price-text-color fa fa-star">
-                                                    </i><i class="fa fa-star"></i>
-                                                </div>
-                                            </div>
-                                            <div class="separator clear-left">
-                                                <p class="btn-details">
-                                                    <i class="fa fa-list"></i><a href="{% url 'part_details' part.id %}" class="hidden-sm">Más detalles</a></p>
-                                            </div>
-                                            <div class="clearfix">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            {% if forloop.counter|divisibleby:3 or forloop.last %}
-                                </div>
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                </div>
-                <div class="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
+                <div class="tab-pane fade active in" id="review" role="tabpanel" aria-labelledby="review-tab">
                     <div class="review-heading">OPINIONES DE LOS CLIENTES</div>
                     {% if not opinions %}
                         <p class="mb-20">No hay opiniones disponibles.</p>
@@ -246,6 +217,46 @@
                             <button class="round-black-btn-opinion" type="submit">AÑADIR OPINIÓN</button>
                         </form>
                     {% endif %}
+                </div>
+                <div class="tab-pane fade" id="description" role="tabpanel" aria-labelledby="description-tab">
+                    <div class="items">
+                        {% for part in compatible_parts %}
+                            {% if forloop.counter0|divisibleby:3 %}
+                                <div class="items-row">
+                            {% endif %}
+                                <div class="col-sm-4">
+                                    <div class="col-item">
+                                        <div class="photo">
+                                            <img src='{{ part.photo }}' class="img-responsive" alt="a" />
+                                        </div>
+                                        <div class="info">
+                                            <div class="row">
+                                                <div class="price col-md-6">
+                                                    <h5>{{ part.name }}</h5>
+                                                    {% if part.stock_quantity == 0 %}
+                                                        <h5 class="part-no-stock">¡AGOTADO!</h5>
+                                                    {% endif %}
+                                                </div>
+                                                <div class="rating hidden-sm col-md-6">
+                                                    <i class="price-text-color fa fa-star"></i><i class="price-text-color fa fa-star">
+                                                    </i><i class="price-text-color fa fa-star"></i><i class="price-text-color fa fa-star">
+                                                    </i><i class="fa fa-star"></i>
+                                                </div>
+                                            </div>
+                                            <div class="separator clear-left">
+                                                <p class="btn-details">
+                                                    <i class="fa fa-list"></i><a href="{% url 'part_details' part.id %}" class="hidden-sm">Más detalles</a></p>
+                                            </div>
+                                            <div class="clearfix">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% if forloop.counter|divisibleby:3 or forloop.last %}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
                 </div>
                 <div class="tab-pane fade" id="parts" role="tabpanel" aria-labelledby="description-tab">
                     <div class="items">

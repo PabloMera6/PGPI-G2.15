@@ -90,7 +90,16 @@
           <input type="hidden" name="score" id="rating" value="0">
         </form>
         </div>
-      <a href="{% url 'cart' %}"><img src="{% static 'images/cart.png' %}" alt="cart" width="90" height="90"></a>
+      <!-- <a href="{% url 'cart' %}"><img src="{% static 'images/cart.png' %}" alt="cart" width="90" height="90"></a>
+
+      <span id="quantity"></span> -->
+      <div style="position: relative; display: inline-block;">
+        <a href="{% url 'cart' %}">
+            <img src="{% static 'images/cart.png' %}" alt="cart" width="90" height="90">
+        </a>
+    
+        <span id="quantity" style="position: absolute; top: 0; right: 0; background-color: #031924; color: white; padding: 4px 8px; border-radius: 50%;">{{ cantidad_carrito }}</span>
+      </div>
     </div>
     <div class="lateral">
       <div class="collapse navbar-collapse js-navbar-collapse">
@@ -103,8 +112,9 @@
                 <li><a href="{% url 'profile' %}"><i class="icon-cog"></i> <span class="	glyphicon glyphicon-cog"
                       aria-hidden="true"></span> Perfil</a></li>
                 <li><a href="{% url 'user_orders' %}"><i class="fas fa-shopping-bag"></i> Mis Pedidos</a></li>
+                
                 {% if user.is_superuser %}
-                    <li><a href="/administrate"><i class="fas fa-laptop">Administrar</i></a></li>
+                <li><a href="/administrate"><i class="fa-solid fa-user-tie"></i> Administrar</a></li>
                 {% endif %}
                 
                 <li class="divider"></li>
@@ -207,4 +217,27 @@
     </div>
   </footer>
 </body>
+
+<script>
+  var quantity = [];
+  {% for cart, quantity in request.session.cart.items %}
+    quantity.push({{ quantity }});
+  {% endfor %}
+
+  // Función para sumar los elementos de la lista
+  function sumarLista(lista) {
+      var suma = 0;
+      for (var i = 0; i < lista.length; i++) {
+          suma += lista[i];
+      }
+      return suma;
+  }
+
+  // Mostrar la suma dentro de la etiqueta <span> con id "quantity"
+  var spanElement = document.getElementById("quantity");
+  if (spanElement) {
+      spanElement.innerHTML = sumarLista(quantity);
+  }
+</script>
+
 </html>

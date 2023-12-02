@@ -47,6 +47,7 @@ body{
     justify-content: space-between;
     align-items: center;
     margin-bottom: 0px;
+    border-radius: 0px;
 }
 
 .footer-col ul li p {
@@ -371,8 +372,25 @@ ul{
   text-align: center;
 }
 
-@media (min-width: 768px){
-  .navbar {
-    border-radius: 0.5px;
-  }
+.card-details {
+  display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-details-fond {
+    padding: 15px;
+    border-radius: 5px;
+    border: 1px solid #000000;
+    background-color: var(--antique-brass-50);
+}
+
+.admin-row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
 }

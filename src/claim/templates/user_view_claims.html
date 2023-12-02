@@ -1,11 +1,14 @@
 {% extends 'base.html' %}
 
+{% block title %}Mis Reclamaciones{% endblock %}
+
 {% block content %}
   <div class="container">
-    <h2 class="text-center mb-4">Mis Reclamaciones</h2>
     
     {% if user.is_authenticated %}
-      <a href="{% url 'create_claim' %}" class="btn btn-success mb-4">Añadir Reclamación</a>
+      <div class="button-center">
+        <a href="{% url 'create_claim' %}" class="btn btn-success mb-4">Añadir Reclamación</a>
+      </div>
     {% endif %}
     
     {% if claims %}
@@ -22,9 +25,9 @@
               <td>{{ claim.date }}</td>
               <td>{{ claim.title }}</td>
               <td>
-                {% if claim.response %}
-                  <a href="{% url 'user_view_claim' claim.id %}" class="btn btn-info">Ver Respuesta</a>
-                {% endif %}
+                <p class="btn-details">
+                  <i class="fa fa-list"></i>
+                  <a href="{% url 'user_view_claim' claim.id %}" class="hidden-sm">Más detalles</a></p>
               </td>
             </tr>
           {% endfor %}

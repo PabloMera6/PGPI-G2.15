@@ -10,6 +10,7 @@ from order.models import Order,OrderProduct
 from product.models import Product
 from motorcycle.models import Motorcycle
 from part.models import Part
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 import matplotlib
 matplotlib.use('Agg')
@@ -19,9 +20,20 @@ def user_orders(request):
 
     if request.user.is_authenticated:
 
-        orders = Order.objects.filter(buyer=request.user).order_by('-id')
+        results = Order.objects.filter(buyer=request.user).order_by('-id')
 
-        return render(request, 'user_orders.html', {'orders': orders})
+        results_per_page = 12
+        page = request.GET.get('page')
+        paginator = Paginator(results, results_per_page)
+
+        try:
+            results = paginator.page(page)
+        except PageNotAnInteger:
+            results = paginator.page(1)
+        except EmptyPage:
+            results = paginator.page(paginator.num_pages)
+
+        return render(request, 'user_orders.html', {'orders': results})
     else:
         return redirect('login') 
     
@@ -51,6 +63,17 @@ def administrate(request):
 def orders(request):
     if request.user.is_authenticated and request.user.is_superuser:
         orders = Order.objects.all().order_by('-id')
+
+        orders_per_page = 24
+        page = request.GET.get('page')
+        paginator = Paginator(orders, orders_per_page)
+
+        try:
+            orders = paginator.page(page)
+        except PageNotAnInteger:
+            orders = paginator.page(1)
+        except EmptyPage:
+            orders = paginator.page(paginator.num_pages)
         return render(request, 'orders.html', {'orders': orders})
     else:
         return redirect('/')

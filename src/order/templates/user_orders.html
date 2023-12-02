@@ -3,28 +3,73 @@
 {% block extrahead %}
 {% load static %}
 <link rel="stylesheet" href="{% static 'styles/orders.css' %}">
+<link rel="stylesheet" href="{% static 'styles/results.css' %}">
 {% endblock %}
 
+{% block title%}Mis pedidos{% endblock %}
+
 {% block content %}
-  <div class="container-fluid">
-    <h1 class="text-center mb-4">Mis Pedidos</h1>
-    {% if orders %}
-      <div class="row">
-        {% for order in orders %}
-          <div class="col-md-3 mb-4">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Pedido con ID: {{ order.id }}</h5>
+<div class="container">
+  {% if orders %}
+  <div class="row">
+    <div class="items">
+      {% for order in orders %}
+        {% if forloop.counter0|divisibleby:3 %}
+          <div class="items-row">
+        {% endif %}
+          <div class="col-sm-4">
+            <div class="col-item">
+              <div class="info">
+                <p class="card-text"><strong>Pedido con ID:</strong> {{ order.id }}</p>
                 <p class="card-text"><strong>Estado:</strong> {{ order.get_state_display }}</p>
                 <p class="card-text"><strong>Precio:</strong> {{ order.price }} €</p>
-                <a href="{% url 'checkout_confirmation' order.id %}" class="btn btn-primary btn-view">Ver Detalles</a>
+                <div class="separator clear-left">
+                  <p class="btn-details">
+                    <i class="fa fa-list"></i><a href="{% url 'checkout_confirmation' order.id %}" class="hidden-sm">Ver detalles</a>
+                  </p>
+                </div>
+                <div class="clearfix">
+                </div>
               </div>
             </div>
           </div>
-        {% endfor %}
-      </div>
-    {% else %}
-      <p class="text-center">No has realizado ningún pedido</p>
-    {% endif %}
+        {% if forloop.counter|divisibleby:3 or forloop.last %}
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+    <div class="pagination-container text-center mt-4">
+      <ul class="pagination">
+          {% if orders.has_previous %}
+              <li class="page-item">
+                  <a class="page-link" href="?{{ request.GET.urlencode }}&page=1">&laquo; Primera</a>
+              </li>
+              <li class="page-item">
+                  <a class="page-link" href="?{{ request.GET.urlencode }}&page={{ orders.previous_page_number }}">Anterior</a>
+              </li>
+          {% endif %}
+  
+          <li class="page-item disabled">
+              <span class="page-link">
+                  Página {{ orders.number }} de {{ orders.paginator.num_pages }}.
+              </span>
+          </li>
+  
+          {% if orders.has_next %}
+              <li class="page-item">
+                  <a class="page-link" href="?{{ request.GET.urlencode }}&page={{ orders.next_page_number }}">Siguiente</a>
+              </li>
+              <li class="page-item">
+                  <a class="page-link" href="?{{ request.GET.urlencode }}&page={{ orders.paginator.num_pages }}">Última &raquo;</a>
+              </li>
+          {% endif %}
+      </ul>
+    </div>
   </div>
+  {% else %}
+    <div class="card-title">
+      <p class="text-center">No has realizado ningún pedido</p>
+    </div>
+  {% endif %}
+</div>
 {% endblock %}
