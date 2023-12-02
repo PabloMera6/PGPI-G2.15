@@ -32,7 +32,7 @@
                     </div>
                     <div class="form-group">
                         <label for="price">Precio:</label>
-                        <input type="price" class="form-control" id="price" name="price">
+                        <input type="price" class="form-control" id="price" name="price" pattern="\d+(\.\d{2})?" title="El precio debe ser del estilo '19.99'">
                     </div>
                     <div class="form-group">
                         <label for="manufacturer">Fabricante:</label>
@@ -43,18 +43,18 @@
                             {% endfor %}
                         </select>
                     </div>
-                    <div class="form-group" >
+                    <div class="form-group">
                         <label for="carroceria">Carrocería por defecto de la moto:</label>
                         {% for part in carrocerias %}
-                            <div class="form-check"style="display:flex; flex-direction: row; flex-grow: 4;">
-                                <input class="form-check-input" type="radio" name="carroceria" id="part_{{ part.id }}" value="{{ part.id }}">
+                            <div class="form-check" style="display:flex; flex-direction: row; flex-grow: 4;">
+                                <input class="form-check-input" type="radio" name="carroceria" id="part_{{ part.id }}" value="{{ part.id }}" required>
                                 <label class="form-check-label" for="part_{{ part.id }}">
                                     <img src="{{ part.photo }}" alt="{{ part.name }}" width="100">
                                     {{ part.name }}
                                 </label>
                             </div>
                         {% endfor %}
-                    </div>                    
+                    </div>                   
                     <div class="form-group">
                         <label for="carroceriac">Carrocerías compatibles:</label>
                         {% for part in carrocerias %}
@@ -72,7 +72,7 @@
                         <label for="motor">Motor por defecto de la moto:</label>
                         {% for part in motores %}
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="motor" id="part_{{ part.id }}" value="{{ part.id }}">
+                                <input class="form-check-input" type="radio" name="motor" id="part_{{ part.id }}" value="{{ part.id }}" required>
                                 <label class="form-check-label" for="part_{{ part.id }}">
                                     <img src="{{ part.photo }}" alt="{{ part.name }}" width="100">
                                     {{ part.name }}
@@ -97,7 +97,7 @@
                         <label for="transmision">Transmisión por defecto de la moto:</label>
                         {% for part in transmisiones %}
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="transmision" id="part_{{ part.id }}" value="{{ part.id }}">
+                                <input class="form-check-input" type="radio" name="transmision" id="part_{{ part.id }}" value="{{ part.id }}" required>
                                 <label class="form-check-label" for="part_{{ part.id }}">
                                     <img src="{{ part.photo }}" alt="{{ part.name }}" width="100">
                                     {{ part.name }}
@@ -122,7 +122,7 @@
                         <label for="suspension">Suspensión por defecto de la moto:</label>
                         {% for part in suspensiones %}
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="suspension" id="part_{{ part.id }}" value="{{ part.id }}">
+                                <input class="form-check-input" type="radio" name="suspension" id="part_{{ part.id }}" value="{{ part.id }}" required>
                                 <label class="form-check-label" for="part_{{ part.id }}">
                                     <img src="{{ part.photo }}" alt="{{ part.name }}" width="100">
                                     {{ part.name }}
@@ -147,7 +147,7 @@
                         <label for="rueda">Ruedas por defecto de la moto:</label>
                         {% for part in ruedas %}
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="rueda" id="part_{{ part.id }}" value="{{ part.id }}">
+                                <input class="form-check-input" type="radio" name="rueda" id="part_{{ part.id }}" value="{{ part.id }}" required>
                                 <label class="form-check-label" for="part_{{ part.id }}">
                                     <img src="{{ part.photo }}" alt="{{ part.name }}" width="100">
                                     {{ part.name }}
@@ -172,7 +172,7 @@
                         <label for="freno">Frenos por defecto de la moto:</label>
                         {% for part in frenos %}
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="freno" id="part_{{ part.id }}" value="{{ part.id }}">
+                                <input class="form-check-input" type="radio" name="freno" id="part_{{ part.id }}" value="{{ part.id }}" required>
                                 <label class="form-check-label" for="part_{{ part.id }}">
                                     <img src="{{ part.photo }}" alt="{{ part.name }}" width="100">
                                     {{ part.name }}
@@ -196,7 +196,7 @@
                         <label for="manillar">Manillar por defecto de la moto:</label>
                         {% for part in manillares %}
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="manillar" id="part_{{ part.id }}" value="{{ part.id }}">
+                                <input class="form-check-input" type="radio" name="manillar" id="part_{{ part.id }}" value="{{ part.id }}" required>
                                 <label class="form-check-label" for="part_{{ part.id }}">
                                     <img src="{{ part.photo }}" alt="{{ part.name }}" width="100">
                                     {{ part.name }}
@@ -220,7 +220,7 @@
                         <label for="combustible">Combustible por defecto de la moto:</label>
                         {% for part in combustibles %}
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="combustible" id="part_{{ part.id }}" value="{{ part.id }}">
+                                <input class="form-check-input" type="radio" name="combustible" id="part_{{ part.id }}" value="{{ part.id }}" required>
                                 <label class="form-check-label" for="part_{{ part.id }}">
                                     <img src="{{ part.photo }}" alt="{{ part.name }}" width="100">
                                     {{ part.name }}
@@ -245,7 +245,7 @@
                         <label for="chasis">Chasis por defecto de la moto:</label>
                         {% for part in chasis %}
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="chasis" id="part_{{ part.id }}" value="{{ part.id }}">
+                                <input class="form-check-input" type="radio" name="chasis" id="part_{{ part.id }}" value="{{ part.id }}" required>
                                 <label class="form-check-label" for="part_{{ part.id }}">
                                     <img src="{{ part.photo }}" alt="{{ part.name }}" width="100">
                                     {{ part.name }}
@@ -265,6 +265,23 @@
                             </div>
                         {% endfor %}
                     </div>
+
+                    <script>
+                        function validarFormulario() {
+                            var grupos = ['motor', 'motorc', 'transmision', 'transmisionc', 'suspension', 'suspensionc', 'rueda', 'ruedac', 'freno', 'frenoc', 'manillar', 'manillarc', 'combustible', 'combustiblec', 'chasis'];
+                    
+                            for (var i = 0; i < grupos.length; i++) {
+                                var partesSeleccionadas = document.querySelectorAll('input[name="' + grupos[i] + '"]:checked');
+                    
+                                if (partesSeleccionadas.length === 0) {
+                                    alert('Debes seleccionar al menos una parte en la categoría ' + grupos[i] + '.');
+                                    return false;
+                                }
+                            }
+                    
+                            return true;
+                        }
+                    </script>
                     
                     <button type="submit" class="btn btn-primary">Añadir Motocicleta</button>
                 </form>

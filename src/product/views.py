@@ -94,8 +94,8 @@ def new_part(request):
             if(price <=0):
                 messages.error(request,'El precio no puede ser negativo ni 0')
                 return redirect('new_part')
-            if(stock<=0):
-                messages.error(request,'El stock no puede ser negativo ni 0')
+            if(stock<0):
+                messages.error(request,'El stock no puede ser negativo')
                 return redirect('new_part')
             reference_number = generate_reference_number()
             while True:
@@ -155,8 +155,8 @@ def new_motorcycle(request):
             if(price <=0):
                 messages.error(request,'El precio no puede ser negativo ni 0')
                 return redirect('new_part')
-            if(stock<=0):
-                messages.error(request,'El stock no puede ser negativo ni 0')
+            if(stock<0):
+                messages.error(request,'El stock no puede ser negativo')
                 return redirect('new_part')
             reference_number = generate_reference_number()
             while True:
@@ -228,8 +228,8 @@ def edit_part(request, part_id):
             if(price <=0):
                 messages.error(request,'El precio no puede ser negativo ni 0')
                 return redirect('new_part')
-            if(stock<=0):
-                messages.error(request,'El stock no puede ser negativo ni 0')
+            if(stock<0):
+                messages.error(request,'El stock no puede ser negativo')
                 return redirect('new_part')
             part = Part.objects.get(pk=part_id)
             part.name = name
@@ -282,8 +282,8 @@ def edit_motorcycle(request, motorcycle_id):
             if(price <=0):
                 messages.error(request,'El precio no puede ser negativo ni 0')
                 return redirect('new_part')
-            if(stock<=0):
-                messages.error(request,'El stock no puede ser negativo ni 0')
+            if(stock<0):
+                messages.error(request,'El stock no puede ser negativo')
                 return redirect('new_part')
             reference_number = generate_reference_number()
             while True:
