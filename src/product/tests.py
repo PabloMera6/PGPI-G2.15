@@ -25,24 +25,22 @@ class TestTestadminproduct(StaticLiveServerTestCase):
 
     @classmethod
     def tearDownClass(cls):
-        cls.driver.quit()
+        #cls.driver.quit()
         super().tearDownClass()
 
     def setUp(self):
         call_command('loaddata', 'populate.json')
 
     def test_adminproduct(self):
-        
         self.driver.get(self.live_server_url)
         self.driver.set_window_size(1695, 1087)
-        '''
         self.driver.find_element(By.LINK_TEXT, "Registrarse").click()
         self.driver.find_element(By.ID, "email").clear()
         self.driver.find_element(By.ID, "email").click()
         self.driver.find_element(By.ID, "email").send_keys("pepe@pepe.com")
         self.driver.find_element(By.ID, "password").clear()
         self.driver.find_element(By.ID, "password").click()
-        self.driver.find_element(By.ID, "password").send_keys("1111")
+        self.driver.find_element(By.ID, "password").send_keys("1111@ñtR")
         self.driver.find_element(By.ID, "full_name").clear()
         self.driver.find_element(By.ID, "full_name").click()
         self.driver.find_element(By.ID, "full_name").send_keys("pepito pepe pepón")
@@ -57,7 +55,7 @@ class TestTestadminproduct(StaticLiveServerTestCase):
         self.driver.find_element(By.ID, "email").send_keys("pepe@pepe.com")
         self.driver.find_element(By.ID, "password").clear()
         self.driver.find_element(By.ID, "password").send_keys(Keys.ENTER)
-        self.driver.find_element(By.ID, "password").send_keys("1111")
+        self.driver.find_element(By.ID, "password").send_keys("1111@ñtR")
         self.driver.find_element(By.CSS_SELECTOR, ".submit > .btn").click()
         self.driver.find_element(By.LINK_TEXT, "Más detalles").click()
         self.driver.find_element(By.CSS_SELECTOR, ".qtyplus").click()
@@ -76,7 +74,7 @@ class TestTestadminproduct(StaticLiveServerTestCase):
         self.driver.find_element(By.CSS_SELECTOR, ".btn-primary").click()
         self.driver.find_element(By.LINK_TEXT, "Bienvenido, pepito pepe pepón").click()
         self.driver.find_element(By.CSS_SELECTOR, ".sin-estilo").click()
-        '''
+
         self.driver.find_element(By.CSS_SELECTOR, ".item:nth-child(1) .col-sm-4:nth-child(2) .sin-estilo").click()
         self.driver.find_element(By.CSS_SELECTOR, ".btn-danger:nth-child(3)").click()
         self.driver.find_element(By.CSS_SELECTOR, ".navbar > a:nth-child(1) > img").click()
@@ -131,7 +129,7 @@ class TestTestadminproduct(StaticLiveServerTestCase):
         self.driver.set_window_size(1695, 1087)
         self.driver.find_element(By.LINK_TEXT, "Iniciar Sesión").click()
         self.driver.find_element(By.ID, "email").send_keys("admin@admin.com")
-        self.driver.find_element(By.ID, "password").send_keys("1111")
+        self.driver.find_element(By.ID, "password").send_keys("1111@ñtR")
         self.driver.find_element(By.CSS_SELECTOR, ".submit > .btn").click()
         self.driver.find_element(By.LINK_TEXT, "Bienvenido, Admin").click()
         self.driver.find_element(By.CSS_SELECTOR, ".fa-laptop").click()
@@ -218,7 +216,7 @@ class TestTestadminproduct(StaticLiveServerTestCase):
         self.driver.find_element(By.ID, "email").click()
         self.driver.find_element(By.ID, "email").send_keys("antonio@antonio.com")
         self.driver.find_element(By.ID, "password").click()
-        self.driver.find_element(By.ID, "password").send_keys("1111")
+        self.driver.find_element(By.ID, "password").send_keys("1111@ñtR")
         self.driver.find_element(By.ID, "full_name").click()
         self.driver.find_element(By.ID, "full_name").click()
         self.driver.find_element(By.ID, "full_name").send_keys("Antonio")
@@ -231,7 +229,7 @@ class TestTestadminproduct(StaticLiveServerTestCase):
         self.driver.find_element(By.ID, "email").click()
         self.driver.find_element(By.ID, "email").send_keys("antonio@antonio.com")
         self.driver.find_element(By.ID, "password").click()
-        self.driver.find_element(By.ID, "password").send_keys("1111")
+        self.driver.find_element(By.ID, "password").send_keys("1111@ñtR")
         self.driver.find_element(By.CSS_SELECTOR, ".submit > .btn").click()
         WebDriverWait(self.driver, 20).until(EC.visibility_of_element_located((By.CSS_SELECTOR, ".footer-col li:nth-child(2) > a")))
         self.driver.find_element(By.CSS_SELECTOR, ".footer-col li:nth-child(2) > a").click()
@@ -245,7 +243,7 @@ class TestTestadminproduct(StaticLiveServerTestCase):
         self.driver.find_element(By.CSS_SELECTOR, "#logoutForm > .sin-estilo").click()
         self.driver.find_element(By.LINK_TEXT, "Iniciar Sesión").click()
         self.driver.find_element(By.ID, "email").send_keys("admin@admin.com")
-        self.driver.find_element(By.ID, "password").send_keys("1111")
+        self.driver.find_element(By.ID, "password").send_keys("1111@ñtR")
         self.driver.find_element(By.CSS_SELECTOR, ".submit > .btn").click()
         self.driver.find_element(By.LINK_TEXT, "Bienvenido, Admin").click()
         self.driver.find_element(By.CSS_SELECTOR, ".fa-laptop").click()
@@ -259,7 +257,7 @@ class TestTestadminproduct(StaticLiveServerTestCase):
         self.driver.find_element(By.LINK_TEXT, "Iniciar Sesión").click()
         self.driver.find_element(By.ID, "email").click()
         self.driver.find_element(By.ID, "email").send_keys("antonio@antonio.com")
-        self.driver.find_element(By.ID, "password").send_keys("1111")
+        self.driver.find_element(By.ID, "password").send_keys("1111@ñtR")
         self.driver.find_element(By.CSS_SELECTOR, ".submit > .btn").click()
         self.driver.find_element(By.CSS_SELECTOR, ".footer-col li:nth-child(2) > a").click()
         self.driver.find_element(By.LINK_TEXT, "Ver Respuesta").click()
@@ -269,7 +267,7 @@ class TestTestadminproduct(StaticLiveServerTestCase):
         
         self.driver.find_element(By.LINK_TEXT, "Iniciar Sesión").click()
         self.driver.find_element(By.ID, "email").send_keys("admin@admin.com")
-        self.driver.find_element(By.ID, "password").send_keys("1111")
+        self.driver.find_element(By.ID, "password").send_keys("1111@ñtR")
         self.driver.find_element(By.CSS_SELECTOR, ".submit > .btn").click()
         self.driver.find_element(By.LINK_TEXT, "Bienvenido, Admin").click()
         self.driver.find_element(By.LINK_TEXT, "Administrar").click()
@@ -284,7 +282,7 @@ class TestTestadminproduct(StaticLiveServerTestCase):
         self.driver.find_element(By.ID, "email").click()
         self.driver.find_element(By.ID, "email").send_keys("antonio@antonio.com")
         self.driver.find_element(By.ID, "password").click()
-        self.driver.find_element(By.ID, "password").send_keys("1111")
+        self.driver.find_element(By.ID, "password").send_keys("1111@ñtR")
         self.driver.find_element(By.CSS_SELECTOR, ".submit > .btn").click()
         self.driver.find_element(By.CSS_SELECTOR, ".item:nth-child(1) .col-sm-4:nth-child(2) .sin-estilo").click()
         self.driver.find_element(By.LINK_TEXT, "Finalizar").click()
@@ -297,7 +295,7 @@ class TestTestadminproduct(StaticLiveServerTestCase):
         self.driver.find_element(By.CSS_SELECTOR, ".sin-estilo").click()
         self.driver.find_element(By.LINK_TEXT, "Iniciar Sesión").click()
         self.driver.find_element(By.ID, "email").send_keys("admin@admin.com")
-        self.driver.find_element(By.ID, "password").send_keys("1111")
+        self.driver.find_element(By.ID, "password").send_keys("1111@ñtR")
         self.driver.find_element(By.CSS_SELECTOR, ".submit > .btn").click()
         self.driver.find_element(By.LINK_TEXT, "Bienvenido, Admin").click()
         self.driver.find_element(By.CSS_SELECTOR, ".fa-laptop").click()
