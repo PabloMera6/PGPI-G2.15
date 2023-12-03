@@ -15,14 +15,14 @@
         <div style="padding: 0px 100px; margin: 10px 0px;">
             <div class="resume-cart">
 
-                <h3><strong>Producto más vendido:</strong> {{ producto_mas_vendido }}</h3>
-                <h3><strong>Media de precios de productos vendidos:</strong> {{ media_precios }} €</h3>
-                <h3><strong>Tipo de producto preferido:</strong> {{ tipo_producto_preferido }}</h3>
-                <h3><strong>Fabricante preferido:</strong> {{ fabricante_preferido }}</h3>
-                <h3><strong>Tipo de envío preferido:</strong> {{ tipo_envio_preferido }}</h3>
-                <h3><strong>Ciudad con más ventas:</strong> {{ ciudad_mas_ventas }}</h3>
-                <h3><strong>Forma de pago preferida:</strong> {{ forma_pago_preferida }}</h3>
-                <h3><strong>Cliente más activo:</strong> {{ cliente_mas_activo }}</h3>
+                <h3><strong>Producto más vendido:</strong>{% if producto_mas_vendido %} {{ producto_mas_vendido }} {% else %}  No hay información suficiente. {% endif %}</h3>
+                <h3><strong>Media de precios de productos vendidos:</strong>{% if producto_mas_vendido %} {{ media_precios }} {% else %}  No hay información suficiente. {% endif %}  €</h3>
+                <h3><strong>Tipo de producto preferido:</strong>{% if producto_mas_vendido %} {{ tipo_producto_preferido }} {% else %}  No hay información suficiente. {% endif %} </h3>
+                <h3><strong>Fabricante preferido:</strong>{% if producto_mas_vendido %}  {{ fabricante_preferido }} {% else %}  No hay información suficiente. {% endif %}</h3>
+                <h3><strong>Tipo de envío preferido:</strong>{% if producto_mas_vendido %} {{ tipo_envio_preferido }} {% else %}  No hay información suficiente. {% endif %} </h3>
+                <h3><strong>Ciudad con más ventas:</strong>{% if producto_mas_vendido %} {{ ciudad_mas_ventas }} {% else %}  No hay información suficiente. {% endif %} </h3>
+                <h3><strong>Forma de pago preferida:</strong>{% if producto_mas_vendido %} {{ forma_pago_preferida }} {% else %}  No hay información suficiente. {% endif %} </h3>
+                <h3><strong>Cliente más activo:</strong>{% if producto_mas_vendido %} {{ cliente_mas_activo }} {% else %}  No hay información suficiente. {% endif %} </h3>
 
 
                 <div class="button-center" style="margin-top: 4px;">
