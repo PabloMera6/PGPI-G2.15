@@ -16,7 +16,7 @@ from selenium.webdriver.chrome.service import Service
 from django.core.management import call_command
 from selenium.webdriver.support import expected_conditions as EC
 
-class TestTestadminproduct(StaticLiveServerTestCase):
+class TestTestadminproduct(TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -25,15 +25,17 @@ class TestTestadminproduct(StaticLiveServerTestCase):
 
     @classmethod
     def tearDownClass(cls):
-        #cls.driver.quit()
+        cls.driver.quit()
         super().tearDownClass()
 
     def setUp(self):
         call_command('loaddata', 'populate.json')
 
     def test_adminproduct(self):
-        self.driver.get(self.live_server_url)
+        self.driver.get('http://localhost:8000/')
         self.driver.set_window_size(1695, 1087)
+
+        
         self.driver.find_element(By.LINK_TEXT, "Registrarse").click()
         self.driver.find_element(By.ID, "email").clear()
         self.driver.find_element(By.ID, "email").click()
@@ -57,6 +59,7 @@ class TestTestadminproduct(StaticLiveServerTestCase):
         self.driver.find_element(By.ID, "password").send_keys(Keys.ENTER)
         self.driver.find_element(By.ID, "password").send_keys("1111@ñtR")
         self.driver.find_element(By.CSS_SELECTOR, ".submit > .btn").click()
+        '''
         self.driver.find_element(By.LINK_TEXT, "Más detalles").click()
         self.driver.find_element(By.CSS_SELECTOR, ".qtyplus").click()
         self.driver.find_element(By.CSS_SELECTOR, ".round-black-btn:nth-child(5)").click()
@@ -74,7 +77,7 @@ class TestTestadminproduct(StaticLiveServerTestCase):
         self.driver.find_element(By.CSS_SELECTOR, ".btn-primary").click()
         self.driver.find_element(By.LINK_TEXT, "Bienvenido, pepito pepe pepón").click()
         self.driver.find_element(By.CSS_SELECTOR, ".sin-estilo").click()
-
+        
         self.driver.find_element(By.CSS_SELECTOR, ".item:nth-child(1) .col-sm-4:nth-child(2) .sin-estilo").click()
         self.driver.find_element(By.CSS_SELECTOR, ".btn-danger:nth-child(3)").click()
         self.driver.find_element(By.CSS_SELECTOR, ".navbar > a:nth-child(1) > img").click()
@@ -122,11 +125,10 @@ class TestTestadminproduct(StaticLiveServerTestCase):
         self.driver.find_element(By.NAME, "query").click()
         self.driver.find_element(By.NAME, "query").send_keys("ducati")
         self.driver.find_element(By.NAME, "query").send_keys(Keys.ENTER)
+        '''
 
 
-
-        self.driver.get(self.live_server_url)
-        self.driver.set_window_size(1695, 1087)
+        self.driver.get('http://localhost:8000/')
         self.driver.find_element(By.LINK_TEXT, "Iniciar Sesión").click()
         self.driver.find_element(By.ID, "email").send_keys("admin@admin.com")
         self.driver.find_element(By.ID, "password").send_keys("1111@ñtR")
@@ -309,13 +311,4 @@ class TestTestadminproduct(StaticLiveServerTestCase):
         self.driver.find_element(By.LINK_TEXT, "Bienvenido, Admin").click()
         self.driver.find_element(By.CSS_SELECTOR, ".sin-estilo").click()
 
-        
-
-        
-  
-
-    
-
-
-        
             

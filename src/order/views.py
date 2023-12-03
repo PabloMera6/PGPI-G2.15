@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404
 from newapp.models import Manufacturers as Manufacturer
 from order.models import Order,OrderProduct
 from product.models import Product
-from motorcycle.models import Motorcycle
+from motorcycle.models import Motorcycle, DerivedMotorcycle
 from part.models import Part
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
@@ -320,9 +320,12 @@ def generar_grafica_ventas_por_producto():
         if product.product_type == "M":
             moto = Motorcycle.objects.get(id=product.id)
             name = moto.name
-        else:
+        elif product.product_type == "P":
             part = Part.objects.get(id=product.id)
             name = part.name
+        else:
+            derived = DerivedMotorcycle.objects.get(id=product.id)
+            name = derived.name
 
         if product_count[product] > 0:
             labels.append(name)
