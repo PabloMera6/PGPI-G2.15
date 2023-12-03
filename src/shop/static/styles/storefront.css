@@ -9,12 +9,12 @@
     white-space: nowrap;
 }
 
-.btn-primary {
+.btn-primary-select {
     position: relative;
     align-self: right;
     display: inline-block;
     white-space: nowrap;
-    margin-top: 14%;
+    margin-top: 10%;
 }
 
 .left {

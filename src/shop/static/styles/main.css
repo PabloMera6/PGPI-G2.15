@@ -409,3 +409,17 @@ label {
   margin-bottom: 10px;
   font-weight: 700;
 }
+
+.btn-primary-inicio {
+  position: relative;
+  align-self: right;
+  display: inline-block;
+  white-space: nowrap;
+  margin: 5px;
+  /* margin-top: 14%; */
+}
+
+.inicio-sesion {
+  display: flex;
+  align-items: center; /* Centrar verticalmente */
+}
