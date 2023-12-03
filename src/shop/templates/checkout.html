@@ -11,26 +11,26 @@
 {% block content %}
 
 
-  <div class="container">
+<div class="container">
     <form method="post" action="{% url 'checkout' %}">
-      {% csrf_token %}
-    <div>
-        <table id="cart" class="table table-hover table-condensed">
-            <thead>
-                <tr>
-                    <th style="width:50%">Producto</th>
-                    <th style="width:10%">Precio</th>
-                    <th style="width:8%">Cantidad</th>
-                    <th style="width:22%" class="text-center">Subtotal</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for moto, datos in motos.items %}
+        {% csrf_token %}
+        <div>
+            <table id="cart" class="table table-hover table-condensed">
+                <thead>
+                    <tr>
+                        <th style="width:50%">Producto</th>
+                        <th style="width:10%">Precio</th>
+                        <th style="width:8%">Cantidad</th>
+                        <th style="width:22%" class="text-center">Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for moto, datos in motos.items %}
                     <tr>
                         <td data-th="Product">
                             <div class="row">
-                                <div class="img-cart"><img src="{{ moto.photo }}" alt="..." 
-                                        class="img-responsive" /></div>
+                                <div class="img-cart"><img src="{{ moto.photo }}" alt="..." class="img-responsive" />
+                                </div>
                                 <div class="cart-product col-sm-10">
                                     <h4 class="nomargin" style="font-weight: bold;">{{ moto }}</h4>
                                     <div>
@@ -38,27 +38,27 @@
                                         <p style="display: inline;"> Motocicleta - {{ moto.category}}</p>
                                     </div>
                                     {% for manufacturer in manufacturers %}
-                                        {% if manufacturer.id == moto.manufacturer_id %}
-                                            <strong style="display: inline;">Fabricante:</strong>
-                                            <p style="display: inline;"> {{ manufacturer.name}}</p>
-                                        {% endif %}
+                                    {% if manufacturer.id == moto.manufacturer_id %}
+                                    <strong style="display: inline;">Fabricante:</strong>
+                                    <p style="display: inline;"> {{ manufacturer.name}}</p>
+                                    {% endif %}
                                     {% endfor %}
                                 </div>
                             </div>
                         </td>
-                        <td data-th="Price">{{ moto.price }}  €</td>
+                        <td data-th="Price">{{ moto.price }} €</td>
                         <td data-th="Quantity">
                             {{ datos.quantity }}
                         </td>
-                        <td data-th="Subtotal" class="text-center">{{ datos.price }}  €</td>
+                        <td data-th="Subtotal" class="text-center">{{ datos.price }} €</td>
                     </tr>
-                {% endfor %}
-                {% for part, datos in parts.items %}
+                    {% endfor %}
+                    {% for part, datos in parts.items %}
                     <tr>
                         <td data-th="Product">
                             <div class="row">
-                                <div class="img-cart"><img src="{{ part.photo}}" alt="..."
-                                        class="img-responsive" /></div>
+                                <div class="img-cart"><img src="{{ part.photo}}" alt="..." class="img-responsive" />
+                                </div>
                                 <div class="cart-product col-sm-10">
                                     <h4 class="nomargin" style="font-weight: bold;">{{ part }}</h4>
                                     <div>
@@ -66,10 +66,10 @@
                                         <p style="display: inline;"> Parte - {{ part.category}}</p>
                                     </div>
                                     {% for manufacturer in manufacturers %}
-                                        {% if manufacturer.id == part.manufacturer_id %}
-                                            <strong style="display: inline;">Fabricante:</strong>
-                                            <p style="display: inline;"> {{ manufacturer.name}}</p>
-                                        {% endif %}
+                                    {% if manufacturer.id == part.manufacturer_id %}
+                                    <strong style="display: inline;">Fabricante:</strong>
+                                    <p style="display: inline;"> {{ manufacturer.name}}</p>
+                                    {% endif %}
                                     {% endfor %}
                                 </div>
                             </div>
@@ -78,104 +78,113 @@
                         <td data-th="Quantity">
                             {{ datos.quantity }}
                         </td>
-                        <td data-th="Subtotal" class="text-center">{{ datos.price }}  €</td>
+                        <td data-th="Subtotal" class="text-center">{{ datos.price }} €</td>
                     </tr>
-                {% endfor %}
-                {% for derived_moto, datos in derived_motos.items %}
-                <tr>
-                    <td data-th="Product">
-                        <div class="row">
-                            <div class="img-cart"><img src="{{ derived_moto.base_motorcycle.photo }}" alt="..." 
-                                    class="img-responsive" /></div>
-                            <div class="cart-product col-sm-10">
-                                <a href="{% url 'motorcycle_details' derived_moto.base_motorcycle.id %}" class="hidden-sm">
-                                    <h4 class="nomargin" style="font-weight: bold;">{{ derived_moto.name }}</h4>
-                                </a>
-                                <div>
-                                    <strong style="display: inline;">Configurada a su gusto</strong>
-                                </div>
-                                <div>
-                                    <strong style="display: inline;">Categoria:</strong>
-                                    <p style="display: inline;"> Motocicleta - {{ derived_moto.base_motorcycle.category}}</p>
-                                </div>
-                                {% for manufacturer in manufacturers %}
+                    {% endfor %}
+                    {% for derived_moto, datos in derived_motos.items %}
+                    <tr>
+                        <td data-th="Product">
+                            <div class="row">
+                                <div class="img-cart"><img src="{{ derived_moto.base_motorcycle.photo }}" alt="..."
+                                        class="img-responsive" /></div>
+                                <div class="cart-product col-sm-10">
+                                    <a href="{% url 'motorcycle_details' derived_moto.base_motorcycle.id %}"
+                                        class="hidden-sm">
+                                        <h4 class="nomargin" style="font-weight: bold;">{{ derived_moto.name }}</h4>
+                                    </a>
+                                    <div>
+                                        <strong style="display: inline;">Configurada a su gusto</strong>
+                                    </div>
+                                    <div>
+                                        <strong style="display: inline;">Categoria:</strong>
+                                        <p style="display: inline;"> Motocicleta - {{
+                                            derived_moto.base_motorcycle.category}}</p>
+                                    </div>
+                                    {% for manufacturer in manufacturers %}
                                     {% if manufacturer.id == derived_moto.manufacturer_id %}
-                                        <strong style="display: inline;">Fabricante:</strong>
-                                        <p style="display: inline;"> {{ manufacturer.name}}</p>
+                                    <strong style="display: inline;">Fabricante:</strong>
+                                    <p style="display: inline;"> {{ manufacturer.name}}</p>
                                     {% endif %}
-                                {% endfor %}
-                                <div>
-                                    <strong style="display: inline;">Stock:</strong>
-                                    <p style="display: inline;"> {{ derived_moto.stock_quantity}}</p>
+                                    {% endfor %}
+                                    <div>
+                                        <strong style="display: inline;">Stock:</strong>
+                                        <p style="display: inline;"> {{ derived_moto.stock_quantity}}</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </td>
-                    <td data-th="Price">{{ derived_moto.price }}  €</td>
-                    <td data-th="Quantity">
-                        {{ datos.quantity }}
-                    </td>
-                    <td data-th="Subtotal" class="text-center">{{ datos.price }} €</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-            <tfoot>
-                <tr>
-                    {% if precio < 30 %}
-                    <tr>
-                        <td>Gastos de Envío</td>
-                        <td></td>
-                        <td></td>
-                        <td class="text-center">5.00 €</td>
+                        </td>
+                        <td data-th="Price">{{ derived_moto.price }} €</td>
+                        <td data-th="Quantity">
+                            {{ datos.quantity }}
+                        </td>
+                        <td data-th="Subtotal" class="text-center">{{ datos.price }} €</td>
                     </tr>
-                    {% endif %}
-                </tr>
-                <tr class="visible-xs">
-                    <td class="text-center"><strong>Total {{ precio }} €</strong></td>
-                </tr>
-                <tr>
-                    <td><a href="{% url 'initial' %}" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continuar comprando</a></td>
-                    <td colspan="2" class="hidden-xs" style="text-align: center;">
-                        
-                    </td>
-                    <td class="hidden-xs text-center"><strong>Total 
-                        {{ precio }} €</strong></td>
-                </tr>
-            </tfoot>
-        </table>
-    </div>
+                    {% endfor %}
+                    <tr>
+                        <td></td>
+                        <td>
+                            Gastos de Envío
+                        </td>
+                        <td></td>
+                        <td class="text-center">
+                            <h5 id="precio">0.00 €</h5></td>
+                        </td>
+                    </tr>
+                    
+                </tbody>
+                <tfoot>
+                    <tr class="visible-xs">
+                        <td class="text-center"><strong>Total {{ precio }} €</strong></td>
+                    </tr>
+                    <tr>
+                        <td><a href="{% url 'initial' %}" class="btn btn-warning"><i class="fa fa-angle-left"></i>
+                                Continuar comprando</a></td>
+                        <td colspan="2" class="hidden-xs" style="text-align: center;">
 
-    <div class="mt-5">
-        <div class="card">
-            <div class="card-body">
-                <div class="form-group">
-                    <label for="payment_method">Método de pago:</label>
-                    <select class="form-control" name="payment_method" id="payment_method">
-                        <option value="Contrarrembolso">Contrarrembolso</option>
-                        <option value="Tarjeta">Tarjeta</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="shipment">Método de envio:</label>
-                    <select class="form-control" name="shipment" id="shipment">
-                        <option value="Recogida">Recogida</option>
-                        <option value="Envío a domicilio">Envio a domicilio</option>
-                    </select>
-                </div>
+                        </td>
+                        <td class="hidden-xs text-center"><strong>Total
+                                <strong id="total">{{ precio }}</strong> €</strong></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
 
-                
-                {% if request.user.is_authenticated %}
+        <div class="mt-5">
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="payment_method">Método de pago:</label>
+                        <select class="form-control" name="payment_method" id="payment_method">
+                            <option value="Contrarrembolso">Contrarrembolso</option>
+                            <option value="Tarjeta">Tarjeta</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="shipment">Método de envio:</label>
+                        <select class="form-control" name="shipment" id="shipment">
+                            <option value="Recogida">Recogida</option>
+                            {% if precio < 30 %} <option value="Envío a domicilio">Envio a domicilio (+5€)</option>
+                                {% else %}
+                                <option value="Envío a domicilio">Envio a domicilio</option>
+                                {% endif %}
+                        </select>
+                    </div>
+
+
+                    {% if request.user.is_authenticated %}
                     <div class="form-group">
                         <label for="email">Correo Electrónico: *</label>
                         <input class="form-control" type="email" name="email" value="{{ request.user.email }}" required>
                     </div>
                     <div class="form-group">
                         <label for="full_name">Nombre Completo: *</label>
-                        <input class="form-control" type="text" name="full_name" value="{{ request.user.full_name }}" required>
+                        <input class="form-control" type="text" name="full_name" value="{{ request.user.full_name }}"
+                            required>
                     </div>
                     <div class="form-group">
                         <label for="phone">Número de Teléfono: *</label>
-                        <input class="form-control" type="tel" name="phone" value="{{ request.user.phone }}" required pattern="[0-9]{9}" title="Ingrese un número de teléfono válido (9 dígitos)">
+                        <input class="form-control" type="tel" name="phone" value="{{ request.user.phone }}" required
+                            pattern="[0-9]{9}" title="Ingrese un número de teléfono válido (9 dígitos)">
                     </div>
                     <div class="form-group">
                         <label for="city">Ciudad: *</label>
@@ -183,13 +192,15 @@
                     </div>
                     <div class="form-group">
                         <label for="postal_code">Código Postal: *</label>
-                        <input class="form-control" type="text" name="postal_code" value="{{ request.user.postal_code}}" required pattern="[0-9]{5}" title="Ingrese un código postal válido">
+                        <input class="form-control" type="text" name="postal_code" value="{{ request.user.postal_code}}"
+                            required pattern="[0-9]{5}" title="Ingrese un código postal válido">
                     </div>
                     <div class="form-group">
                         <label for="address">Dirección: *</label>
-                        <input class="form-control" type="text" name="address" value="{{ request.user.address }}" required>
+                        <input class="form-control" type="text" name="address" value="{{ request.user.address }}"
+                            required>
                     </div>
-                {% else %}
+                    {% else %}
                     <div class="form-group">
                         <label for="email">Correo Electrónico: *</label>
                         <input type="email" class="form-control" name="email" required>
@@ -200,7 +211,8 @@
                     </div>
                     <div class="form-group">
                         <label for="phone">Número de Teléfono: *</label>
-                        <input type="tel" class="form-control" name="phone" required pattern="[0-9]{9}" title="Ingrese un número de teléfono válido">
+                        <input type="tel" class="form-control" name="phone" required pattern="[0-9]{9}"
+                            title="Ingrese un número de teléfono válido">
                     </div>
                     <div class="form-group">
                         <label for="city">Ciudad: *</label>
@@ -208,23 +220,47 @@
                     </div>
                     <div class="form-group">
                         <label for="postal_code">Código postal: *</label>
-                        <input type="text" class="form-control" id="postal_code" name="postal_code" required pattern="[0-9]{5}" title="Ingrese un código postal válido" >
+                        <input type="text" class="form-control" id="postal_code" name="postal_code" required
+                            pattern="[0-9]{5}" title="Ingrese un código postal válido">
                     </div>
                     <div class="form-group">
                         <label for="address">Dirección: *</label>
                         <input class="form-control" type="text" name="address" required>
                     </div>
 
-                {% endif %}
-                <div class="button-center">
-                    {% if precio != 0 %}
-                        <button type="submit" class="btn btn-primary">Finalizar Compra</button>
                     {% endif %}
+                    <div class="button-center">
+                        {% if precio != 0 %}
+                        <button type="submit" class="btn btn-primary">Finalizar Compra</button>
+                        {% endif %}
+                    </div>
                 </div>
-            </div>   
+            </div>
         </div>
-    </div>
-      
+
+        <script>
+            document.getElementById('shipment').addEventListener('change', function () {
+                var precio = document.getElementById('precio');
+                var totalElement = document.getElementById('total');
+                var currentTotal = parseFloat(totalElement.innerText.replace('Total ', '').replace(' €', ''));
+                if (currentTotal < 30) {
+                    if (this.value === 'Envío a domicilio') {
+                        var newTotal = currentTotal + 5.00;
+                        totalElement.innerText = newTotal;
+
+                        var newPrecio = "5.00 €";
+                        precio.innerText = newPrecio;
+                    } else {
+                        var newTotal = currentTotal - 5.00;
+                        totalElement.innerText = newTotal;
+
+                        var newPrecio = "0.00 €";
+                        precio.innerText = newPrecio;
+                    }
+                }
+            });
+        </script>
+
     </form>
-  </div>
+</div>
 {% endblock %}

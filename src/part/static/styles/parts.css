@@ -55,11 +55,13 @@
 .col-item .info .price {
     color: black;
     font-weight: bold;
+    text-align: center;
 }
 
 .col-item .name {
     float: left;
     margin-top: 5px;
+    text-align: center;
 }
 
 .col-item .name h5 {

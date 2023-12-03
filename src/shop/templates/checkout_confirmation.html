@@ -32,9 +32,28 @@
         {% endfor %}
     </ul>
 
-    <p><strong>Método de Pago: </strong>{{ payment_method }}</p>
-    <p><strong>Dirección de Envío: </strong>{{ address }}, {{ postal_code }} {{ city }}</p>
+    <ul>
+        <li>Gastos de envio - 
+            {% if precio_total < 30  %}
+                {% if shipment == "Envío a domicilio" %}
+                    5.00 €
+                {% else %}
+                    0.00 €
+                {% endif %}
+            {% else %}  
+                0.00 €
+            {% endif %}
+        </li>
+    </ul>
 
+    <p><strong>Método de Pago: </strong>{{ payment_method }}</p>
+    <p><strong>Método de Envío: </strong>
+        {% if shipment == "Envío a domicilio" %}
+            Envío a domicilio - {{ address }}, {{ postal_code }} {{ city }}
+        {% else %}
+            Recogida en tienda
+        {% endif %}
+    </p>
     <p>¡Gracias por elegir Motos Para Todos!</p>
 </body>
 

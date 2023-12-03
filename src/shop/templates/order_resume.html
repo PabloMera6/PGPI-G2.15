@@ -127,19 +127,28 @@
 
                 </tr>
                 {% endfor %}
+                <tr>
+                    <td></td>
+                    <td>
+                        Gastos de Envío
+                    </td>
+                    <td></td>
+                    <td class="text-center">
+                        <h5 id="precio">
+                            {% if order.price < 30  %}
+                                {% if order.shipment == "Envío a domicilio" %}
+                                    5.00 €
+                                {% else %}
+                                    0.00 €
+                                {% endif %}
+                            {% else %}  
+                                0.00 €
+                            {% endif %}</h5></td>
+                    </td>
+                </tr>
 
             </tbody>
             <tfoot>
-                <tr>
-                    {% if precio < 30 %} <tr>
-                        <td>Si el precio del pedido es menor de 30€ y pides que te lo enviemos, se sumarán 5 euros por
-                            gastos de envio</td>
-                        <td></td>
-                        <td></td>
-                        <td class="text-center">5.00 €</td>
-                </tr>
-                {% endif %}
-                </tr>
                 <tr class="visible-xs">
                     <td class="text-center"><strong>Total {{ order.price }} €</strong></td>
                 </tr>

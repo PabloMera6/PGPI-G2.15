@@ -196,8 +196,6 @@ def checkout(request):
                 if derived_moto.stock_quantity < value:
                     messages.error(request, f"No hay suficiente stock de piezas de la moto que has configurado, cambia los componentes o reduce la cantidad de motos a comprar")
                     return redirect('/checkout/')
-        if precio_total <30 and shipment == 'Envío a domicilio':
-            precio_total += 5
         payment_method = request.POST.get('payment_method')
         email = request.POST.get('email')
         full_name = request.POST.get('full_name')
@@ -206,6 +204,8 @@ def checkout(request):
         city = request.POST.get('city')
         postal_code = request.POST.get('postal_code')
         shipment = request.POST.get('shipment')
+        if precio_total <30 and shipment == 'Envío a domicilio':
+            precio_total += 5
         if payment_method == 'Tarjeta' or payment_method == 'card': 
             request.session['checkout_data'] = {
                 'payment_method': payment_method,
@@ -262,6 +262,8 @@ def checkout(request):
 
 def enviar_correo(full_name, precio_total, motos, parts, payment_method, address, city, postal_code, order_id, email):
     try:
+        order = get_object_or_404(Order, pk=order_id)
+        shipment = order.shipment
         subject = 'Detalles de tu compra en Motos Para Todos'
         from_email = 'motosparatodos@outlook.es'
         to_email = [email]
@@ -276,6 +278,7 @@ def enviar_correo(full_name, precio_total, motos, parts, payment_method, address
             'city': city,
             'postal_code': postal_code,
             'order': order_id,
+            'shipment': shipment,
             }
 
         html_message = render_to_string('checkout_confirmation.html', context)
