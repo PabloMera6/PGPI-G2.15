@@ -394,6 +394,16 @@
         }
     },
     {
+        "model": "product.product",
+        "pk": 38,
+        "fields": {
+            "reference_number": "PartHonda00038",
+            "product_type": "P",
+            "price": "12.99",
+            "manufacturer": 2
+        }
+    },
+    {
         "model": "users.userprofile",
         "pk": 1,
         "fields": {
@@ -994,6 +1004,16 @@
             "category": "Chasis",
             "stock_quantity": 3
         }
+    },
+    {
+        "model": "part.part",
+        "pk": 38,
+        "fields": {
+            "name": "Pastilla de frenos",
+            "photo": "https://pierce-images.imgix.net/images/8/2/a/c/82ac71051cc4084f54b06be10c956744533f6a38_2015_01_13161939_1.png?bg=F0F1F2&auto=compress&auto=format&h=630&w=630",
+            "category": "Frenos",
+            "stock_quantity": 5
+        }   
     },
     {
         "model": "newapp.manufacturers",
