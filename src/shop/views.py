@@ -270,7 +270,7 @@ def enviar_correo(full_name, precio_total, motos, parts, payment_method, address
 
         context = {
             'full_name': full_name,
-            'precio_total': precio_total,
+            'precio_total': round(precio_total, 2),
             'motos': motos,
             'parts': parts,
             'payment_method': payment_method,

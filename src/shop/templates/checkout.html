@@ -245,14 +245,16 @@
                 var currentTotal = parseFloat(totalElement.innerText.replace('Total ', '').replace(' €', ''));
                 if (currentTotal < 30) {
                     if (this.value === 'Envío a domicilio') {
-                        var newTotal = currentTotal + 5.00;
-                        totalElement.innerText = newTotal;
+                        var newTotal = currentTotal + 5;
+                        var redondeado = newTotal.toFixed(2);
+                        totalElement.innerText = redondeado;
 
                         var newPrecio = "5.00 €";
                         precio.innerText = newPrecio;
                     } else {
-                        var newTotal = currentTotal - 5.00;
-                        totalElement.innerText = newTotal;
+                        var newTotal = currentTotal - 5;
+                        var redondeado = newTotal.toFixed(2);
+                        totalElement.innerText = redondeado;
 
                         var newPrecio = "0.00 €";
                         precio.innerText = newPrecio;
