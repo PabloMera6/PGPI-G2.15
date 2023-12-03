@@ -64,7 +64,7 @@ def user_view_claims(request):
         claims_dates[claim] = {
             'date': claim.date.strftime('%d-%m-%Y a las %H:%M'),
         }
-    return render(request, 'view_claims.html', {'claims': claims_dates})
+    return render(request, 'user_view_claims.html', {'claims': claims_dates})
 
 @login_required
 def user_view_claim(request, claim_id):
