@@ -1,32 +1,45 @@
 {% extends 'base.html' %}
 
+
+{% block extrahead %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'styles/cart.css' %}">
+{% endblock %}
+
 {% block title %}Información sobre las ventas{% endblock %}
 
 {% block content %}
 
-<div class="content" style="display: flex; flex-direction: row; justify-content: space-evenly;">
-    {% csrf_token %}
-    <div class="statistics" style="right: 100%; display: flex; flex-direction: column; gap: 20px;">
-        <h4>Producto más vendido: {{ producto_mas_vendido }}</h4>
-        <h4>Media de precios de productos vendidos: {{ media_precios }}</h4>
-        <h4>Tipo de producto preferido: {{ tipo_producto_preferido }}</h4>
-        <h4>Fabricante preferido: {{ fabricante_preferido }}</h4>
-        <h4>Tipo de envío preferido: {{ tipo_envio_preferido }}</h4>
-        <h4>Ciudad con más ventas: {{ ciudad_mas_ventas }}</h4>
-        <h4>Forma de pago preferida: {{ forma_pago_preferida }}</h4>
-        <h4>Cliente más activo: {{ cliente_mas_activo }}</h4>
-    </div>
-    <div class="buttons" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
-        <h3>Gráficas</h3>
-        <button class="btn btn-primary" onclick="toggleVentasPorProducto()">Ventas por producto</button>
-        <button class="btn btn-primary" onclick="toggleVentasPorTipo()">Ventas por tipo de producto</button>
-        <button class="btn btn-primary" onclick="togglePedidosPorEstado()">Número de pedidos por estado</button>
-    </div>
-    <div class="plots" style="display: flex; flex-direction: column; justify-content: center; align-items: center; margin-left: 20px;">
-        <img class="ventas_por_producto" src="../../static/images/ventas_por_producto.png" width="420px" height="300px" alt="Gráfica de Ventas por Producto" style="display: none; margin-top: 20px;">
-        <img class="ventas_por_tipo" src="../../static/images/ventas_por_tipo.png" width="420px" height="300px" alt="Gráfica de Ventas por Tipo" style="display: none; margin-top: 20px;">
-        <img class="pedidos_por_estado" src="../../static/images/pedidos_por_estado.png" width="420px" height="300px" alt="Gráfica de Pedidos por Estado" style="display: none; margin-top: 20px;">
-    </div>
+<div class="container">
+        {% csrf_token %}
+        <div style="padding: 0px 100px; margin: 10px 0px;">
+            <div class="resume-cart">
+
+                <h3><strong>Producto más vendido:</strong> {{ producto_mas_vendido }}</h3>
+                <h3><strong>Media de precios de productos vendidos:</strong> {{ media_precios }} €</h3>
+                <h3><strong>Tipo de producto preferido:</strong> {{ tipo_producto_preferido }}</h3>
+                <h3><strong>Fabricante preferido:</strong> {{ fabricante_preferido }}</h3>
+                <h3><strong>Tipo de envío preferido:</strong> {{ tipo_envio_preferido }}</h3>
+                <h3><strong>Ciudad con más ventas:</strong> {{ ciudad_mas_ventas }}</h3>
+                <h3><strong>Forma de pago preferida:</strong> {{ forma_pago_preferida }}</h3>
+                <h3><strong>Cliente más activo:</strong> {{ cliente_mas_activo }}</h3>
+
+
+                <div class="button-center" style="margin-top: 4px;">
+                    <h3><strong>Gráficas</strong></h3>
+                    <button class="btn btn-primary" onclick="toggleVentasPorProducto()">Ventas por producto</button>
+                    <button class="btn btn-primary" onclick="toggleVentasPorTipo()">Ventas por tipo de producto</button>
+                    <button class="btn btn-primary" onclick="togglePedidosPorEstado()">Número de pedidos por estado</button>
+                </div>
+
+                <div class="plots" style="display: flex; flex-direction: column; justify-content: center; align-items: center; margin-left: 20px;">
+                    <img class="ventas_por_producto" src="../../static/images/ventas_por_producto.png" width="420px" height="300px" alt="Gráfica de Ventas por Producto" style="display: none; margin-top: 20px;">
+                    <img class="ventas_por_tipo" src="../../static/images/ventas_por_tipo.png" width="420px" height="300px" alt="Gráfica de Ventas por Tipo" style="display: none; margin-top: 20px;">
+                    <img class="pedidos_por_estado" src="../../static/images/pedidos_por_estado.png" width="420px" height="300px" alt="Gráfica de Pedidos por Estado" style="display: none; margin-top: 20px;">
+                </div>
+            </div>
+        </div>
+    </form>
 </div>
 
 <script>
@@ -69,5 +82,4 @@
         }
     }
 </script>
-
 {% endblock %}
