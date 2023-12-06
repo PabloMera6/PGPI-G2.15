@@ -382,6 +382,7 @@ def generar_grafica_ventas_por_tipo():
     plt.savefig('order/static/images/ventas_por_tipo.png')
     plt.close()
 
+
 def generar_grafica_pedidos_por_estado():
     orders = Order.objects.all()
     order_count = {}
