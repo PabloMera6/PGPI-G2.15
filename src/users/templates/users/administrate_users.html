@@ -28,6 +28,7 @@
               <td>{{ user.full_name }}</td>
               <td>{{ user.phone }}</td>
               <td>{{ user.address }}</td>
+              <td><a href="{% url 'administrate_profile' email=user.email %}" class="btn btn-success btn-block">Consultar</a></td>
               <td>
                 <form method="post" action="{% url 'administrate_users' %}">
                     {% csrf_token %}

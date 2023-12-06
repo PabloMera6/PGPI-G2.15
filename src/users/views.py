@@ -158,3 +158,33 @@ class ListUsersView(APIView):
 
         return redirect(reverse('administrate_users'))
 
+def user_profile(request, email):
+    if not request.user.is_authenticated:
+        return redirect('/')
+    current_user = request.user
+    if current_user.is_staff:
+        user = UserProfile.objects.get(email=email)
+        if request.method == 'POST':
+            full_name = request.data.get('full_name', '')
+            phone = request.data.get('phone', '')
+            address = request.data.get('address', '')
+            postal_code = request.data.get('postal_code', '')
+            city = request.data.get('city', '')
+
+            try:
+                user_profile = request.user
+            except ObjectDoesNotExist:
+                messages.error(request, f'El usuario no existe.')
+                return redirect('administrate_users')
+
+            user_profile.full_name = full_name
+            user_profile.phone = phone
+            user_profile.address = address
+            user_profile.postal_code = postal_code
+            user_profile.city = city
+            user_profile.save()
+            return redirect(reverse('administrate_users'))
+        else:
+            return render(request, 'users/profile.html', {'current_user': user})
+    else:
+        return redirect('/')
