@@ -48,6 +48,7 @@ def view_claim(request, claim_id):
     if request.method == 'POST':
         response_text = request.POST.get('response_text')
         claim.response = response_text
+        messages.success(request, 'Reclamación respondida correctamente.')
         claim.save()
         
         return redirect('view_claims')
