@@ -710,7 +710,7 @@
         "pk": 2,
         "fields": {
             "name": "Carrocería deportiva",
-            "photo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0_mKTBN-NN5eRu0T_e0xVbcSbB23IMRKmHg&usqp=CAU",
+            "photo": "https://revistacentrozaragoza.com/wp-content/uploads/2019/05/motos_portada.jpg",
             "category": "Carrocería",
             "stock_quantity": 38
         }
@@ -720,7 +720,7 @@
         "pk": 3,
         "fields": {
             "name": "Carrocería naked",
-            "photo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQl9ZzmhqG74oW8IkWsMvUSx8JUurZ_yGmQSQ&usqp=CAU",
+            "photo": "https://talleractual.com/images/contenido/news-2020-06-24/MA%202020-06-24%20Una%20naked%20superpotente%20de%20CFMoto%201.jpg",
             "category": "Carrocería",
             "stock_quantity": 29
         }
@@ -730,7 +730,7 @@
         "pk": 4,
         "fields": {
             "name": "Carrocería custom",
-            "photo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTh1w6psVyVwvgT4Snyxd1jAwq9PdUFQOGbRQ&usqp=CAU",
+            "photo": "https://s1.eestatic.com/2021/01/27/motor/554454581_171368836_1706x1280.jpg",
             "category": "Carrocería",
             "stock_quantity": 23
         }
@@ -740,7 +740,7 @@
         "pk": 5,
         "fields": {
             "name": "Motor de combustión 4T en V",
-            "photo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTlZcGyNmOzSfhO6W-mJ7thU3t8ogve3lzX7A&usqp=CAU",
+            "photo": "https://www.auteco.com.co/wp-content/uploads/2020/03/moto-husqvarna-fe-250-atributos-4-1024x576.jpg",
             "category": "Motor",
             "stock_quantity": 12
         }
@@ -750,7 +750,7 @@
         "pk": 6,
         "fields": {
             "name": "Motor de combustión 4T en línea",
-            "photo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPfFQJOJQigAKxtYdId3fjaJgvnrB_E9cq5g&usqp=CAU",
+            "photo": "https://www.autofacil.es/wp-content/uploads/2023/01/KATANA_M2_engine_1.jpg",
             "category": "Motor",
             "stock_quantity": 8
         }
