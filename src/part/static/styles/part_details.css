@@ -1,6 +1,7 @@
 .product-image {
     vertical-align: middle;
     width: 100%;
+    max-height: 550px;
 }
 
 .pd-wrap {
