@@ -13,3 +13,4 @@ class Product(models.Model):
     product_type = models.CharField(max_length=1,choices=TYPE_CHOICES)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     manufacturer = models.ForeignKey(Manufacturers, on_delete=models.CASCADE, null=True, related_name='manufacturer')
+    show = models.BooleanField(default=True)

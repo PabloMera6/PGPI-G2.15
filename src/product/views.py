@@ -104,10 +104,12 @@ def new_part(request):
             category = request.POST.get('category')
             stock = request.POST.get('stock')
             price = request.POST.get('price')
+            show = request.POST.get('show')
             manufacturer_id = request.POST.get('manufacturer')
             try:
                 stock = int(stock)
                 price = float(price)
+                show = bool(show)
             except (ValueError, TypeError):
                 return render(request, self.template_name, {'error_message': 'Error al procesar los datos. Asegúrate de ingresar números válidos.'})
             if(price <=0):
@@ -128,6 +130,7 @@ def new_part(request):
                 category=category,
                 stock_quantity=stock,
                 price=price,
+                show=show,
                 manufacturer_id=manufacturer_id,
                 reference_number=reference_number
             )
@@ -147,6 +150,7 @@ def new_motorcycle(request):
             category = request.POST.get('category')
             stock = request.POST.get('stock')
             price = request.POST.get('price')
+            show = request.POST.get('show')
             manufacturer_id = request.POST.get('manufacturer')
             carroceria_id = request.POST.get('carroceria')
             carrocerias_compatibles = request.POST.getlist('carroceriac')
@@ -169,6 +173,7 @@ def new_motorcycle(request):
             try:
                 stock = int(stock)
                 price = float(price)
+                show = bool(show)
             except (ValueError, TypeError):
                 return render(request, self.template_name, {'error_message': 'Error al procesar los datos. Asegúrate de ingresar números válidos.'})
             if(price <=0):
@@ -189,6 +194,7 @@ def new_motorcycle(request):
                 category=category,
                 stock_quantity=stock,
                 price=price,
+                show=show,
                 manufacturer_id=manufacturer_id,
                 reference_number=reference_number,
                 selected_carrocería_id=carroceria_id,
@@ -247,10 +253,12 @@ def edit_part(request, part_id):
             category = request.POST.get('category')
             stock = request.POST.get('stock')
             price = request.POST.get('price')
+            show = request.POST.get('show')
             manufacturer_id = request.POST.get('manufacturer')
             try:
                 stock = int(stock)
                 price = float(price)
+                show = bool(show)
             except (ValueError, TypeError):
                 return render(request, self.template_name, {'error_message': 'Error al procesar los datos. Asegúrate de ingresar números válidos.'})
             if(price <=0):
@@ -265,6 +273,7 @@ def edit_part(request, part_id):
             part.category = category
             part.stock_quantity = stock
             part.price = price
+            part.show = show
             part.manufacturer_id = manufacturer_id
             part.save()
             messages.success(request,'Parte editada con éxito')
@@ -283,6 +292,7 @@ def edit_motorcycle(request, motorcycle_id):
             category = request.POST.get('category')
             stock = request.POST.get('stock')
             price = request.POST.get('price')
+            show = request.POST.get('show')
             manufacturer_id = request.POST.get('manufacturer')
             carroceria_id = request.POST.get('carroceria')
             carrocerias_compatibles = request.POST.getlist('carroceriac')
@@ -305,6 +315,7 @@ def edit_motorcycle(request, motorcycle_id):
             try:
                 stock = int(stock)
                 price = float(price)
+                show = bool(show)
             except (ValueError, TypeError):
                 return render(request, self.template_name, {'error_message': 'Error al procesar los datos. Asegúrate de ingresar números válidos.'})
             if(price <=0):
@@ -324,6 +335,7 @@ def edit_motorcycle(request, motorcycle_id):
             nueva_moto.category = category
             nueva_moto.stock_quantity = stock
             nueva_moto.price = price
+            nueva_moto.show = show
             nueva_moto.manufacturer_id = manufacturer_id
             nueva_moto.selected_carrocería_id=carroceria_id
             nueva_moto.selected_motor_id=motor_id

@@ -25,8 +25,8 @@ from paypalrestsdk import Payment
 
 
 def welcome(request):
-    motorcycles = Motorcycle.objects.all()
-    parts = Part.objects.all()
+    motorcycles = Motorcycle.objects.filter(show=True)
+    parts = Part.objects.filter(show=True)
     combined_list = list(motorcycles) + list(parts)
     random.shuffle(combined_list)
     active_group = combined_list[:3]
