@@ -165,14 +165,14 @@ def user_profile(request, email):
     if current_user.is_staff:
         user = UserProfile.objects.get(email=email)
         if request.method == 'POST':
-            full_name = request.data.get('full_name', '')
-            phone = request.data.get('phone', '')
-            address = request.data.get('address', '')
-            postal_code = request.data.get('postal_code', '')
-            city = request.data.get('city', '')
+            full_name = request.POST.get('full_name', '')
+            phone = request.POST.get('phone', '')
+            address = request.POST.get('address', '')
+            postal_code = request.POST.get('postal_code', '')
+            city = request.POST.get('city', '')
 
             try:
-                user_profile = request.user
+                user_profile = UserProfile.objects.get(email=email)
             except ObjectDoesNotExist:
                 messages.error(request, f'El usuario no existe.')
                 return redirect('administrate_users')
@@ -185,6 +185,6 @@ def user_profile(request, email):
             user_profile.save()
             return redirect(reverse('administrate_users'))
         else:
-            return render(request, 'users/profile.html', {'current_user': user})
+            return render(request, 'users/edit_user.html', {'current_user': user})
     else:
         return redirect('/')
